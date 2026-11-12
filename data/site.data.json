@@ -106,7 +106,7 @@
       "bandAltEn": "Bharat Block Puzzle board with jewel blocks",
       "shots": [
         { "src": "/assets/img/shots/block-home.webp", "w": 480, "h": 1067, "altEn": "Bharat Block Puzzle home screen with Play, Easy 8x8, Levels and Daily Challenge" },
-        { "src": "/assets/img/shots/block-game.webp", "w": 480, "h": 1067, "altEn": "A Bharat Block Puzzle board during play" }
+        { "src": "/assets/img/shots/block-game.webp", "w": 480, "h": 1067, "altEn": "A Bharat Block Puzzle board during play, with the Rotate, Swap tray and Undo helpers" }
       ],
       "kindEn": "A puzzle",
       "taglineEn": "Fit the blocks, clear the board.",
