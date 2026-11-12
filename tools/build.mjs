@@ -120,7 +120,7 @@ function footer(T) {
     </div>
     <div>
       <p class="foot-h">${T.s('footSupport')}</p>
-      <p><a href="mailto:${S.supportEmail}">${S.supportEmail}</a><br>${esc(HOST)}</p>
+      <p><a class="foot-mail" href="mailto:${S.supportEmail}">${S.supportEmail}</a><br>${esc(HOST)}</p>
     </div>
     <div>
       <p class="foot-h">${T.s('footPolicies')}</p>

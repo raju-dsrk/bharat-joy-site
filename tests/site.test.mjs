@@ -5,6 +5,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, dirname, extname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { cmapCodepoints } from './woff2-cmap.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = join(ROOT, 'public');
@@ -65,12 +66,31 @@ const FORBIDDEN = [
   /\u20B9/, /\brupees?\b/i, /\brs\.?\s?\d/i, /\bbet(s|ting)?\b/i, /\bjackpot/i, /\bcasino/i, /\bwager/i, /\bgambl/i,
   /\bcash\s?win/i, /\breal[\s-]money/i, /\blucky\b/i, /\bwin (real )?money\b/i, /\bearn money\b/i, /\bprize money\b/i,
   /\bpoker\b/i, /\brummy\b/i, /\bteen patti\b/i, /\bsatta\b/i, /\bpay[\s-]to[\s-]win\b/i, /\bsweet pop\b/i, /\bmithai match\b/i,
-  /\bcash\b/i, /\bprizes?\b/i, /\bwin cash\b/i, /\bcash prizes?\b/i, /\bcrashlytics\b/i, /\biphone\b/i, /\bios\b/i, /\bapp store\b/i, /\blimited time\b/i, /\bhurry\b/i,
+  /\bcash\b/i, /\bprizes?\b/i, /\bwin cash\b/i, /\bcash prizes?\b/i,
+  // stake and payout framing ("Costs 100 coins, win 200", "Join 200, win 800")
+  /\bwin (up to )?\d/i, /\bwin \w+ coins\b/i, /\bentry fee\b/i, /\b(costs?|join|entry|enter)\b[^.]{0,30}\bwin\b/i, /\bpay ?outs?\b(?! money or anything)/i,
+  /\bcrashlytics\b/i, /\biphone\b/i, /\bios\b/i, /\bapp store\b/i, /\blimited time\b/i, /\bhurry\b/i,
 ];
 test('no rupee sign, gambling, pay-to-win, retired names or dark-pattern words in visible copy', () => {
   for (const f of [...HTML, join(ROOT, 'data/site.data.json')]) {
     const text = f.endsWith('.json') ? read(f) : visible(read(f));
     for (const re of FORBIDDEN) assert.ok(!re.test(text), `${re} found in ${relative(ROOT, f)}`);
+  }
+});
+
+// Hindi: whole words only (a Devanagari letter on either side means a different word, e.g. लकी inside लकीर).
+// इनाम (reward) and पैसा (money) are used legitimately ("इनाम वाले विज्ञापन" = rewarded ads, "कोई पैसा मूल्य नहीं"
+// = no money value), so only their gambling phrases are banned.
+const hi = (w) => new RegExp(`(?<![\\u0900-\\u097F])(${w})(?![\\u0900-\\u097F])`);
+const FORBIDDEN_HI = [
+  'नकद', 'कैश', 'जुआ', 'जुए', 'सट्टा', 'सट्टे', 'दांव', 'दाँव', 'जैकपॉट', 'कैसीनो', 'लकी', 'किस्मत', 'क़िस्मत',
+  'रुपया', 'रुपये', 'रुपए', 'रुपयों', 'जीतो', 'जीतिए', 'जीतें',
+  'इनाम जीत\\S*', 'नकद इनाम', 'इनामी राशि', 'पैसे जीत\\S*', 'पैसा जीत\\S*', 'असली पैसे', 'असली पैसा',
+].map(hi);
+test('no gambling or stake/payout words in the Hindi copy', () => {
+  for (const f of [...HTML, join(ROOT, 'data/site.data.json'), join(ROOT, 'tools/build.mjs')]) {
+    const text = read(f);
+    for (const re of FORBIDDEN_HI) { const m = text.match(re); assert.ok(!m, `${m && m[0]} found in ${relative(ROOT, f)}`); }
   }
 });
 
@@ -181,8 +201,10 @@ test('privacy pages match each game\'s SDKs', () => {
   assert.ok(!/Firebase Analytics/.test(mela));
   assert.match(mela, /generate_204/);
   assert.match(mela, /at most one local notification a day/);
+  assert.match(block, /rewarded video[^.]*\bhint\b[^.]*\(power-up\)/, 'Block Puzzle names hint and power-up rewarded ads');
   for (const g of POLICY) {
     const s = p(g.slug);
+    assert.ok(s.includes(`${g.nameEn} is not directed at children under 13.`), `${g.slug}: children sentence`);
     assert.match(s, /Google AdMob/);
     assert.ok(s.includes(g.package), `${g.slug} names its package`);
     assert.ok(s.includes(S.supportEmail));
@@ -217,12 +239,88 @@ test('every file the pages reference is tracked in git (so Pages gets it)', () =
   }
 });
 
-test('the Devanagari web font covers every Hindi letter the site uses', () => {
-  const have = new Set([...readFileSync(join(ROOT, 'tools/devanagari-chars.txt'), 'utf8').trim()]);
+test('the Devanagari web font (its real cmap) covers every Hindi character the site uses', () => {
+  const have = cmapCodepoints(join(PUB, 'assets/fonts/NotoSerifDevanagari-deva.woff2'));
   const used = new Set();
   for (const f of [join(ROOT, 'data/site.data.json'), join(ROOT, 'tools/build.mjs'), ...HTML]) {
     for (const c of read(f)) if (c >= '\u0900' && c <= '\u097F') used.add(c);
   }
-  const missing = [...used].filter((c) => !have.has(c));
-  assert.deepEqual(missing, [], `letters missing from the font subset: ${missing.join(' ')}. Run python3 tools/fonts.py <NotoSerifDevanagari.ttf>`);
+  assert.ok(used.size > 30, 'expected Hindi text');
+  const missing = [...used].filter((c) => !have.has(c.codePointAt(0)));
+  assert.deepEqual(missing, [], `characters missing from NotoSerifDevanagari-deva.woff2: ${missing.join(' ')}. Run python3 tools/fonts.py <NotoSerifDevanagari.ttf>`);
+});
+
+// ---- Touch targets: at least 48x48 CSS px at every width ----
+// Every link and button in the output is either inline in running text (WCAG 2.5.8 inline exception)
+// or one of these kinds, and each kind's CSS sets min-height (and min-width where text can be short) >= 48px,
+// with no rule at any breakpoint setting a size below 48px.
+const TAP = {
+  '.nav a': 'hw', '.lang-btn': 'hw', '.foot-links li a': 'hw', '.icon-rail a': 'hw', '.win a': 'hw',
+  '.foot-mail': 'h', '.game-name a': 'h', '.mail': 'h', '.more': 'h', '.links a': 'h', '.cta': 'h',
+  '.legal-foot a': 'h', '.small': 'h', '.brand': 'h', '.contact-game': 'h', '.skip': 'h',
+};
+function cssRules(css) {
+  css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  const rules = []; const media = [];
+  let buf = '';
+  for (const ch of css) {
+    if (ch === '{') {
+      const sel = buf.trim(); buf = '';
+      media.push(sel.startsWith('@') ? sel : null);
+      if (!sel.startsWith('@')) rules.push({ sel, media: media.filter(Boolean).join(' '), body: '' });
+    } else if (ch === '}') {
+      const top = media.pop();
+      if (top === null) { rules[rules.length - 1].body = buf; }
+      buf = '';
+    } else buf += ch;
+  }
+  return rules.map((r) => ({ ...r, sels: r.sel.split(',').map((x) => x.trim().replace(/\s+/g, ' ')),
+    decl: Object.fromEntries(r.body.split(';').map((d) => d.split(':').map((x) => x.trim())).filter((d) => d[0] && d[1]).map(([k, ...v]) => [k, v.join(':')])) }));
+}
+const CSS_RULES = cssRules(read(join(PUB, 'assets/css/site.css')));
+const px = (v) => { const m = /^(\d+(?:\.\d+)?)px$/.exec(v || ''); return m ? Number(m[1]) : null; };
+
+test('tap targets: every kind sets min-height (and min-width) of 48px, and no breakpoint shrinks it', () => {
+  for (const [sel, dims] of Object.entries(TAP)) {
+    const mine = CSS_RULES.filter((r) => r.sels.includes(sel));
+    const base = mine.filter((r) => !r.media);
+    assert.ok(base.length, `no base CSS rule for ${sel}`);
+    const get = (k) => base.map((r) => r.decl[k]).filter(Boolean).pop();
+    assert.ok(px(get('min-height')) >= 48, `${sel} min-height is ${get('min-height')}, needs >= 48px`);
+    if (dims.includes('w')) assert.ok(px(get('min-width')) >= 48, `${sel} min-width is ${get('min-width')}, needs >= 48px`);
+    if (sel !== '.lang-btn') assert.ok(/^(inline-)?(flex|block|grid)$/.test(get('display') || ''), `${sel} needs a box display for min-height to apply (has ${get('display')})`);
+    for (const r of mine) {
+      for (const k of ['min-height', 'min-width', 'height', 'width', 'max-height', 'max-width']) {
+        const v = px(r.decl[k]);
+        assert.ok(v === null || v >= 48, `${sel} ${k}:${r.decl[k]} ${r.media ? 'in ' + r.media : ''}`);
+      }
+    }
+  }
+  for (const r of CSS_RULES) {
+    const v = px(r.decl['min-height']);
+    assert.ok(v === null || v >= 48, `min-height:${r.decl['min-height']} on ${r.sel}`);
+  }
+});
+
+test('tap targets: every link and button in the pages is a measured kind or an inline text link', () => {
+  const VOID = new Set(['img', 'br', 'meta', 'link', 'input', 'hr', 'source', 'wbr']);
+  const OWN = { 'lang-btn': 1, 'foot-mail': 1, mail: 1, more: 1, small: 1, brand: 1, 'contact-game': 1, skip: 1, cta: 1 };
+  const ANCESTOR = ['nav', 'legal-foot', 'foot-links', 'icon-rail', 'win', 'game-name', 'links'];
+  for (const f of HTML) {
+    const html = read(f).replace(/<script[\s\S]*?<\/script>/g, '').replace(/<!--[\s\S]*?-->/g, '');
+    const stack = [];
+    for (const m of html.matchAll(/<(\/?)([a-zA-Z0-9]+)([^>]*)>/g)) {
+      const [, close, tagU, attrs] = m; const tag = tagU.toLowerCase();
+      if (close) { const i = stack.map((x) => x.tag).lastIndexOf(tag); if (i >= 0) stack.length = i; continue; }
+      const cls = ((attrs.match(/class="([^"]*)"/) || [])[1] || '').split(/\s+/).filter(Boolean);
+      if (tag === 'a' || tag === 'button') {
+        const anc = stack.flatMap((x) => x.cls);
+        const parent = stack[stack.length - 1];
+        const ok = cls.some((c) => OWN[c]) || ANCESTOR.some((c) => anc.includes(c))
+          || (tag === 'a' && parent.tag === 'p' && parent.cls.length === 0 && stack.some((x) => x.tag === 'main'));
+        assert.ok(ok, `${relative(PUB, f)}: <${tag} class="${cls.join(' ')}"> in ${stack.slice(-3).map((x) => x.tag + (x.cls[0] ? '.' + x.cls[0] : '')).join(' > ')} is not a known 48px tap target`);
+      }
+      if (!VOID.has(tag) && !attrs.endsWith('/')) stack.push({ tag, cls });
+    }
+  }
 });

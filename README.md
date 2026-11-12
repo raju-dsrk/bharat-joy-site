@@ -11,7 +11,9 @@ tools/build.mjs       regenerates the pages in public/ from the data file (Node 
 tools/serve.mjs       local preview that behaves like Cloudflare Pages
 tools/images.py       optional (needs Pillow): turns a PNG into the icon / screenshot files the site uses
 tools/fonts.py        optional (needs fonttools + brotli): rebuilds the Devanagari font from the Hindi text in use
-tests/site.test.mjs   node:test checks (output up to date, links, copy rules, privacy vs SDKs, domain, a11y basics)
+tests/site.test.mjs   node:test checks (output up to date, links, copy rules in English and Hindi, privacy vs SDKs, domain,
+                      a11y basics, 48px tap targets, Devanagari font coverage)
+tests/woff2-cmap.mjs  reads a WOFF2 font's character map (used by the font coverage test)
 public/               the website, deployed as-is
   index.html, bharat-ludo/, block-puzzle/, sweet-mela/ (each with index.html and privacy.html),
   delete.html, terms.html, contact.html, 404.html, robots.txt, sitemap.xml, app-ads.txt, _headers,
@@ -90,7 +92,7 @@ Never put a placeholder id on a real (non-comment) line.
 
 ## Studio rules for copy
 
-No rupee sign, no gambling words, no pay-to-win wording, no dark patterns, no fake online players, no em-dashes, Android / Google Play only. Coins are earned for play and have no money value. The tests check most of this.
+No rupee sign, no gambling words, no pay-to-win wording, no dark patterns, no fake online players, no em-dashes, Android / Google Play only. Coins are earned for play and have no money value. Screenshots on the site show no entry cost next to a coin reward (no stake and payout look). Tap targets are at least 48x48 px at every width; a link inside a sentence is the only exception. The tests check most of this.
 
 ## Never commit
 
@@ -98,4 +100,4 @@ Keystores, `keystore.properties`, `google-services.json`, `.env*` files or token
 
 ## Fonts
 
-Self-hosted from `public/assets/fonts/` (no Google Fonts requests). All are under the SIL Open Font License 1.1; licence texts are in `public/assets/fonts/licenses/`. Yeseva One is converted to WOFF2 without changes (it has a Reserved Font Name); EB Garamond and Literata are subset to Latin. Noto Serif Devanagari keeps only the Hindi letters the site uses (listed in `tools/devanagari-chars.txt`) with all their shaping rules. If new Hindi text adds a letter, the tests fail and say to run `python3 tools/fonts.py path/to/NotoSerifDevanagari.ttf` (the variable font from Google Fonts), then rebuild.
+Self-hosted from `public/assets/fonts/` (no Google Fonts requests). All are under the SIL Open Font License 1.1; licence texts are in `public/assets/fonts/licenses/`. Yeseva One is converted to WOFF2 without changes (it has a Reserved Font Name); EB Garamond and Literata are subset to Latin. Noto Serif Devanagari keeps only the Hindi letters the site uses, with all their shaping rules. The tests read the font file's own character map (`tests/woff2-cmap.mjs`, no dependencies). If new Hindi text adds a letter, the tests fail and say to run `python3 tools/fonts.py path/to/NotoSerifDevanagari.ttf` (the variable font from Google Fonts), then rebuild.

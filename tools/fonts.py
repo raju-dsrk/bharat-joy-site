@@ -4,10 +4,10 @@
   python3 tools/fonts.py path/to/NotoSerifDevanagari[wdth,wght].ttf
 
 Reads every Devanagari letter in data/site.data.json and tools/build.mjs, keeps those (plus joiners,
-digits and punctuation) with all their shaping rules, and writes
-public/assets/fonts/NotoSerifDevanagari-deva.woff2 and tools/devanagari-chars.txt.
-tests/site.test.mjs fails when the Hindi text uses a letter that is not in devanagari-chars.txt, so run
-this again after adding Hindi text with a new letter. Source font: Google Fonts, Noto Serif Devanagari (OFL).
+digits and punctuation) with all their shaping rules, and writes public/assets/fonts/NotoSerifDevanagari-deva.woff2.
+tests/site.test.mjs reads the woff2's own character map (tests/woff2-cmap.mjs, no dependencies) and fails
+when the site uses a Devanagari character the font does not have, so run this again after adding Hindi
+text with a new letter. Source font: Google Fonts, Noto Serif Devanagari (OFL).
 """
 import io, os, sys
 from fontTools.ttLib import TTFont
@@ -43,8 +43,6 @@ def main():
     font.flavor = 'woff2'
     out = os.path.join(ROOT, 'public/assets/fonts/NotoSerifDevanagari-deva.woff2')
     font.save(out)
-    with open(os.path.join(ROOT, 'tools/devanagari-chars.txt'), 'w', encoding='utf8') as fh:
-        fh.write(''.join(chars) + '\n')
     print(out, os.path.getsize(out) // 1024, 'KB,', len(chars), 'letters')
 
 
