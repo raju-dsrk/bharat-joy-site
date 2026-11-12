@@ -81,7 +81,8 @@ test('no rupee sign, gambling, pay-to-win, retired names or dark-pattern words i
 // Hindi: whole words only (a Devanagari letter on either side means a different word, e.g. लकी inside लकीर).
 // इनाम (reward) and पैसा (money) are used legitimately ("इनाम वाले विज्ञापन" = rewarded ads, "कोई पैसा मूल्य नहीं"
 // = no money value), so only their gambling phrases are banned.
-const hi = (w) => new RegExp(`(?<![\\u0900-\\u097F])(${w})(?![\\u0900-\\u097F])`);
+// The boundary class leaves out the danda । and double danda ॥ (U+0964-0965), so 'जीतो।' is still a whole word.
+const hi = (w) => new RegExp(`(?<![\\u0900-\\u0963\\u0966-\\u097F])(${w})(?![\\u0900-\\u0963\\u0966-\\u097F])`);
 const FORBIDDEN_HI = [
   'नकद', 'कैश', 'जुआ', 'जुए', 'सट्टा', 'सट्टे', 'दांव', 'दाँव', 'जैकपॉट', 'कैसीनो', 'लकी', 'किस्मत', 'क़िस्मत',
   'रुपया', 'रुपये', 'रुपए', 'रुपयों', 'जीतो', 'जीतिए', 'जीतें',
@@ -316,11 +317,15 @@ test('tap targets: every link and button in the pages is a measured kind or an i
       if (tag === 'a' || tag === 'button') {
         const anc = stack.flatMap((x) => x.cls);
         const parent = stack[stack.length - 1];
-        const ok = cls.some((c) => OWN[c]) || ANCESTOR.some((c) => anc.includes(c))
-          || (tag === 'a' && parent.tag === 'p' && parent.cls.length === 0 && stack.some((x) => x.tag === 'main'));
+        // Inline means a link inside a sentence: the paragraph, without its links, must still contain words
+        // (Latin or Devanagari letters), not just separators like "·" or "|".
+        const rest = () => html.slice(parent.at, html.indexOf('</p>', parent.at)).replace(/<a\b[\s\S]*?<\/a>/g, ' ').replace(/<[^>]+>/g, ' ');
+        const inline = tag === 'a' && parent.tag === 'p' && parent.cls.length === 0 && stack.some((x) => x.tag === 'main')
+          && /[A-Za-z\u0900-\u0963\u0966-\u097F]/.test(rest());
+        const ok = cls.some((c) => OWN[c]) || ANCESTOR.some((c) => anc.includes(c)) || inline;
         assert.ok(ok, `${relative(PUB, f)}: <${tag} class="${cls.join(' ')}"> in ${stack.slice(-3).map((x) => x.tag + (x.cls[0] ? '.' + x.cls[0] : '')).join(' > ')} is not a known 48px tap target`);
       }
-      if (!VOID.has(tag) && !attrs.endsWith('/')) stack.push({ tag, cls });
+      if (!VOID.has(tag) && !attrs.endsWith('/')) stack.push({ tag, cls, at: m.index + m[0].length });
     }
   }
 });

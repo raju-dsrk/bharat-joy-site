@@ -60,7 +60,9 @@ const icon = (g, size, cls = '', alt = '', extra = '') =>
   `<img class="${cls}" src="${g.icon}-${size <= 96 ? 96 : 192}.webp" width="${size}" height="${size}" alt="${esc(alt)}"${extra}>`;
 
 function phone(shot, { eager = false, cls = '' } = {}) {
-  return `<div class="phone ${cls}"><div class="bezel"><div class="screen"><img src="${shot.src}" width="${shot.w}" height="${shot.h}" alt="${esc(shot.altEn)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div></div></div>`;
+  // Screens captured on a 16:9 phone (for example 360x640) get a 9:16 frame so nothing is cropped.
+  const screen = shot.h / shot.w < 1.9 ? 'screen r169' : 'screen';
+  return `<div class="phone ${cls}"><div class="bezel"><div class="${screen}"><img src="${shot.src}" width="${shot.w}" height="${shot.h}" alt="${esc(shot.altEn)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div></div></div>`;
 }
 
 function cta(g, T) {
@@ -485,7 +487,7 @@ function contactPage() {
     <ul class="contact-games">
         ${games}
     </ul>
-    <p><a href="${url.delete}">${T.s('delete')}</a> · <a href="${url.terms}">${T.s('terms')}</a></p>
+    <p class="contact-more"><a class="small" href="${url.delete}">${T.s('delete')}</a> <span aria-hidden="true">·</span> <a class="small" href="${url.terms}">${T.s('terms')}</a></p>
   </section>
   </main>`;
   return page({

@@ -29,7 +29,7 @@
       "bandAltEn": "Bharat Ludo board with four colours of pawns",
       "shots": [
         { "src": "/assets/img/shots/ludo-match.webp", "w": 480, "h": 1039, "altEn": "A Bharat Ludo match with a dice box for each player" },
-        { "src": "/assets/img/shots/ludo-friends.webp", "w": 480, "h": 1039, "altEn": "Bharat Ludo Play with Friends setup: number of players, names, colours and pawns" }
+        { "src": "/assets/img/shots/ludo-friends.webp", "w": 480, "h": 853, "altEn": "Bharat Ludo Play with Friends setup: number of players, names, colours, pawns and Start game" }
       ],
       "kindEn": "A board game",
       "taglineEn": "Roll the dice, reach home.",
