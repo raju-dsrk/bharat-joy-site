@@ -202,3 +202,15 @@ test('no secrets or signing files are tracked', () => {
     assert.ok(!/(\.keystore|\.jks|keystore\.properties|google-services\.json|(^|\/)\.env(\.|$))/.test(f), `secret-like file tracked: ${f}`);
   }
 });
+
+test('every file the pages reference is tracked in git (so Pages gets it)', () => {
+  let tracked;
+  try { tracked = new Set(execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).split('\n')); } catch { return; }
+  for (const f of HTML) {
+    for (const m of read(f).matchAll(/\s(?:href|src)="(\/[^"#?]*)/g)) {
+      const target = resolves(m[1]);
+      if (!target) continue;
+      assert.ok(tracked.has(relative(ROOT, target)), `${relative(ROOT, target)} is used by ${relative(PUB, f)} but not tracked`);
+    }
+  }
+});
