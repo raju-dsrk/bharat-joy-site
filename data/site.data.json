@@ -1,0 +1,321 @@
+{
+  "_readme": "ONE place for every name, icon, status, store link, domain and email on the site. Edit, then run `node tools/build.mjs` and commit the regenerated public/ folder. {name}, {nameHi}, {package}, {studio}, {email}, {domain}, {host} in text are filled in by the build.",
+
+  "site": {
+    "domain": "https://tejona.com",
+    "studio": "Bharat Joy",
+    "studioHi": "भारत जॉय",
+    "supportEmail": "dsrkraju777@gmail.com",
+    "admobPublisherId": "",
+    "platform": "Google Play",
+    "legalEffectiveDate": "12 November 2026",
+    "legalEffectiveISO": "2026-11-12",
+    "themeColor": "#6b1d24",
+    "ogImage": "/assets/img/og-home.jpg"
+  },
+
+  "games": [
+    {
+      "id": "ludo",
+      "slug": "bharat-ludo",
+      "featured": true,
+      "package": "com.bharatjoy.ludo",
+      "nameEn": "Bharat Ludo",
+      "nameHi": "भारत लूडो",
+      "status": "closed-testing",
+      "playUrl": "",
+      "icon": "/assets/img/icons/ludo-icon",
+      "band": "/assets/img/band/band-ludo.webp",
+      "bandAltEn": "Bharat Ludo board with four colours of pawns",
+      "shots": [
+        { "src": "/assets/img/shots/ludo-match.webp", "w": 480, "h": 1039, "altEn": "A Bharat Ludo match with a dice box for each player" },
+        { "src": "/assets/img/shots/ludo-friends.webp", "w": 480, "h": 853, "altEn": "Bharat Ludo Play with Friends setup: number of players, names, colours, pawns and Start game" }
+      ],
+      "kindEn": "A board game",
+      "taglineEn": "Roll the dice, reach home.",
+      "taglineHi": "पासा फेंको, घर पहुँचो।",
+      "summaryEn": "Roll the dice and reach home. Play vs AI, pass the phone with two to four players, or practise against the computer. The die is always fair. A re-roll, once per person, comes from a short ad you choose to watch.",
+      "summaryHi": "पासा फेंको और घर पहुँचो। AI के साथ खेलें, दो से चार खिलाड़ियों के साथ फ़ोन पास करें, या कंप्यूटर के साथ अभ्यास करें। पासा हमेशा निष्पक्ष है। हर खिलाड़ी को एक बार दोबारा पासा फेंकने का मौका, आपकी चुनी हुई छोटी विज्ञापन वीडियो से।",
+      "ledeEn": "An offline Ludo board in English and Hindi. Play vs AI, pass the phone with friends, or practise against the computer. The die is always fair.",
+      "ledeHi": "अंग्रेज़ी और हिंदी में ऑफ़लाइन लूडो। AI के साथ खेलें, दोस्तों के साथ फ़ोन पास करें, या कंप्यूटर के साथ अभ्यास करें। पासा हमेशा निष्पक्ष है।",
+      "featuresTitleEn": "On the board",
+      "featuresTitleHi": "बोर्ड पर",
+      "featuresEn": [
+        "Play vs AI, or practise against the computer",
+        "Pass and Play for 2, 3 or 4 players, always free",
+        "Quick Ludo for a shorter match",
+        "Fair, random dice for every player",
+        "One re-roll per person each match, from a short ad you choose. Computer players never re-roll.",
+        "Daily reward, daily spin (odds shown in the game), goals and coins",
+        "Festive and classic themes, and avatars",
+        "English by default, Hindi one tap away",
+        "Plays offline. Ads need the internet."
+      ],
+      "featuresHi": [
+        "AI के साथ खेलें, या कंप्यूटर के साथ अभ्यास करें",
+        "2, 3 या 4 खिलाड़ियों के लिए पास एंड प्ले, हमेशा मुफ़्त",
+        "छोटे मैच के लिए क्विक लूडो",
+        "हर खिलाड़ी के लिए निष्पक्ष, रैंडम पासा",
+        "हर मैच में हर खिलाड़ी को एक री-रोल, आपकी चुनी हुई छोटी विज्ञापन वीडियो से। कंप्यूटर कभी री-रोल नहीं करता।",
+        "रोज़ का इनाम, डेली स्पिन (संभावना गेम में दिखाई जाती है), लक्ष्य और सिक्के",
+        "त्योहार और क्लासिक थीम, और अवतार",
+        "पहले से अंग्रेज़ी, हिंदी एक टैप पर",
+        "ऑफ़लाइन खेलें। विज्ञापनों के लिए इंटरनेट चाहिए।"
+      ],
+      "privacy": {
+        "published": true,
+        "stays": [
+          "The name you type",
+          "A profile photo you choose, after the app shrinks it",
+          "Coin balance, daily gift and daily spin counts",
+          "Wins, losses and tokens captured",
+          "Sound, music, vibration, reminder and language settings",
+          "Optional gender, if you choose to give it. It is never sent to ads or analytics."
+        ],
+        "sections": [
+          { "h": "Ads (Google AdMob)", "p": [
+            "{name} shows Google AdMob ads in two formats only. A rewarded video is always your choice: you can watch one for free coins, an extra daily spin, or a dice re-roll. A banner sits at the bottom of the game screen in matches against the computer; there is no banner in Pass and Play. There are no full-screen ads between games.",
+            "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings."
+          ] },
+          { "h": "Analytics (Google Firebase Analytics)", "p": [
+            "Google Play builds of {name} include Firebase Analytics. It receives anonymous usage events (screens opened, game start and end, rewards claimed) together with an app-instance ID and basic device information. Your name, photo, gender and coin balance are not sent. A copy built without a Firebase configuration sends nothing to Firebase."
+          ] },
+          { "h": "Daily reward time check", "p": [
+            "When the phone is online, the app asks two public time services, worldtimeapi.org and timeapi.io, for the current India date so daily rewards reset at midnight IST. Those requests do not include your name, photo, or coin balance. Like any web request they see the phone's IP address. If the phone is offline, the app uses the device clock and blocks a claim when that clock has been moved backwards."
+          ] },
+          { "h": "Reminders", "p": [
+            "Reminders are off until you turn them on and allow notifications. The app then schedules at most one local reminder a day, around 7 pm phone time, and only while you are away from the game. The reminder is made and shown on this phone. Nothing is sent to a push server. You can turn reminders off in the app at any time."
+          ] },
+          { "h": "Photo, vibration and sharing", "p": [
+            "Play vs AI is played against computer opponents on the phone, and each one is labelled AI. Choosing a photo opens the system picker. The app does not ask for camera or photo library permission. Vibration uses the normal vibrate permission and only runs when that setting is on. The share button opens your phone's share sheet. The app does not receive the list of people you share with."
+          ] }
+        ]
+      }
+    },
+    {
+      "id": "block",
+      "slug": "block-puzzle",
+      "featured": true,
+      "package": "com.bharatjoy.blockpuzzle",
+      "nameEn": "Bharat Block Puzzle",
+      "nameHi": "भारत ब्लॉक पहेली",
+      "status": "coming-soon",
+      "playUrl": "",
+      "icon": "/assets/img/icons/block-icon",
+      "band": "/assets/img/band/band-block.webp",
+      "bandAltEn": "Bharat Block Puzzle board with jewel blocks",
+      "shots": [
+        { "src": "/assets/img/shots/block-home.webp", "w": 480, "h": 1067, "altEn": "Bharat Block Puzzle home screen with Play, Easy 8x8, Levels and Daily Challenge" },
+        { "src": "/assets/img/shots/block-game.webp", "w": 480, "h": 1067, "altEn": "A Bharat Block Puzzle board during play" }
+      ],
+      "kindEn": "A puzzle",
+      "taglineEn": "Fit the blocks, clear the board.",
+      "taglineHi": "ब्लॉक जमाओ, बोर्ड साफ़ करो।",
+      "summaryEn": "A jewel board with daily challenges, levels, a streak calendar and a festive look. Rewarded ads only when you choose, and a banner only on the game screen. Coins you earn, never buy.",
+      "summaryHi": "रोज़ की चुनौती, स्तर, स्ट्रीक कैलेंडर और त्योहार जैसा रूप, एक चमकते बोर्ड पर। इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर सिर्फ़ गेम स्क्रीन पर। सिक्के कमाए जाते हैं, ख़रीदे नहीं जाते।",
+      "ledeEn": "A calm block-fitting puzzle in English and Hindi. Classic and easy boards, one hundred levels, and a fresh challenge every day.",
+      "ledeHi": "अंग्रेज़ी और हिंदी में शांत ब्लॉक पहेली। क्लासिक और आसान बोर्ड, सौ स्तर, और हर दिन एक नई चुनौती।",
+      "featuresTitleEn": "On the board",
+      "featuresTitleHi": "बोर्ड पर",
+      "featuresEn": [
+        "Classic 9x9 and Easy 8x8 boards",
+        "100 levels, a daily challenge and a weekly festival event",
+        "Helpers: rotate, bomb, swap tray, undo and hint",
+        "Daily reward, streak calendar, daily spin, chest and achievements",
+        "Board skins and themes, a share card, and your own name and icon",
+        "Rewarded ads only when you choose, and a banner on the game screen. No full-screen ads.",
+        "English and Hindi"
+      ],
+      "featuresHi": [
+        "क्लासिक 9x9 और आसान 8x8 बोर्ड",
+        "100 स्तर, रोज़ की चुनौती और हर हफ़्ते त्योहार इवेंट",
+        "मदद: घुमाओ, बम, ट्रे बदलो, वापस लो और संकेत",
+        "रोज़ का इनाम, स्ट्रीक कैलेंडर, डेली स्पिन, संदूक और उपलब्धियाँ",
+        "बोर्ड स्किन और थीम, शेयर कार्ड, और आपका अपना नाम और आइकन",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर गेम स्क्रीन पर। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "अंग्रेज़ी और हिंदी"
+      ],
+      "privacy": {
+        "published": true,
+        "stays": [
+          "The name and icon you choose",
+          "Optional gender, if you choose to give it. It is never sent to ads, and you can clear it in Settings.",
+          "Coins, levels, stars, streaks and achievements",
+          "Sound, vibration, notification and language settings"
+        ],
+        "sections": [
+          { "h": "Ads (Google AdMob)", "p": [
+            "{name} shows Google AdMob ads in two formats only. A rewarded video is always your choice, for example to continue a game, double coins, get one extra spin a day, or use a hint or another helper (power-up). A banner is shown on the game screen only. There are no full-screen ads between games.",
+            "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings.",
+            "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+          ] },
+          { "h": "Notifications", "p": [
+            "After your first win the app may ask once for permission to show notifications. This version does not schedule or send any reminders. If a later version adds reminders, they will be local to the phone, off until you allow them, and this policy will be updated first. You can turn notifications off in Settings or in your phone's settings."
+          ] },
+          { "h": "Daily rewards and the clock", "p": [
+            "Daily rewards use the phone's own clock, with checks on the phone that stop a reward being claimed twice when the clock is moved. The app does not contact a time service."
+          ] },
+          { "h": "Share card and vibration", "p": [
+            "The share card is a picture made on the phone. It holds your chosen name (or none) and your score, never your gender or icon. It leaves the phone only when you tap Share, through your phone's share sheet. The app does not receive the list of people you share with. Vibration only runs when that setting is on."
+          ] }
+        ]
+      }
+    },
+    {
+      "id": "mela",
+      "slug": "sweet-mela",
+      "featured": true,
+      "package": "com.bharatjoy.sweets",
+      "nameEn": "Bharat Sweet Mela",
+      "nameHi": "भारत स्वीट मेला",
+      "status": "coming-soon",
+      "playUrl": "",
+      "icon": "/assets/img/icons/mela-icon",
+      "band": "/assets/img/band/band-mela.webp",
+      "bandAltEn": "Bharat Sweet Mela level map through a market street",
+      "shots": [
+        { "src": "/assets/img/shots/mela-map.webp", "w": 480, "h": 1039, "altEn": "Bharat Sweet Mela level map through a festive market street" },
+        { "src": "/assets/img/shots/mela-level.webp", "w": 480, "h": 1039, "altEn": "A Bharat Sweet Mela level card with its goals and optional boosters" }
+      ],
+      "kindEn": "A match-3",
+      "taglineEn": "Match sweets along the mela.",
+      "taglineHi": "मेले में मिठाइयाँ मिलाओ।",
+      "summaryEn": "Match sweets along a map of Indian streets. Daily Thali, lives, and festive events. A match-3 in our own colours.",
+      "summaryHi": "भारत की गलियों के नक्शे पर मिठाइयाँ मिलाओ। डेली थाली, लाइफ़ और त्योहार इवेंट। हमारे अपने रंगों में एक मैच-3।",
+      "ledeEn": "A match-3 game of Indian sweets, played across a map of market streets, in English and Hindi.",
+      "ledeHi": "भारतीय मिठाइयों का मैच-3 गेम, बाज़ार की गलियों के नक्शे पर, अंग्रेज़ी और हिंदी में।",
+      "featuresTitleEn": "At the mela",
+      "featuresTitleHi": "मेले में",
+      "featuresEn": [
+        "Match-3 with Indian sweets on a level map through market streets",
+        "Daily Thali, a daily gift and a daily spin",
+        "Lives, achievements and a shop of items you earn in play",
+        "Festive events through the year",
+        "Rewarded ads only when you choose, with a daily cap, and a banner. No full-screen ads.",
+        "English and Hindi"
+      ],
+      "featuresHi": [
+        "बाज़ार की गलियों से होकर स्तरों के नक्शे पर भारतीय मिठाइयों का मैच-3",
+        "डेली थाली, रोज़ का तोहफ़ा और डेली स्पिन",
+        "लाइफ़, उपलब्धियाँ और खेल में कमाई चीज़ों की दुकान",
+        "साल भर त्योहार इवेंट",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, रोज़ की सीमा के साथ, और एक बैनर। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "अंग्रेज़ी और हिंदी"
+      ],
+      "privacy": {
+        "published": true,
+        "stays": [
+          "Your name and avatar",
+          "Optional gender, if you choose to give it",
+          "Progress, coins, stars, streaks and records",
+          "Sound, reminder and language settings"
+        ],
+        "sections": [
+          { "h": "Ads (Google AdMob)", "p": [
+            "{name} shows Google AdMob ads: rewarded videos that you choose to watch, with a daily cap, and a banner. There are no full-screen ads between games. Ads are limited to content rated PG.",
+            "The Google Mobile Ads SDK may collect and use the advertising ID, the IP address (for approximate location), ad interactions, and diagnostics such as crash and performance data, to serve, measure and protect ads and to prevent fraud. See <a href=\"https://policies.google.com/technologies/partner-sites\">how Google uses information from sites or apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+            "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+          ] },
+          { "h": "Time check", "p": [
+            "When the game starts on Android, it sends an empty request to https://www.google.com/generate_204 and reads only the date and time from the reply, so the daily gift and the Daily Thali follow real time and not a changed phone clock. The request carries no game data, no player details and no ad or device ID. Like any web request, it lets Google see the phone's IP address and the web view's browser string. If the phone is offline, the game falls back to its own clock checks."
+          ] },
+          { "h": "Reminders", "p": [
+            "Reminders are off until you turn them on (the game asks once after your first Daily Thali, or you can use Settings). The game then schedules at most one local notification a day, around 6 pm phone time, using Android's notification system. The text is made on the phone. Nothing is sent to a server and no push service is used. Turning reminders off cancels the pending one."
+          ] },
+          { "h": "Share card, fonts and art", "p": [
+            "The share card is drawn on the phone and leaves it only when you tap Share, through your phone's share sheet. All fonts, pictures and sounds are inside the app, so the game makes no requests to font or art servers."
+          ] }
+        ]
+      }
+    },
+    {
+      "id": "snakes", "slug": "saanp-seedhi", "featured": false,
+      "package": "com.bharatjoy.saanpseedhi",
+      "nameEn": "Bharat Saanp Seedhi", "nameHi": "भारत साँप सीढ़ी",
+      "status": "in-workshop", "playUrl": "",
+      "icon": "/assets/img/icons/snakes-icon",
+      "lineEn": "Snakes and ladders with Pass and Play and vs AI.",
+      "lineHi": "साँप सीढ़ी, पास एंड प्ले और AI के साथ।",
+      "privacy": { "published": false }
+    },
+    {
+      "id": "carrom", "slug": "carrom", "featured": false,
+      "package": "com.bharatjoy.carrom",
+      "nameEn": "Bharat Carrom", "nameHi": "भारत कैरम",
+      "status": "in-workshop", "playUrl": "",
+      "icon": "/assets/img/icons/carrom-icon",
+      "lineEn": "A carrom board, still being made.",
+      "lineHi": "कैरम बोर्ड, अभी बन रहा है।",
+      "privacy": { "published": false, "_note": "Do not publish until the release AAB's SDKs are confirmed (see PLAN.md section 5)." }
+    },
+    {
+      "id": "callbreak", "slug": "call-break", "featured": false,
+      "package": "com.bharatjoy.callbreak",
+      "nameEn": "Bharat Call Break", "nameHi": "भारत कॉल ब्रेक",
+      "status": "in-workshop", "playUrl": "",
+      "icon": "/assets/img/icons/callbreak-icon",
+      "lineEn": "The card game, still being made.",
+      "lineHi": "ताश का खेल, अभी बन रहा है।",
+      "privacy": { "published": false }
+    },
+    {
+      "id": "bubble", "slug": "bubble-shooter", "featured": false,
+      "package": "com.bharatjoy.bubbleshooter",
+      "nameEn": "Bharat Bubble Shooter", "nameHi": "भारत बबल शूटर",
+      "status": "in-workshop", "playUrl": "",
+      "icon": "/assets/img/icons/bubble-icon",
+      "lineEn": "Aim, match and pop, still being made.",
+      "lineHi": "निशाना लगाओ, मिलाओ और फोड़ो, अभी बन रहा है।",
+      "privacy": { "published": false }
+    }
+  ],
+
+  "status": {
+    "closed-testing": { "pillEn": "Closed testing on Google Play", "pillHi": "Google Play पर क्लोज़्ड टेस्टिंग", "ctaEn": "Coming to Google Play", "ctaHi": "जल्द Google Play पर" },
+    "coming-soon": { "pillEn": "Coming soon", "pillHi": "जल्द आ रहा है", "ctaEn": "Coming to Google Play", "ctaHi": "जल्द Google Play पर" },
+    "live": { "pillEn": "On Google Play", "pillHi": "Google Play पर", "ctaEn": "Get it on Google Play", "ctaHi": "Google Play से पाएँ" },
+    "in-workshop": { "pillEn": "In the workshop", "pillHi": "वर्कशॉप में", "ctaEn": "", "ctaHi": "" }
+  },
+
+  "strings": {
+    "skip": { "en": "Skip to content", "hi": "सामग्री पर जाएँ" },
+    "langLabel": { "en": "Language", "hi": "भाषा" },
+    "navGames": { "en": "Games", "hi": "गेम" },
+    "navWorkshop": { "en": "Workshop", "hi": "वर्कशॉप" },
+    "navPrivacy": { "en": "Privacy", "hi": "गोपनीयता" },
+    "navContact": { "en": "Contact", "hi": "संपर्क" },
+    "homeKicker": { "en": "A game studio in India", "hi": "भारत का एक गेम स्टूडियो" },
+    "homeTag": { "en": "Games from India, made with care.", "hi": "भारत के गेम, दिल से बने।" },
+    "homeManifesto": { "en": "We make casual games for Indian phones: English first, Hindi one tap away, fair play, and coins you earn. Coins have no money value and cannot be bought or cashed out.", "hi": "हम भारतीय फ़ोन के लिए आसान गेम बनाते हैं: पहले अंग्रेज़ी, हिंदी एक टैप पर, निष्पक्ष खेल, और कमाए हुए सिक्के। सिक्कों का कोई पैसा मूल्य नहीं है, और इन्हें न ख़रीदा जा सकता है न भुनाया जा सकता है।" },
+    "bandCaption": { "en": "Games from the Bharat Joy studio, for Google Play.", "hi": "भारत जॉय स्टूडियो के गेम, Google Play के लिए।" },
+    "bandLabel": { "en": "Our games", "hi": "हमारे गेम" },
+    "gamesTitle": { "en": "The games", "hi": "हमारे गेम" },
+    "gamesIntro": { "en": "A board game, a puzzle, and a match-3, all from the same studio.", "hi": "एक बोर्ड गेम, एक पहेली और एक मैच-3, सब एक ही स्टूडियो से।" },
+    "readAbout": { "en": "Read about {name}", "hi": "{nameHi} के बारे में पढ़ें" },
+    "workshopTitle": { "en": "In the workshop", "hi": "वर्कशॉप में" },
+    "workshopLead": { "en": "These will join the catalogue when they are ready to show.", "hi": "ये गेम तैयार होने पर सूची में जुड़ेंगे।" },
+    "footAbout": { "en": "A small studio. Games for Google Play. Coins are for play only and have no money value.", "hi": "एक छोटा स्टूडियो। Google Play के लिए गेम। सिक्के सिर्फ़ खेलने के लिए हैं, उनका कोई पैसा मूल्य नहीं है।" },
+    "footSupport": { "en": "Support", "hi": "सहायता" },
+    "footPolicies": { "en": "Policies", "hi": "नीतियाँ" },
+    "privacyFor": { "en": "{name} privacy", "hi": "{nameHi} गोपनीयता" },
+    "delete": { "en": "Data deletion", "hi": "डेटा हटाना" },
+    "terms": { "en": "Terms of use", "hi": "उपयोग की शर्तें" },
+    "contact": { "en": "Contact", "hi": "संपर्क" },
+    "gameKicker": { "en": "A Bharat Joy game", "hi": "भारत जॉय का एक गेम" },
+    "coinsNote": { "en": "Coins are earned only, for play, and have no money value. They cannot be bought or cashed out. Package name: {package}.", "hi": "सिक्के सिर्फ़ खेलकर कमाए जाते हैं और उनका कोई पैसा मूल्य नहीं है। इन्हें न ख़रीदा जा सकता है न भुनाया जा सकता है। पैकेज नाम: {package}." },
+    "privacyPolicy": { "en": "Privacy policy", "hi": "गोपनीयता नीति" },
+    "backTo": { "en": "Back to {name}", "hi": "{nameHi} पर वापस" },
+    "screens": { "en": "Screens from the game", "hi": "गेम की झलक" },
+    "legalEnOnly": { "en": "", "hi": "यह पेज अभी केवल अंग्रेज़ी में है। हिंदी अनुवाद जल्द आएगा।" },
+    "home": { "en": "Home", "hi": "होम" },
+    "notFoundTitle": { "en": "This square is empty", "hi": "यह खाना ख़ाली है" },
+    "notFoundBody": { "en": "The page you asked for is not here. It may have moved, or the link may be mistyped.", "hi": "आप जो पेज ढूँढ रहे हैं वह यहाँ नहीं है। शायद यह कहीं और चला गया है, या लिंक में कोई गलती है।" },
+    "notFoundBack": { "en": "Go back to the Bharat Joy home", "hi": "भारत जॉय होम पर वापस जाएँ" },
+    "contactTitle": { "en": "Contact Bharat Joy", "hi": "भारत जॉय से संपर्क करें" },
+    "contactLead": { "en": "For help with a game, a question about your data, or anything else, write to us. We read every message and reply in English or Hindi.", "hi": "किसी गेम में मदद, अपने डेटा के बारे में सवाल, या कुछ और, हमें लिखें। हम हर संदेश पढ़ते हैं और अंग्रेज़ी या हिंदी में जवाब देते हैं।" },
+    "contactEmail": { "en": "Email", "hi": "ईमेल" },
+    "contactTips": { "en": "To help us help you, please mention the game name, your phone model and Android version, and what happened.", "hi": "जल्दी मदद के लिए, कृपया गेम का नाम, अपने फ़ोन का मॉडल और Android वर्शन, और क्या हुआ, यह लिखें।" },
+    "contactNoAccount": { "en": "Our games have no online account, so we never need your password and will never ask for one.", "hi": "हमारे गेम में कोई ऑनलाइन खाता नहीं है, इसलिए हमें आपके पासवर्ड की ज़रूरत नहीं है और हम कभी नहीं माँगेंगे।" },
+    "contactPolicies": { "en": "Privacy policies", "hi": "गोपनीयता नीतियाँ" }
+  }
+}
