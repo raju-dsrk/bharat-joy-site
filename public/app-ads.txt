@@ -1,7 +1,1 @@
-# Bharat Joy / tejona.com
-# app-ads.txt for Bharat Joy games on Google Play.
-# TODO: add the real AdMob publisher ID before production ads go live.
-# Test ads do not require a line here.
-# To add it: put the id (pub-...) in site.admobPublisherId in data/site.data.json
-# and run node tools/build.mjs. The build writes this line:
-# google.com, pub-<your id>, DIRECT, f08c47fec0942fa0
+google.com, pub-9290187978277778, DIRECT, f08c47fec0942fa0

@@ -75,11 +75,13 @@ English is in the HTML, so the site reads fully without JavaScript (the toggle i
 
 ## AdMob publisher ID (app-ads.txt)
 
-`public/app-ads.txt` is comments only. Test ads do not need a line. When the real AdMob publisher id exists:
+The publisher id is set (`site.admobPublisherId` in `data/site.data.json`), so `public/app-ads.txt` is exactly one line:
 
-1. Put it in `site.admobPublisherId` in `data/site.data.json`, for example `"pub-1234567890123456"`.
-2. Run `node tools/build.mjs`. The file then contains `google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0`.
-3. Commit, deploy, and make sure every app's Play listing has `https://tejona.com` (the current domain) as its developer website, so AdMob can find `https://tejona.com/app-ads.txt`.
+```
+google.com, pub-9290187978277778, DIRECT, f08c47fec0942fa0
+```
+
+To change it, edit `site.admobPublisherId` (format `pub-<16 digits>`; the build refuses anything else) and run `node tools/build.mjs`. If the value is empty, the file falls back to comments only (test ads need no line). Keep `https://tejona.com` (the current domain) as the developer website on every app's Play listing so AdMob can find `https://tejona.com/app-ads.txt`.
 
 Never put a placeholder id on a real (non-comment) line.
 

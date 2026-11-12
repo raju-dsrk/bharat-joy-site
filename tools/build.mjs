@@ -538,16 +538,19 @@ Allow: /
 Sitemap: ${abs('/sitemap.xml')}
 `;
 const pub = (S.admobPublisherId || '').trim();
-const appAds = `# ${S.studio} / ${HOST}
+// With a publisher id the file is exactly the one authorised-seller line (no comments), which is
+// what Google's crawler expects. Without one it is comments only (test ads need no line).
+if (pub && !/^pub-\d{16}$/.test(pub)) throw new Error(`site.admobPublisherId must look like pub-<16 digits>, got: ${pub}`);
+const appAds = pub
+  ? `google.com, ${pub}, DIRECT, f08c47fec0942fa0\n`
+  : `# ${S.studio} / ${HOST}
 # app-ads.txt for ${S.studio} games on Google Play.
-${pub
-    ? `google.com, ${pub}, DIRECT, f08c47fec0942fa0\n`
-    : `# TODO: add the real AdMob publisher ID before production ads go live.
+# TODO: add the real AdMob publisher ID before production ads go live.
 # Test ads do not require a line here.
 # To add it: put the id (pub-...) in site.admobPublisherId in data/site.data.json
-# and run node tools/build.mjs. The build writes this line:
+# and run node tools/build.mjs. The build then writes only this line:
 # google.com, pub-<your id>, DIRECT, f08c47fec0942fa0
-`}`;
+`;
 
 // ---------- Write or check ----------
 const files = {

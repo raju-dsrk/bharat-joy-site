@@ -127,10 +127,14 @@ test('domain comes from the data file only', () => {
   }
 });
 
-test('app-ads.txt is comments only until a publisher id is set', () => {
-  const lines = read(join(PUB, 'app-ads.txt')).split('\n').filter((l) => l.trim());
-  if (!S.admobPublisherId) for (const l of lines) assert.ok(l.startsWith('#'), `non-comment line: ${l}`);
-  else assert.ok(lines.some((l) => l === `google.com, ${S.admobPublisherId}, DIRECT, f08c47fec0942fa0`));
+test('app-ads.txt is exactly the seller line when a publisher id is set, comments only otherwise', () => {
+  const txt = read(join(PUB, 'app-ads.txt'));
+  if (S.admobPublisherId) {
+    assert.match(S.admobPublisherId, /^pub-\d{16}$/);
+    assert.equal(txt, `google.com, ${S.admobPublisherId}, DIRECT, f08c47fec0942fa0\n`);
+  } else {
+    for (const l of txt.split('\n').filter((l) => l.trim())) assert.ok(l.startsWith('#'), `non-comment line: ${l}`);
+  }
 });
 
 test('every internal link and asset resolves, and #anchors exist', () => {
