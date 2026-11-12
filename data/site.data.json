@@ -150,7 +150,7 @@
             "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
           ] },
           { "h": "Reminders", "p": [
-            "The evening reminder is optional. After your first level win the app may ask once for permission to show notifications, and you can also turn the reminder on in Settings. Only when you have given that permission and the Settings switch is on, the app schedules at most one local reminder a day, around 7 pm phone time, and none on a day you have already played.",
+            "The evening reminder is optional and off until you turn it on. You can turn it on in Settings, or by allowing notifications when the app asks once after your first level win. A phone that allows notifications without asking does not turn it on. While it is on and notifications are allowed, the app schedules at most one local reminder a day, around 7 pm phone time, and none on a day you have already played.",
             "The reminder is made and shown on this phone using Android's notification system. No data is sent for it and no push server is used. You can turn it off at any time in Settings, which cancels the pending reminder, or in your phone's settings."
           ] },
           { "h": "Daily rewards and the clock", "p": [

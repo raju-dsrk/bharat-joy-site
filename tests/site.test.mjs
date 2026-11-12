@@ -200,6 +200,7 @@ test('privacy pages match each game\'s SDKs', () => {
   assert.match(block, /does not include Firebase/);
   assert.ok(!/Firebase Analytics/.test(block));
   assert.match(block, /at most one local reminder a day, around 7 pm phone time/);
+  assert.match(block, /optional and off until you turn it on/);
   assert.match(block, /No data is sent for it and no push server is used/);
   assert.match(block, /turn it off at any time in Settings/);
   assert.ok(!/does not schedule or send any reminders/.test(block));
