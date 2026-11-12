@@ -141,7 +141,7 @@
           "The name and icon you choose",
           "Optional gender, if you choose to give it. It is never sent to ads, and you can clear it in Settings.",
           "Coins, levels, stars, streaks and achievements",
-          "Sound, vibration, notification and language settings"
+          "Sound, vibration, reminder and language settings"
         ],
         "sections": [
           { "h": "Ads (Google AdMob)", "p": [
@@ -149,8 +149,9 @@
             "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings.",
             "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
           ] },
-          { "h": "Notifications", "p": [
-            "After your first win the app may ask once for permission to show notifications. This version does not schedule or send any reminders. If a later version adds reminders, they will be local to the phone, off until you allow them, and this policy will be updated first. You can turn notifications off in Settings or in your phone's settings."
+          { "h": "Reminders", "p": [
+            "The evening reminder is optional. After your first level win the app may ask once for permission to show notifications, and you can also turn the reminder on in Settings. Only when you have given that permission and the Settings switch is on, the app schedules at most one local reminder a day, around 7 pm phone time, and none on a day you have already played.",
+            "The reminder is made and shown on this phone using Android's notification system. No data is sent for it and no push server is used. You can turn it off at any time in Settings, which cancels the pending reminder, or in your phone's settings."
           ] },
           { "h": "Daily rewards and the clock", "p": [
             "Daily rewards use the phone's own clock, with checks on the phone that stop a reward being claimed twice when the clock is moved. The app does not contact a time service."

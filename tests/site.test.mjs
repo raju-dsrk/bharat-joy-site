@@ -199,7 +199,10 @@ test('privacy pages match each game\'s SDKs', () => {
   const block = p('block-puzzle');
   assert.match(block, /does not include Firebase/);
   assert.ok(!/Firebase Analytics/.test(block));
-  assert.match(block, /does not schedule or send any reminders/);
+  assert.match(block, /at most one local reminder a day, around 7 pm phone time/);
+  assert.match(block, /No data is sent for it and no push server is used/);
+  assert.match(block, /turn it off at any time in Settings/);
+  assert.ok(!/does not schedule or send any reminders/.test(block));
   assert.ok(!/worldtimeapi|timeapi\.io|generate_204/.test(block));
   const mela = p('sweet-mela');
   assert.match(mela, /does not include Firebase/);
