@@ -1,0 +1,17 @@
+# Never commit secrets or signing material
+*.keystore
+*.jks
+keystore.properties
+google-services.json
+.env
+.env.*
+*.pem
+*.key
+
+# Local tooling and output
+node_modules/
+.DS_Store
+shots/
+build-shots/
+review-*/
+*.log
