@@ -10,6 +10,7 @@ data/site.data.json   the ONE file with every game name, Hindi name, package, ic
 tools/build.mjs       regenerates the pages in public/ from the data file (Node 18+, no dependencies)
 tools/serve.mjs       local preview that behaves like Cloudflare Pages
 tools/images.py       optional (needs Pillow): turns a PNG into the icon / screenshot files the site uses
+tools/fonts.py        optional (needs fonttools + brotli): rebuilds the Devanagari font from the Hindi text in use
 tests/site.test.mjs   node:test checks (output up to date, links, copy rules, privacy vs SDKs, domain, a11y basics)
 public/               the website, deployed as-is
   index.html, bharat-ludo/, block-puzzle/, sweet-mela/ (each with index.html and privacy.html),
@@ -97,4 +98,4 @@ Keystores, `keystore.properties`, `google-services.json`, `.env*` files or token
 
 ## Fonts
 
-Self-hosted from `public/assets/fonts/` (no Google Fonts requests). All are under the SIL Open Font License 1.1; licence texts are in `public/assets/fonts/licenses/`. Yeseva One is converted to WOFF2 without changes (it has a Reserved Font Name); EB Garamond, Literata and Noto Serif Devanagari are subset to the characters the site uses.
+Self-hosted from `public/assets/fonts/` (no Google Fonts requests). All are under the SIL Open Font License 1.1; licence texts are in `public/assets/fonts/licenses/`. Yeseva One is converted to WOFF2 without changes (it has a Reserved Font Name); EB Garamond and Literata are subset to Latin. Noto Serif Devanagari keeps only the Hindi letters the site uses (listed in `tools/devanagari-chars.txt`) with all their shaping rules. If new Hindi text adds a letter, the tests fail and say to run `python3 tools/fonts.py path/to/NotoSerifDevanagari.ttf` (the variable font from Google Fonts), then rebuild.
