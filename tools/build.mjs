@@ -341,7 +341,7 @@ ${sections}
     <p>Everything the app sends over the internet, as described above, travels encrypted over HTTPS.</p>
 
     <h2>Children</h2>
-    <p>${esc(g.nameEn)} is a casual game. It is not directed at children under 13 as a separate service, and it does not knowingly collect personal information from children through a server.</p>
+    <p>${esc(g.nameEn)} is not directed at children under 13. It does not knowingly collect personal information from children.</p>
 
     <h2>Changes</h2>
     <p>If a later version changes the ad network or analytics, or adds an account server, this policy and the Google Play Data safety form will be updated before that version ships.</p>
@@ -433,7 +433,7 @@ function termsPage() {
     <h2>Coins and rewards</h2>
     <ul>
       <li>Coins, spins, items and other rewards are virtual and exist only inside the game for play.</li>
-      <li>They have no money value. They cannot be bought, sold, traded, transferred or cashed out, and nothing in our games pays out money or prizes.</li>
+      <li>They have no money value. They cannot be bought, sold, traded, transferred or cashed out, and nothing in our games pays out money or anything else of value.</li>
       <li>Coins are earned by playing, by daily rewards, or by watching an optional ad. They never buy an advantage over another person.</li>
       <li>Because progress is saved only on your phone, it is lost if you uninstall the game or clear its storage.</li>
       <li>We may change how rewards work in a later version.</li>

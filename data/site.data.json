@@ -28,7 +28,7 @@
       "band": "/assets/img/band/band-ludo.webp",
       "bandAltEn": "Bharat Ludo board with four colours of pawns",
       "shots": [
-        { "src": "/assets/img/shots/ludo-home.webp", "w": 480, "h": 1067, "altEn": "Bharat Ludo home screen with Play vs AI, With Friends, Practice and Quick Ludo" },
+        { "src": "/assets/img/shots/ludo-home.webp", "w": 480, "h": 1039, "altEn": "Bharat Ludo home screen with the board, Play vs AI, With Friends, Quick Ludo, Practice and the daily spin" },
         { "src": "/assets/img/shots/ludo-match.webp", "w": 480, "h": 1039, "altEn": "A Bharat Ludo match with a dice box for each player" }
       ],
       "kindEn": "A board game",
@@ -145,7 +145,7 @@
         ],
         "sections": [
           { "h": "Ads (Google AdMob)", "p": [
-            "{name} shows Google AdMob ads in two formats only. A rewarded video is always your choice, for example to continue a game, double coins, or get one extra spin a day. A banner is shown on the game screen only. There are no full-screen ads between games.",
+            "{name} shows Google AdMob ads in two formats only. A rewarded video is always your choice, for example to continue a game, double coins, get one extra spin a day, or use a hint or another helper (power-up). A banner is shown on the game screen only. There are no full-screen ads between games.",
             "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings.",
             "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
           ] },

@@ -1,5 +1,5 @@
 /* EN | हिं toggle. English is in the HTML; Hindi text for this page sits in #i18n-hi.
-   Remembers the choice in localStorage. Without JS the page stays English and the toggle is hidden. */
+   Remembers the choice in localStorage. Without JS the page stays English and the toggle is not shown (display:none, no gap). */
 (function () {
   var root = document.documentElement;
   root.classList.remove('no-js');

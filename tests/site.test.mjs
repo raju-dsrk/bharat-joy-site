@@ -52,10 +52,12 @@ test('no privacy page for unpublished games (Carrom stays off the site)', () => 
   assert.ok(!existsSync(join(PUB, 'carrom')));
 });
 
-test('no em-dashes in copy or data', () => {
-  for (const f of [...TEXTY, join(ROOT, 'data/site.data.json')]) {
-    const s = read(f);
-    assert.ok(!s.includes('\u2014') && !/&mdash;/i.test(s), `em-dash in ${relative(ROOT, f)}`);
+// Em-dash and en-dash in any form: literal, HTML entity, CSS escape (content:"\2014") or JS/JSON escape.
+const DASHES = /[\u2013\u2014]|&(m|n)dash;|&#(8212|8211|x2014|x2013);|\\0*201[34]\b|\\u201[34]/i;
+test('no em-dashes (or en-dashes) in copy, data, CSS or JS', () => {
+  for (const f of [...TEXTY, join(ROOT, 'data/site.data.json'), join(ROOT, 'tools/build.mjs')]) {
+    const m = read(f).match(DASHES);
+    assert.ok(!m, `dash ${m && JSON.stringify(m[0])} in ${relative(ROOT, f)}`);
   }
 });
 
@@ -63,7 +65,7 @@ const FORBIDDEN = [
   /\u20B9/, /\brupees?\b/i, /\brs\.?\s?\d/i, /\bbet(s|ting)?\b/i, /\bjackpot/i, /\bcasino/i, /\bwager/i, /\bgambl/i,
   /\bcash\s?win/i, /\breal[\s-]money/i, /\blucky\b/i, /\bwin (real )?money\b/i, /\bearn money\b/i, /\bprize money\b/i,
   /\bpoker\b/i, /\brummy\b/i, /\bteen patti\b/i, /\bsatta\b/i, /\bpay[\s-]to[\s-]win\b/i, /\bsweet pop\b/i, /\bmithai match\b/i,
-  /\bcrashlytics\b/i, /\biphone\b/i, /\bios\b/i, /\bapp store\b/i, /\blimited time\b/i, /\bhurry\b/i,
+  /\bcash\b/i, /\bprizes?\b/i, /\bwin cash\b/i, /\bcash prizes?\b/i, /\bcrashlytics\b/i, /\biphone\b/i, /\bios\b/i, /\bapp store\b/i, /\blimited time\b/i, /\bhurry\b/i,
 ];
 test('no rupee sign, gambling, pay-to-win, retired names or dark-pattern words in visible copy', () => {
   for (const f of [...HTML, join(ROOT, 'data/site.data.json')]) {
@@ -213,4 +215,14 @@ test('every file the pages reference is tracked in git (so Pages gets it)', () =
       assert.ok(tracked.has(relative(ROOT, target)), `${relative(ROOT, target)} is used by ${relative(PUB, f)} but not tracked`);
     }
   }
+});
+
+test('the Devanagari web font covers every Hindi letter the site uses', () => {
+  const have = new Set([...readFileSync(join(ROOT, 'tools/devanagari-chars.txt'), 'utf8').trim()]);
+  const used = new Set();
+  for (const f of [join(ROOT, 'data/site.data.json'), join(ROOT, 'tools/build.mjs'), ...HTML]) {
+    for (const c of read(f)) if (c >= '\u0900' && c <= '\u097F') used.add(c);
+  }
+  const missing = [...used].filter((c) => !have.has(c));
+  assert.deepEqual(missing, [], `letters missing from the font subset: ${missing.join(' ')}. Run python3 tools/fonts.py <NotoSerifDevanagari.ttf>`);
 });

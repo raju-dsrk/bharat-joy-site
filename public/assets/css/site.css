@@ -56,11 +56,12 @@ main{display:block;position:relative;z-index:2}
 .brand{font-family:var(--display);font-size:18px;color:var(--ink);text-decoration:none;line-height:1.2;padding:6px 0}
 .brand span{display:block;font-size:13px;color:var(--maroon)}
 .nav{display:flex;flex-wrap:wrap;gap:4px 22px}
-.nav a{color:var(--maroon);font-size:16px;text-decoration:none;font-family:var(--italic);font-style:italic;padding:12px 2px;min-height:44px;display:inline-flex;align-items:center}
+.nav a{color:var(--maroon);font-size:16px;text-decoration:none;font-family:var(--italic);font-style:italic;padding:0 4px;min-height:48px;min-width:48px;display:inline-flex;align-items:center;justify-content:center}
 .nav a:hover,.nav a[aria-current="page"]{text-decoration:underline;text-underline-offset:4px}
-.lang{display:inline-flex;align-items:center;border:1px solid var(--maroon);padding:3px;gap:3px;visibility:hidden}
-.js .lang{visibility:visible}
-.lang-btn{font:inherit;font-size:13px;letter-spacing:.1em;min-width:44px;min-height:38px;padding:0 10px;border:0;background:transparent;color:var(--maroon);cursor:pointer}
+.lang{display:none;align-items:center;border:1px solid var(--maroon);padding:2px;gap:2px}
+.js .lang{display:inline-flex}
+.no-js .home-header{justify-content:flex-end}
+.lang-btn{font:inherit;font-size:13px;letter-spacing:.1em;min-width:48px;min-height:48px;padding:0 10px;border:0;background:transparent;color:var(--maroon);cursor:pointer}
 .lang-btn[data-lang="hi"]{font-family:var(--dev);letter-spacing:0;font-size:15px}
 .lang-btn[aria-pressed="true"]{background:var(--maroon);color:var(--paper)}
 
@@ -110,7 +111,7 @@ main{display:block;position:relative;z-index:2}
 .pill{display:inline-block;border:1px solid var(--maroon);color:var(--maroon);font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;margin-bottom:12px}
 html[lang="hi"] .pill,html[lang="hi"] .kicker{letter-spacing:0;font-size:14px;text-transform:none}
 p.body{font-size:17px;line-height:1.6;color:var(--mute);max-width:520px}
-.more{display:inline-flex;align-items:center;min-height:44px;margin-top:6px;font-family:var(--italic);font-style:italic;font-size:18px;color:var(--maroon);text-decoration:none;border-bottom:1px solid rgba(107,29,36,.35)}
+.more{display:inline-flex;align-items:center;min-height:48px;margin-top:6px;font-family:var(--italic);font-style:italic;font-size:18px;color:var(--maroon);text-decoration:none;border-bottom:1px solid rgba(107,29,36,.35)}
 .more:hover{border-bottom-color:var(--maroon)}
 
 /* Phone frame */
@@ -156,7 +157,7 @@ html[lang="hi"] .foot-h{letter-spacing:0;font-size:15px}
 .feat-shot .phone{width:220px}
 .note{color:var(--mute);font-size:15px;line-height:1.55;padding:0 var(--pad) 18px;max-width:calc(40rem + 2 * var(--pad))}
 .links{padding:0 var(--pad) 28px;display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center}
-.links a,.cta{font-family:var(--italic);font-style:italic;font-size:18px;color:var(--maroon);min-height:44px;display:inline-flex;align-items:center}
+.links a,.cta{font-family:var(--italic);font-style:italic;font-size:18px;color:var(--maroon);min-height:48px;display:inline-flex;align-items:center}
 .cta-label{border:1px solid var(--maroon);padding:0 14px;font-style:normal;font-family:var(--text);font-size:15px;letter-spacing:.04em}
 a.cta{border:1px solid var(--maroon);background:var(--maroon);color:var(--paper);padding:0 16px;text-decoration:none;font-style:normal}
 
@@ -174,7 +175,7 @@ a.cta{border:1px solid var(--maroon);background:var(--maroon);color:var(--paper)
 .rule{border:0;border-top:1px solid rgba(107,29,36,.3);margin:28px 0}
 .legal-note{margin:12px auto 0;max-width:calc(46rem);padding:10px 14px;border:1px dashed var(--maroon);color:var(--maroon);font-size:16px;background:rgba(255,248,231,.6)}
 .legal-foot{display:flex;flex-wrap:wrap;gap:4px 22px;padding:0 var(--pad);max-width:calc(46rem + 2 * var(--pad));margin:0 auto}
-.legal-foot a{font-family:var(--italic);font-style:italic;font-size:17px;min-height:44px;display:inline-flex;align-items:center}
+.legal-foot a{font-family:var(--italic);font-style:italic;font-size:17px;min-height:48px;display:inline-flex;align-items:center}
 .contact .lede{margin:8px 0 18px}
 .contact p{margin-bottom:12px;color:var(--ink)}
 .mail-card{border:1px solid var(--maroon);box-shadow:inset 0 0 0 3px var(--paper),inset 0 0 0 4px var(--gold-line);padding:18px 20px;margin:0 0 18px;background:rgba(255,248,231,.55)}
@@ -184,7 +185,7 @@ a.cta{border:1px solid var(--maroon);background:var(--maroon);color:var(--paper)
 .contact-game img{width:48px;height:48px;border-radius:11px}
 .contact-game strong{display:block;font-family:var(--display);font-weight:400;font-size:18px}
 .contact-game span span{display:block;color:var(--maroon);font-size:14px}
-.small{font-family:var(--italic);font-style:italic;font-size:16px;min-height:44px;display:inline-flex;align-items:center}
+.small{font-family:var(--italic);font-style:italic;font-size:16px;min-height:48px;display:inline-flex;align-items:center}
 .center{text-align:center}
 .still-board{width:180px;height:180px;margin:12px auto 18px;filter:drop-shadow(0 12px 18px rgba(80,20,20,.25))}
 .nf .lede{margin:0 auto 10px}
@@ -260,11 +261,11 @@ main,.site-footer,.nav{transition:opacity .2s ease}
   .page-home::after{width:96px;height:96px;bottom:14px;right:14px}
   .page-home{padding-bottom:90px}
   .foot-links{grid-template-columns:1fr}
-  .foot-links li a{padding:8px 0}
+  .foot-links li a{padding:0;min-height:48px;display:inline-flex;align-items:center}
   .hero{padding-left:22px;padding-right:22px}
   .site-header{padding-top:14px;flex-wrap:wrap;row-gap:0}
   .site-header .nav{order:3;width:100%;justify-content:center;gap:0 14px;border-top:1px solid rgba(196,137,26,.3);margin-top:6px}
-  .nav a{font-size:15px;padding:10px 2px}
+  .nav a{font-size:15px}
   .toran{margin:6px 16px 0;gap:3px}
   .bead{width:16px;height:16px}
   .leaf{width:10px;height:20px}
@@ -290,7 +291,7 @@ main,.site-footer,.nav{transition:opacity .2s ease}
   .mail{font-size:20px}
 }
 @media (max-width:360px){
-  .site-header .nav{gap:0 10px}
+  .site-header .nav{gap:0 4px}
   .nav a{font-size:14px}
   .hero h1{font-size:48px}
 }
