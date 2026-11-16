@@ -199,14 +199,19 @@ test('privacy pages match each game\'s SDKs', () => {
   const block = p('block-puzzle');
   assert.match(block, /does not include Firebase/);
   assert.ok(!/Firebase Analytics/.test(block));
-  assert.match(block, /does not schedule or send any reminders/);
+  assert.match(block, /at most one local reminder a day, around 7 pm phone time/);
+  assert.match(block, /optional and off until you turn it on/);
+  assert.match(block, /No data is sent for it and no push server is used/);
+  assert.match(block, /turn it off at any time in Settings/);
+  assert.ok(!/does not schedule or send any reminders/.test(block));
   assert.ok(!/worldtimeapi|timeapi\.io|generate_204/.test(block));
   const mela = p('sweet-mela');
   assert.match(mela, /does not include Firebase/);
   assert.ok(!/Firebase Analytics/.test(mela));
   assert.match(mela, /generate_204/);
   assert.match(mela, /at most one local notification a day/);
-  assert.match(block, /rewarded video[^.]*\bhint\b[^.]*\(power-up\)/, 'Block Puzzle names hint and power-up rewarded ads');
+  assert.match(block, /rewarded video[^.]*\(power-up\): rotate, swap tray or undo/, 'Block Puzzle names its real power-ups');
+  assert.ok(!/\bhint\b|achievements/.test(block), 'Block Puzzle privacy: no hint or achievements (not in the game)');
   for (const g of POLICY) {
     const s = p(g.slug);
     assert.ok(s.includes(`${g.nameEn} is not directed at children under 13.`), `${g.slug}: children sentence`);
@@ -331,5 +336,21 @@ test('tap targets: every link and button in the pages is a measured kind or an i
       }
       if (!VOID.has(tag) && !attrs.endsWith('/')) stack.push({ tag, cls, at: m.index + m[0].length });
     }
+  }
+});
+
+test('Block Puzzle card lists only real features (no calendar, chest, bomb, hint or achievements)', () => {
+  const site = JSON.parse(readFileSync(new URL('../data/site.data.json', import.meta.url), 'utf8'));
+  const g = site.games.find((x) => x.slug === 'block-puzzle');
+  const en = [g.summaryEn, g.ledeEn, ...g.featuresEn].join(' ');
+  const hi = [g.summaryHi, g.ledeHi, ...g.featuresHi].join(' ');
+  assert.ok(!/calendar|chest|bomb|\bhint|achievement/i.test(en), en);
+  assert.ok(!/कैलेंडर|संदूक|बम|संकेत|उपलब्धि/.test(hi), hi);
+  assert.match(en, /rotate, swap tray and undo/);
+  assert.match(en, /7-day daily reward/);
+  assert.match(hi, /घुमाओ, ट्रे बदलो और वापस लो/);
+  for (const page of ['public/index.html', 'public/block-puzzle/index.html']) {
+    const html = readFileSync(new URL(`../${page}`, import.meta.url), 'utf8');
+    assert.ok(!/streak calendar|chest|bomb|स्ट्रीक कैलेंडर|संदूक/i.test(html), page);
   }
 });
