@@ -40,10 +40,75 @@ test('generated output is up to date with the data file', () => {
 });
 
 test('every required page and root file exists', () => {
-  const need = ['index.html', '404.html', 'delete.html', 'terms.html', 'contact.html', 'robots.txt', 'sitemap.xml', 'app-ads.txt', '_headers', 'favicon.ico'];
+  const need = ['index.html', '404.html', 'delete.html', 'terms.html', 'contact.html', 'robots.txt', 'sitemap.xml', 'app-ads.txt', '_headers', '_redirects', 'favicon.ico'];
   for (const g of FEATURED) need.push(`${g.slug}/index.html`);
   for (const g of POLICY) need.push(`${g.slug}/privacy.html`);
   for (const f of need) assert.ok(existsSync(join(PUB, f)), `missing ${f}`);
+});
+
+// Cloudflare Pages _redirects: one "source dest [code]" per line, # comments, first match wins.
+// Static rules (no * or :placeholder) must appear before dynamic ones. Max 2,000 static + 100 dynamic, 1,000 chars/line.
+function parseRedirects(text) {
+  return text.split('\n').flatMap((line, i) => {
+    const raw = line.trim();
+    if (!raw || raw.startsWith('#')) return [];
+    const parts = raw.split(/\s+/);
+    if (parts.length < 2 || parts.length > 3) throw new Error(`bad _redirects line ${i + 1}: ${line}`);
+    const [source, destination, code = '302'] = parts;
+    return [{ source, destination, code, dynamic: /(?:^|\/)(:|[A-Za-z0-9._-]*\*)/.test(source), line: i + 1, length: line.length }];
+  });
+}
+function applyRedirects(rules, path) {
+  for (const r of rules) {
+    if (r.source === path) return r;
+    if (r.source.endsWith('/*')) {
+      const prefix = r.source.slice(0, -1); // "/foo/*" -> "/foo/"
+      if (path.startsWith(prefix)) {
+        return { ...r, destination: r.destination.replaceAll(':splat', path.slice(prefix.length)) };
+      }
+    }
+  }
+  return null;
+}
+
+test('mistyped /bharat-block-puzzle paths 301 to /block-puzzle, and existing routes are left alone', () => {
+  const rules = parseRedirects(read(join(PUB, '_redirects')));
+  assert.ok(rules.length > 0, '_redirects has no rules');
+  assert.ok(rules.length <= 2100, `_redirects has ${rules.length} rules; Pages allows 2,100`);
+  assert.ok(rules.filter((r) => !r.dynamic).length <= 2000);
+  assert.ok(rules.filter((r) => r.dynamic).length <= 100);
+  for (const r of rules) {
+    assert.ok(r.length <= 1000, `line ${r.line} is ${r.length} chars; Pages allows 1,000`);
+    assert.match(r.code, /^(301|302|303|307|308)$/, `line ${r.line} status ${r.code}`);
+  }
+  const firstDynamic = rules.findIndex((r) => r.dynamic);
+  if (firstDynamic >= 0) {
+    assert.ok(rules.slice(firstDynamic).every((r) => r.dynamic), 'static _redirects rules must appear before dynamic ones');
+  }
+
+  const expect = (path, dest) => {
+    const hit = applyRedirects(rules, path);
+    assert.ok(hit, `${path} should redirect`);
+    assert.equal(hit.destination, dest, path);
+    assert.equal(hit.code, '301', path);
+  };
+  expect('/bharat-block-puzzle', '/block-puzzle/');
+  expect('/bharat-block-puzzle/', '/block-puzzle/');
+  expect('/bharat-block-puzzle/privacy.html', '/block-puzzle/privacy');
+  expect('/bharat-block-puzzle/privacy', '/block-puzzle/privacy');
+  expect('/bharat-block-puzzle/anything/else', '/block-puzzle/anything/else');
+
+  // The privacy.html typo must be a single hop, not /block-puzzle/privacy.html then a pretty-URL 308.
+  assert.equal(applyRedirects(rules, '/bharat-block-puzzle/privacy.html').destination, '/block-puzzle/privacy');
+
+  for (const path of [
+    '/', '/block-puzzle', '/block-puzzle/', '/block-puzzle/privacy', '/block-puzzle/privacy.html',
+    '/bharat-ludo', '/bharat-ludo/', '/bharat-ludo/privacy', '/bharat-ludo/privacy.html',
+    '/sweet-mela', '/sweet-mela/privacy', '/delete', '/delete.html', '/terms', '/contact',
+    '/app-ads.txt', '/robots.txt', '/sitemap.xml', '/404',
+  ]) {
+    assert.equal(applyRedirects(rules, path), null, `${path} must not be caught by _redirects`);
+  }
 });
 
 test('no privacy page for unpublished games (Carrom stays off the site)', () => {
