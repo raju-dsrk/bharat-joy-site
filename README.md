@@ -16,7 +16,7 @@ tests/site.test.mjs   node:test checks (output up to date, links, copy rules in 
 tests/woff2-cmap.mjs  reads a WOFF2 font's character map (used by the font coverage test)
 public/               the website, deployed as-is
   index.html, bharat-ludo/, block-puzzle/, sweet-mela/ (each with index.html and privacy.html),
-  delete.html, terms.html, contact.html, 404.html, robots.txt, sitemap.xml, app-ads.txt, _headers,
+  delete.html, terms.html, contact.html, 404.html, robots.txt, sitemap.xml, app-ads.txt, _headers, _redirects,
   assets/ (css, js, fonts + licences, img)
 ```
 
@@ -32,6 +32,8 @@ public/               the website, deployed as-is
 4. `404.html` in `public/` is picked up by Pages automatically for unknown paths. `_headers` sets security and cache headers.
 
 Pages serves `terms.html` at `/terms` and `bharat-ludo/privacy.html` at `/bharat-ludo/privacy` (the `.html` address redirects there), so both forms work in Play Console.
+
+`public/_redirects` sends the mistyped path `/bharat-block-puzzle` (and anything under it) to the matching `/block-puzzle` URL with a 301. `/bharat-block-puzzle/privacy.html` and `/bharat-block-puzzle/privacy` both go straight to `/block-puzzle/privacy`.
 
 ### Custom domain (tejona.com)
 

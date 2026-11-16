@@ -1,0 +1,8 @@
+# Mistyped Play Console path: /bharat-block-puzzle goes to /block-puzzle.
+# Static rules first, then the splat (Cloudflare Pages: first match wins; 301 is permanent).
+# privacy.html goes straight to /block-puzzle/privacy so it does not hop via /block-puzzle/privacy.html.
+/bharat-block-puzzle              /block-puzzle/         301
+/bharat-block-puzzle/             /block-puzzle/         301
+/bharat-block-puzzle/privacy.html /block-puzzle/privacy  301
+/bharat-block-puzzle/privacy      /block-puzzle/privacy  301
+/bharat-block-puzzle/*            /block-puzzle/:splat   301
