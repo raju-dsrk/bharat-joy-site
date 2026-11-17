@@ -16,7 +16,7 @@ const HOST = DOMAIN.replace(/^https?:\/\//, '');
 const STR = DATA.strings;
 const FEATURED = DATA.games.filter((g) => g.featured);
 const WORKSHOP = DATA.games.filter((g) => !g.featured);
-const WITH_POLICY = FEATURED.filter((g) => g.privacy && g.privacy.published);
+const WITH_POLICY = DATA.games.filter((g) => g.privacy && g.privacy.published);
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const fill = (s, g = {}) => String(s ?? '')
@@ -206,7 +206,7 @@ function homePage() {
       </div>
     </article>`;
   }).join('\n');
-  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span><em>${T.t(g.lineEn, g.lineHi)}</em></div></li>`).join('\n      ');
+  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span><em>${T.t(g.lineEn, g.lineHi)}</em>${g.privacy.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</div></li>`).join('\n      ');
   const body = `
   ${toran()}
   <main id="main">
@@ -321,14 +321,14 @@ function privacyPage(g) {
     <p class="kicker">${esc(S.studio)}</p>
     <h1>Privacy policy<br>for ${esc(g.nameEn)}</h1>
     <p class="hi" lang="hi">${esc(g.nameHi)} · गोपनीयता नीति</p>
-    <p class="meta">Developer: ${esc(S.studio)}. This page is for the Android edition of ${esc(g.nameEn)} on Google Play (package ${esc(g.package)}). Effective date: <time datetime="${S.legalEffectiveISO}">${esc(S.legalEffectiveDate)}</time>. A Hindi version of this policy will follow.</p>
+    <p class="meta">Developer: ${esc(S.studio)}. This page is for the Android edition of ${esc(g.nameEn)} on Google Play (package ${esc(g.package)}). Effective date: <time datetime="${esc(p.effectiveISO ?? S.legalEffectiveISO)}">${esc(p.effectiveDate ?? S.legalEffectiveDate)}</time>. A Hindi version of this policy will follow.</p>
 
     <h2>What stays on your phone</h2>
     <p>The app saves the following in private storage on the device. It is not uploaded.</p>
     <ul>
       ${p.stays.map((x) => `<li>${esc(fill(x, g))}</li>`).join('\n      ')}
     </ul>
-    <p>Uninstalling the app deletes this data. There is no ${esc(S.studio)} account and no game server, so there is nothing of yours to delete on our side. See the <a href="${url.delete}">data deletion page</a>.</p>
+    <p>${p.deletion ? fill(p.deletion, g) : `Uninstalling the app deletes this data. There is no ${esc(S.studio)} account and no game server, so there is nothing of yours to delete on our side. See the <a href="${url.delete}">data deletion page</a>.`}</p>
 ${sections}
 
     <h2>What we do not do</h2>
@@ -354,7 +354,7 @@ ${sections}
   </article>
   </main>
   <nav class="legal-foot" aria-label="Related">
-    <a href="${url.game(g)}">${T.s('backTo', g)}</a>
+    <a href="${g.featured ? url.game(g) : '/#workshop'}">${T.s('backTo', g)}</a>
     <a href="${url.delete}">${T.s('delete')}</a>
     <a href="/">${esc(S.studio)}</a>
   </nav>`;
@@ -363,7 +363,7 @@ ${sections}
     headOpts: {
       title: `Privacy policy: ${g.nameEn} | ${S.studio}`,
       description: `How ${g.nameEn} (${g.package}) handles data: what stays on your phone, ads, and how to delete your data.`,
-      path: url.privacy(g), ogImage: `${g.icon}-512.jpg`, ogImageAlt: `${g.nameEn} icon`,
+      path: url.privacy(g), ogImage: `${g.icon}-${g.featured ? '512.jpg' : '96.webp'}`, ogImageAlt: `${g.nameEn} icon`,
     },
   });
 }
@@ -527,9 +527,10 @@ function notFoundPage() {
 
 // ---------- Text files ----------
 const sitemapPaths = ['/', ...FEATURED.map(url.game), ...WITH_POLICY.map(url.privacy), url.delete, url.terms, url.contact];
+const policyDates = new Map(WITH_POLICY.map((g) => [url.privacy(g), g.privacy.effectiveISO]));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapPaths.map((p) => `  <url><loc>${abs(p)}</loc><lastmod>${S.legalEffectiveISO}</lastmod></url>`).join('\n')}
+${sitemapPaths.map((p) => `  <url><loc>${abs(p)}</loc><lastmod>${policyDates.get(p) ?? S.legalEffectiveISO}</lastmod></url>`).join('\n')}
 </urlset>
 `;
 const robots = `User-agent: *
@@ -565,8 +566,8 @@ const files = {
 };
 for (const g of FEATURED) {
   files[`${g.slug}/index.html`] = gamePage(g);
-  if (g.privacy.published) files[`${g.slug}/privacy.html`] = privacyPage(g);
 }
+for (const g of WITH_POLICY) files[`${g.slug}/privacy.html`] = privacyPage(g);
 
 const check = process.argv.includes('--check');
 let stale = [];

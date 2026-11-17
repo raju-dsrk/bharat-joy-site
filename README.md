@@ -15,7 +15,7 @@ tests/site.test.mjs   node:test checks (output up to date, links, copy rules in 
                       a11y basics, 48px tap targets, Devanagari font coverage)
 tests/woff2-cmap.mjs  reads a WOFF2 font's character map (used by the font coverage test)
 public/               the website, deployed as-is
-  index.html, bharat-ludo/, block-puzzle/, sweet-mela/ (each with index.html and privacy.html),
+  index.html, bharat-ludo/, block-puzzle/, sweet-mela/ (each with index.html and privacy.html), carrom/privacy.html,
   delete.html, terms.html, contact.html, 404.html, robots.txt, sitemap.xml, app-ads.txt, _headers, _redirects,
   assets/ (css, js, fonts + licences, img)
 ```
@@ -35,6 +35,8 @@ Pages serves `terms.html` at `/terms` and `bharat-ludo/privacy.html` at `/bharat
 
 `public/_redirects` sends the mistyped path `/bharat-block-puzzle` (and anything under it) to the matching `/block-puzzle` URL with a 301. `/bharat-block-puzzle/privacy.html` and `/bharat-block-puzzle/privacy` both go straight to `/block-puzzle/privacy`.
 
+`/carrom/privacy.html` redirects directly to `/carrom/privacy` with a 301.
+
 ### Custom domain (tejona.com)
 
 1. In the Pages project: **Custom domains**, **Set up a custom domain**, enter `tejona.com` (and optionally `www.tejona.com`).
@@ -45,7 +47,7 @@ Pages serves `terms.html` at `/terms` and `bharat-ludo/privacy.html` at `/bharat
 ### Play Console links
 
 - Website: `https://tejona.com`
-- Privacy policy: `https://tejona.com/bharat-ludo/privacy` (and `/block-puzzle/privacy`, `/sweet-mela/privacy`)
+- Privacy policy: `https://tejona.com/bharat-ludo/privacy` (and `/block-puzzle/privacy`, `/sweet-mela/privacy`, `/carrom/privacy`)
 - Data deletion URL: `https://tejona.com/delete`
 
 ## Editing content
@@ -56,7 +58,7 @@ All content that changes lives in `data/site.data.json`:
 - **New icon:** `python3 tools/images.py icon path/to/icon-512.png ludo-icon` writes `public/assets/img/icons/ludo-icon-96.webp`, `-192.webp` and `-512.jpg`. Point the game's `icon` at the base path (`/assets/img/icons/ludo-icon`). Screenshots: `tools/images.py shot ...`, band art: `tools/images.py band ...`.
 - **Status:** `closed-testing`, `coming-soon` or `live`. Labels for each are in the `status` block. A Google Play button only appears when `status` is `live` **and** `playUrl` is set. Closed testing shows the label "Coming to Google Play" with no link.
 - **Features, taglines, summaries:** `featuresEn` / `featuresHi` and friends. Hindi uses स्तर for level.
-- **Privacy policy text:** each featured game's `privacy.sections`. Write it from that game's real SDKs, never by copying another game. A game only gets a privacy page when `privacy.published` is `true` (Carrom stays `false` until its release build is checked).
+- **Privacy policy text:** each game's `privacy.sections`. Write it from that game's real SDKs, never by copying another game. A game only gets a privacy page when `privacy.published` is `true`, including workshop games. Carrom's policy is published while its status stays `in-workshop`, with Coming soon text and no Play link. Its SDKs are Google AdMob via `@capacitor-community/admob` and the on-device Capacitor core, app, filesystem, haptics and share components. Optional `privacy.effectiveDate` / `privacy.effectiveISO` and `privacy.deletion` override the shared legal date and deletion paragraph for that policy.
 - **Site-wide text** (nav, footer, contact page, Hindi strings): the `strings` block.
 
 Then:
