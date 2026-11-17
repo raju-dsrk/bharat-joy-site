@@ -333,6 +333,28 @@ test('closed testing Ludo has a label, not a store or tester link', () => {
   assert.ok(!/play\.google\.com/.test(html));
 });
 
+test('Block Puzzle and Sweet Mela are in closed testing with a label, no store or tester link; Carrom stays in the workshop', () => {
+  for (const [id, slug] of [['block', 'block-puzzle'], ['mela', 'sweet-mela']]) {
+    const g = DATA.games.find((x) => x.id === id);
+    assert.equal(g.status, 'closed-testing', `${id} status`);
+    assert.equal(g.playUrl, '', `${id} has no Play link yet`);
+    const html = read(join(PUB, `${slug}/index.html`));
+    assert.match(html, /<span class="cta cta-label"><span data-i18n="t\d+">Coming to Google Play<\/span><\/span>/);
+    assert.match(html, /Closed testing on Google Play/);
+    assert.match(html, /Google Play पर क्लोज़्ड टेस्टिंग/);
+    assert.match(html, /<meta name="description" content="[^"]*Closed testing on Google Play\.">/);
+    assert.match(html, /<meta property="og:description" content="[^"]*Closed testing on Google Play\.">/);
+    assert.match(html, /<meta name="twitter:description" content="[^"]*Closed testing on Google Play\.">/);
+    assert.ok(!/play\.google\.com|groups\.google\.com|\/apps\/testing\//.test(html), `${slug} has no store or tester link`);
+  }
+  const home = read(join(PUB, 'index.html'));
+  assert.ok(!/play\.google\.com|groups\.google\.com|\/apps\/testing\//.test(home));
+  assert.ok(!/>Coming soon</.test(home.slice(0, home.indexOf('<section class="workshop"'))), 'no featured game still says Coming soon');
+  const carrom = DATA.games.find((x) => x.id === 'carrom');
+  assert.equal(carrom.status, 'in-workshop');
+  assert.equal(carrom.playUrl, '');
+});
+
 test('no secrets or signing files are tracked', () => {
   let files = [];
   try { files = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).split('\n'); } catch { return; }
