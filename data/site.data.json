@@ -245,9 +245,42 @@
       "nameEn": "Bharat Carrom", "nameHi": "भारत कैरम",
       "status": "in-workshop", "playUrl": "",
       "icon": "/assets/img/icons/carrom-icon",
-      "lineEn": "A carrom board, still being made.",
-      "lineHi": "कैरम बोर्ड, अभी बन रहा है।",
-      "privacy": { "published": false, "_note": "Do not publish until the release AAB's SDKs are confirmed (see PLAN.md section 5)." }
+      "lineEn": "Coming soon. A carrom board, still being made.",
+      "lineHi": "जल्द आ रहा है। कैरम बोर्ड, अभी बन रहा है।",
+      "privacy": {
+        "published": true,
+        "effectiveDate": "17 November 2026",
+        "effectiveISO": "2026-11-17",
+        "stays": [
+          "Game progress and saved games",
+          "Coin balance",
+          "Game settings, including the optional commentary voice"
+        ],
+        "deletion": "Uninstalling the app or clearing its app data deletes this local data. There is no {studio} account, no sign-in and no game server, so there is nothing of yours to delete on our side. See the <a href=\"/delete\">data deletion page</a> for ad data and advertising ID reset or deletion steps.",
+        "sections": [
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded ads that you choose to watch, and banner ads. There are no interstitial ads or full-screen ads between games.",
+              "Google is the ad provider and processes ad data. AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings.",
+              "Where required, you are asked for consent before personalised ads are shown. Your consent choices determine whether personalised ads can be shown.",
+              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service. {studio} does not collect personal data or run servers for this game. Your game progress, settings, saves and coins stay only on your device."
+            ]
+          },
+          {
+            "h": "Optional commentary voice",
+            "p": [
+              "The optional commentary voice uses your phone's on-device text-to-speech. Nothing is recorded or sent from the phone for commentary. The app does not use the microphone or ask for microphone permission."
+            ]
+          },
+          {
+            "h": "On-device features",
+            "p": [
+              "Game saves and app settings are handled on the phone. These features do not upload your game data. Vibration only runs when that setting is on. Sharing opens your phone's share sheet, and content leaves the phone only when you choose to share it. The app does not receive the list of people you share with."
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "callbreak", "slug": "call-break", "featured": false,

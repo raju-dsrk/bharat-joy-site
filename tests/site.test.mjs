@@ -12,7 +12,7 @@ const PUB = join(ROOT, 'public');
 const DATA = JSON.parse(readFileSync(join(ROOT, 'data/site.data.json'), 'utf8'));
 const S = DATA.site;
 const FEATURED = DATA.games.filter((g) => g.featured);
-const POLICY = FEATURED.filter((g) => g.privacy?.published);
+const POLICY = DATA.games.filter((g) => g.privacy?.published);
 
 function walk(dir) {
   return readdirSync(dir).flatMap((n) => {
@@ -36,7 +36,8 @@ function resolves(urlPath) {
 }
 
 test('generated output is up to date with the data file', () => {
-  execFileSync(process.execPath, [join(ROOT, 'tools/build.mjs'), '--check'], { stdio: 'pipe' });
+  // These read-only subprocesses need no stdin; avoid opening a pipe for it in restricted environments.
+  execFileSync(process.execPath, [join(ROOT, 'tools/build.mjs'), '--check'], { stdio: ['ignore', 'pipe', 'pipe'] });
 });
 
 test('every required page and root file exists', () => {
@@ -71,7 +72,7 @@ function applyRedirects(rules, path) {
   return null;
 }
 
-test('mistyped /bharat-block-puzzle paths 301 to /block-puzzle, and existing routes are left alone', () => {
+test('Block Puzzle typos and Carrom privacy.html redirect with 301, leaving canonical routes alone', () => {
   const rules = parseRedirects(read(join(PUB, '_redirects')));
   assert.ok(rules.length > 0, '_redirects has no rules');
   assert.ok(rules.length <= 2100, `_redirects has ${rules.length} rules; Pages allows 2,100`);
@@ -97,6 +98,7 @@ test('mistyped /bharat-block-puzzle paths 301 to /block-puzzle, and existing rou
   expect('/bharat-block-puzzle/privacy.html', '/block-puzzle/privacy');
   expect('/bharat-block-puzzle/privacy', '/block-puzzle/privacy');
   expect('/bharat-block-puzzle/anything/else', '/block-puzzle/anything/else');
+  expect('/carrom/privacy.html', '/carrom/privacy');
 
   // The privacy.html typo must be a single hop, not /block-puzzle/privacy.html then a pretty-URL 308.
   assert.equal(applyRedirects(rules, '/bharat-block-puzzle/privacy.html').destination, '/block-puzzle/privacy');
@@ -105,17 +107,20 @@ test('mistyped /bharat-block-puzzle paths 301 to /block-puzzle, and existing rou
     '/', '/block-puzzle', '/block-puzzle/', '/block-puzzle/privacy', '/block-puzzle/privacy.html',
     '/bharat-ludo', '/bharat-ludo/', '/bharat-ludo/privacy', '/bharat-ludo/privacy.html',
     '/sweet-mela', '/sweet-mela/privacy', '/delete', '/delete.html', '/terms', '/contact',
+    '/carrom/privacy',
     '/app-ads.txt', '/robots.txt', '/sitemap.xml', '/404',
   ]) {
     assert.equal(applyRedirects(rules, path), null, `${path} must not be caught by _redirects`);
   }
 });
 
-test('no privacy page for unpublished games (Carrom stays off the site)', () => {
+test('unpublished policies stay off the site; workshop games have no game page', () => {
   for (const g of DATA.games.filter((x) => !x.privacy?.published)) {
-    assert.ok(!existsSync(join(PUB, g.slug)), `${g.slug} should not be published`);
+    assert.ok(!existsSync(join(PUB, g.slug, 'privacy.html')), `${g.slug} privacy should not be published`);
   }
-  assert.ok(!existsSync(join(PUB, 'carrom')));
+  for (const g of DATA.games.filter((x) => !x.featured)) {
+    assert.ok(!existsSync(join(PUB, g.slug, 'index.html')), `${g.slug} should stay in the workshop`);
+  }
 });
 
 // Em-dash and en-dash in any form: literal, HTML entity, CSS escape (content:"\2014") or JS/JSON escape.
@@ -277,6 +282,24 @@ test('privacy pages match each game\'s SDKs', () => {
   assert.match(mela, /at most one local notification a day/);
   assert.match(block, /rewarded video[^.]*\(power-up\): rotate, swap tray or undo/, 'Block Puzzle names its real power-ups');
   assert.ok(!/\bhint\b|achievements/.test(block), 'Block Puzzle privacy: no hint or achievements (not in the game)');
+  const carrom = p('carrom');
+  assert.match(carrom, /rewarded ads that you choose to watch, and banner ads/);
+  assert.match(carrom, /no interstitial ads/);
+  assert.match(carrom, /advertising ID, device and app information/);
+  assert.match(carrom, /consent before personalised ads/);
+  assert.match(carrom, /does not include Firebase or any other analytics service/);
+  assert.ok(!/Firebase Analytics|worldtimeapi|timeapi\.io|generate_204/.test(carrom));
+  assert.match(carrom, /does not collect personal data or run servers/);
+  assert.match(carrom, /no sign-in/);
+  assert.match(carrom, /progress, settings, saves and coins stay only on your device/);
+  assert.match(carrom, /on-device text-to-speech/);
+  assert.match(carrom, /Nothing is recorded or sent/);
+  assert.match(carrom, /does not use the microphone/);
+  assert.match(carrom, /Uninstalling the app or clearing its app data deletes this local data/);
+  const carromHtml = read(join(PUB, 'carrom/privacy.html'));
+  assert.match(carromHtml, /<time datetime="2026-11-17">17 November 2026<\/time>/);
+  assert.match(carromHtml, /href="\/delete"/);
+  assert.match(carromHtml, /href="\/#workshop"/);
   for (const g of POLICY) {
     const s = p(g.slug);
     assert.ok(s.includes(`${g.nameEn} is not directed at children under 13.`), `${g.slug}: children sentence`);
@@ -284,6 +307,22 @@ test('privacy pages match each game\'s SDKs', () => {
     assert.ok(s.includes(g.package), `${g.slug} names its package`);
     assert.ok(s.includes(S.supportEmail));
   }
+});
+
+test('Carrom has a published workshop policy, Coming soon text and no Play link', () => {
+  const carrom = DATA.games.find((g) => g.id === 'carrom');
+  assert.equal(carrom.privacy.published, true);
+  assert.equal(carrom.status, 'in-workshop');
+  assert.equal(carrom.featured, false);
+  assert.equal(carrom.playUrl, '');
+  const home = read(join(PUB, 'index.html'));
+  const workshop = home.slice(home.indexOf('<section class="workshop"'), home.indexOf('</main>'));
+  assert.match(workshop, /Bharat Carrom/);
+  assert.match(workshop, /Coming soon/);
+  assert.match(workshop, /href="\/carrom\/privacy"/);
+  assert.ok(!/play\.google\.com/.test(workshop));
+  assert.ok(read(join(PUB, 'sitemap.xml')).includes(`<loc>${S.domain}/carrom/privacy</loc><lastmod>2026-11-17</lastmod>`));
+  assert.match(read(join(PUB, 'delete.html')), /com\.bharatjoy\.carrom/);
 });
 
 test('closed testing Ludo has a label, not a store or tester link', () => {
@@ -296,7 +335,7 @@ test('closed testing Ludo has a label, not a store or tester link', () => {
 
 test('no secrets or signing files are tracked', () => {
   let files = [];
-  try { files = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).split('\n'); } catch { return; }
+  try { files = execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).split('\n'); } catch { return; }
   for (const f of files) {
     assert.ok(!/(\.keystore|\.jks|keystore\.properties|google-services\.json|(^|\/)\.env(\.|$))/.test(f), `secret-like file tracked: ${f}`);
   }
@@ -304,7 +343,7 @@ test('no secrets or signing files are tracked', () => {
 
 test('every file the pages reference is tracked in git (so Pages gets it)', () => {
   let tracked;
-  try { tracked = new Set(execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8' }).split('\n')); } catch { return; }
+  try { tracked = new Set(execFileSync('git', ['ls-files'], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).split('\n')); } catch { return; }
   for (const f of HTML) {
     for (const m of read(f).matchAll(/\s(?:href|src)="(\/[^"#?]*)/g)) {
       const target = resolves(m[1]);
