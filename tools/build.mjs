@@ -363,7 +363,7 @@ ${sections}
   </article>
   </main>
   <nav class="legal-foot" aria-label="Related">
-    <a href="${g.featured ? url.game(g) : `/#g-${g.id}`}">${T.s('backTo', g)}</a>
+    <a href="${url.game(g)}">${T.s('backTo', g)}</a>
     <a href="${url.delete}">${T.s('delete')}</a>
     <a href="/">${esc(S.studio)}</a>
   </nav>`;
@@ -372,7 +372,7 @@ ${sections}
     headOpts: {
       title: `Privacy policy: ${g.nameEn} | ${S.studio}`,
       description: `How ${g.nameEn} (${g.package}) handles data: what stays on your phone, ads, and how to delete your data.`,
-      path: url.privacy(g), ogImage: `${g.icon}-${g.featured ? '512.jpg' : '96.webp'}`, ogImageAlt: `${g.nameEn} icon`,
+      path: url.privacy(g), ogImage: `${g.icon}-512.jpg`, ogImageAlt: `${g.nameEn} icon`,
     },
   });
 }

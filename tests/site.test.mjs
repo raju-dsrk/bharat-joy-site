@@ -349,7 +349,17 @@ test('privacy pages match each game\'s SDKs and current behaviour', () => {
   assert.ok(!/\bhint\b|achievements/.test(block), 'Block Puzzle privacy: no hint or achievements (not in the game)');
   for (const slug of ['carrom', 'sudoku', 'call-break', 'bubble-shooter']) {
     const id = DATA.games.find((g) => g.slug === slug).id;
-    assert.ok(read(join(PUB, slug, 'privacy.html')).includes(`href="/#g-${id}"`), `${slug} links back to its card on the home grid`);
+    const g = DATA.games.find((x) => x.id === id);
+    const html = read(join(PUB, slug, 'privacy.html'));
+    const back = html.match(new RegExp(`<a href="/${slug}/"><span data-i18n="(t\\d+)">Back to ${g.nameEn}</span></a>`));
+    assert.ok(back, `${slug} privacy links back to its game page`);
+    const hi = JSON.parse(html.match(/<script type="application\/json" id="i18n-hi">([\s\S]*?)<\/script>/)[1]);
+    assert.equal(hi[back[1]], `${g.nameHi} पर वापस`, `${slug} Hindi back link`);
+    assert.ok(!html.includes(`href="/#g-${id}"`), `${slug} privacy no longer links to the home card`);
+    for (const m of ['og:image', 'twitter:image']) {
+      assert.match(html, new RegExp(`<meta (property|name)="${m}" content="${S.domain.replace(/\./g, '\\.')}${g.icon}-512\\.jpg">`), `${slug} ${m} is the 512 icon`);
+    }
+    assert.ok(!html.includes('-96.webp">'), `${slug} share image is not the small icon`);
   }
 });
 
