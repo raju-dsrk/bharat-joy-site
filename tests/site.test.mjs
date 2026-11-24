@@ -308,11 +308,20 @@ test('privacy pages match each game\'s SDKs and current behaviour', () => {
   assert.match(ludo, /name, photo, gender, friends' names and coin balance are not sent/);
   assert.match(ludo, /retention period set in our Firebase project/);
   assert.ok(read(join(PUB, 'bharat-ludo/privacy.html')).includes('href="https://policies.google.com/privacy"'), 'Ludo links Google privacy policy');
-  for (const id of ['block', 'mela', 'carrom', 'sudoku', 'callbreak', 'bubble']) {
+  for (const id of ['mela', 'carrom', 'sudoku', 'callbreak', 'bubble']) {
     assert.match(all[id], /does not include Firebase or any other analytics service/, id);
   }
+  // Block Puzzle: Firebase Analytics is added to the release build; the code logs no custom events.
+  assert.match(block, /Analytics \(Google Firebase Analytics\)/);
+  assert.match(block, /does not send any events of its own/);
+  assert.match(block, /automatically collects app usage data/);
+  assert.match(block, /app-instance ID, the advertising ID/);
+  assert.match(block, /retention period set in our Firebase project/);
+  assert.ok(!/does not include Firebase/.test(block));
+  assert.ok(!/game_start|reward being claimed|game starting/.test(block), 'no Ludo custom events in Block Puzzle');
+  assert.ok(read(join(PUB, 'block-puzzle/privacy.html')).includes('href="https://policies.google.com/privacy"'));
   const del = visible(read(join(PUB, 'delete.html')));
-  assert.match(del, /Usage events in Bharat Ludo/);
+  assert.match(del, /Usage events in Bharat Ludo, Bharat Block Puzzle/);
   assert.match(del, /Android backup in Bharat Call Break/);
   assert.match(bubble, /bottom of the level map and of the game screen/);
   // Banners: no banner in Ludo Pass and Play; Carrom and Call Break show it in Pass and Play.

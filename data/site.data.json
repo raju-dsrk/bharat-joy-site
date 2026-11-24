@@ -174,8 +174,15 @@
             "p": [
               "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown on the game screen only. There are no interstitial ads or other full-screen ads between games.",
               "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
-              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Settings (the gear on the home screen), then Privacy choices. This entry appears when Google's consent rules apply to you.",
-              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Settings (the gear on the home screen), then Privacy choices. This entry appears when Google's consent rules apply to you."
+            ]
+          },
+          {
+            "h": "Analytics (Google Firebase Analytics)",
+            "p": [
+              "Google Play builds of {name} include Google Firebase Analytics. The game does not send any events of its own to Firebase. The Firebase SDK automatically collects app usage data, such as when the app is first opened, app sessions and how long the app is used.",
+              "Firebase sends this data with an app-instance ID, the advertising ID, and basic device and app information such as the phone model, Android version, app version and approximate location from the IP address. Your name, icon, gender and coin balance are not sent.",
+              "Google keeps this data for the retention period set in our Firebase project, and then deletes it. Uninstalling the app or clearing its storage removes the app-instance ID from the phone, and you can reset or delete the advertising ID in your phone's settings (Google, then Ads). See <a href=\"https://policies.google.com/privacy\">Google's privacy policy</a> and <a href=\"https://policies.google.com/technologies/partner-sites\">how Google uses information from apps that use its services</a>."
             ]
           },
           {
