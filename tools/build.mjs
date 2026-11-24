@@ -14,9 +14,11 @@ const S = DATA.site;
 const DOMAIN = S.domain.replace(/\/+$/, '');
 const HOST = DOMAIN.replace(/^https?:\/\//, '');
 const STR = DATA.strings;
-const FEATURED = DATA.games.filter((g) => g.featured);
-const WORKSHOP = DATA.games.filter((g) => !g.featured);
-const WITH_POLICY = DATA.games.filter((g) => g.privacy && g.privacy.published);
+// A game with "listed": false (for example one still being built) stays off every page, list and sitemap.
+const GAMES = DATA.games.filter((g) => g.listed !== false);
+const FEATURED = GAMES.filter((g) => g.featured);
+const WORKSHOP = GAMES.filter((g) => !g.featured);
+const WITH_POLICY = GAMES.filter((g) => g.privacy && g.privacy.published);
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const fill = (s, g = {}) => String(s ?? '')
@@ -190,7 +192,7 @@ ${body}
 function homePage() {
   const T = makeT();
   const windows = FEATURED.map((g) => `<li class="win"><a href="${url.game(g)}" aria-label="${esc(g.nameEn)}"><img src="${g.band}" alt="${esc(g.bandAltEn)}" width="400" height="300" fetchpriority="high" decoding="async"></a></li>`).join('\n        ');
-  const rail = DATA.games.map((g) => `<li>${g.featured
+  const rail = GAMES.map((g) => `<li>${g.featured
     ? `<a href="${url.game(g)}" aria-label="${esc(g.nameEn)}">${icon(g, 48, '', '')}</a>`
     : `<span class="rail-quiet" title="${esc(g.nameEn)}">${icon(g, 48, '', g.nameEn)}</span>`}</li>`).join('\n        ');
   const entries = FEATURED.map((g, i) => {
@@ -206,7 +208,7 @@ function homePage() {
       </div>
     </article>`;
   }).join('\n');
-  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span><em>${T.t(g.lineEn, g.lineHi)}</em>${g.privacy.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</div></li>`).join('\n      ');
+  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span>${statusOf(g).pillEn ? `<p class="pill">${T.t(statusOf(g).pillEn, statusOf(g).pillHi)}</p>` : ''}<em>${T.t(g.lineEn, g.lineHi)}</em>${g.privacy.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</div></li>`).join('\n      ');
   const body = `
   ${toran()}
   <main id="main">
@@ -324,7 +326,7 @@ function privacyPage(g) {
     <p class="meta">Developer: ${esc(S.studio)}. This page is for the Android edition of ${esc(g.nameEn)} on Google Play (package ${esc(g.package)}). Effective date: <time datetime="${esc(p.effectiveISO ?? S.legalEffectiveISO)}">${esc(p.effectiveDate ?? S.legalEffectiveDate)}</time>. A Hindi version of this policy will follow.</p>
 
     <h2>What stays on your phone</h2>
-    <p>The app saves the following in private storage on the device. It is not uploaded.</p>
+    <p>${esc(p.staysIntro ?? 'The app saves the following in private storage on the device. It is not uploaded.')}</p>
     <ul>
       ${p.stays.map((x) => `<li>${esc(fill(x, g))}</li>`).join('\n      ')}
     </ul>
@@ -342,8 +344,8 @@ ${sections}
     <h2>Security</h2>
     <p>Everything the app sends over the internet, as described above, travels encrypted over HTTPS.</p>
 
-    <h2>Children</h2>
-    <p>${esc(g.nameEn)} is not directed at children under 13. It does not knowingly collect personal information from children.</p>
+    <h2>Age</h2>
+    <p>${esc(g.nameEn)} is intended for adults aged 18 and over. It is not directed at children and does not knowingly collect personal information from children.</p>
 
     <h2>Changes</h2>
     <p>If a later version changes the ad network or analytics, or adds an account server, this policy and the Google Play Data safety form will be updated before that version ships.</p>
@@ -387,9 +389,11 @@ function deletePage() {
   const T = makeT();
   const games = WITH_POLICY.map((g) => `<li>${esc(g.nameEn)} <span lang="hi">(${esc(g.nameHi)})</span>, package ${esc(g.package)}</li>`).join('\n      ');
   const fb = WITH_POLICY.filter((g) => /Firebase Analytics/.test(JSON.stringify(g.privacy.sections)));
+  const backup = WITH_POLICY.filter((g) => g.privacy.sections.some((sec) => sec.h === 'Android backup'));
+  const names = (list) => list.map((g) => esc(g.nameEn)).join(', ');
   const inner = `
     <h2>There is no account to delete</h2>
-    <p>Our games do not have sign-in, cloud saves or a game server. Your name, picture, optional gender, coins and progress are kept only on your phone. This page covers:</p>
+    <p>Our games do not have sign-in, cloud saves or a game server. Your name, picture, optional gender, coins and progress are kept on your phone${fb.length || backup.length ? ' (see the notes below for usage events and Android backup)' : ' only'}. This page covers:</p>
     <ul>
       ${games}
     </ul>
@@ -405,8 +409,11 @@ function deletePage() {
     <h2>Advertising ID</h2>
     <p>Ads come from Google AdMob, which uses your phone's advertising ID. To delete or reset it, open Settings, then Google, then Ads, and choose Delete advertising ID (or Reset advertising ID on older Android versions). Google handles ad data under its own <a href="https://policies.google.com/privacy">privacy policy</a>.</p>
 ${fb.length ? `
-    <h2>Usage events in ${fb.map((g) => esc(g.nameEn)).join(', ')}</h2>
-    <p>${fb.map((g) => esc(g.nameEn)).join(', ')} sends anonymous usage events to Google Firebase Analytics, linked to a random app-instance ID and not to your name. Uninstalling or clearing storage removes that ID from your phone, so older events are no longer linked to it. Google keeps those events only for the retention period set for the project, and then deletes them. If you would like us to ask for them to be deleted sooner, write to us.</p>
+    <h2>Usage events in ${names(fb)}</h2>
+    <p>${names(fb)} ${fb.length > 1 ? 'send' : 'sends'} usage data to Google Firebase Analytics with an app-instance ID and the advertising ID, never your name, picture or coin balance. Each game's privacy policy lists what is sent. Uninstalling or clearing storage removes the app-instance ID from your phone, so older events are no longer linked to it, and you can delete or reset the advertising ID as above. Google keeps those events only for the retention period set in our Firebase project, and then deletes them. If you would like us to ask for them to be deleted sooner, write to us.</p>
+` : ''}${backup.length ? `
+    <h2>Android backup in ${names(backup)}</h2>
+    <p>${names(backup)} allows Android's own backup. If backup is turned on for your Google account, a copy of the game's saved data may be kept in your phone's Google backup, even after you uninstall the game, until you turn backup off or delete that backup. To remove it, open Settings, then Google, then Backup on your phone (the path varies by phone), turn backup off or delete the backup, or manage backups in your Google account. ${esc(S.studio)} never receives this backup.</p>
 ` : ''}
     <h2>Questions</h2>
     <p>Write to <a href="mailto:${S.supportEmail}">${S.supportEmail}</a> with the name of the game. We will never ask for a password.</p>`;
@@ -470,7 +477,12 @@ function termsPage() {
 
 function contactPage() {
   const T = makeT();
-  const games = FEATURED.map((g) => `<li><a class="contact-game" href="${url.game(g)}">${icon(g, 48, '', '', ' loading="lazy" decoding="async"')}<span><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span></span></a>${g.privacy.published ? ` <a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</li>`).join('\n        ');
+  // Featured games link to their page; the others (no game page yet) show their name and the policy link only.
+  const games = [...FEATURED, ...WORKSHOP.filter((g) => g.privacy.published)].map((g) => {
+    const inner = `${icon(g, 48, '', '', ' loading="lazy" decoding="async"')}<span><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span></span>`;
+    const name = g.featured ? `<a class="contact-game" href="${url.game(g)}">${inner}</a>` : `<span class="contact-game">${inner}</span>`;
+    return `<li>${name}${g.privacy.published ? ` <a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</li>`;
+  }).join('\n        ');
   const body = `
   <main id="main" class="contact">
   <section class="wrap">

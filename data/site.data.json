@@ -64,31 +64,53 @@
       ],
       "privacy": {
         "published": true,
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
         "stays": [
           "The name you type",
           "A profile photo you choose, after the app shrinks it",
+          "Optional gender, if you choose to give it. It is never sent to ads.",
+          "Names you type for Pass and Play players",
           "Coin balance, daily gift and daily spin counts",
-          "Wins, losses and tokens captured",
-          "Sound, music, vibration, reminder and language settings",
-          "Optional gender, if you choose to give it. It is never sent to ads or analytics."
+          "Wins, losses, tokens captured and saved matches",
+          "Sound, music, vibration, reminder, theme and language settings",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
         ],
         "sections": [
-          { "h": "Ads (Google AdMob)", "p": [
-            "{name} shows Google AdMob ads in two formats only. A rewarded video is always your choice: you can watch one for free coins, an extra daily spin, or a dice re-roll. A banner sits at the bottom of the game screen in matches against the computer; there is no banner in Pass and Play. There are no full-screen ads between games.",
-            "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings."
-          ] },
-          { "h": "Analytics (Google Firebase Analytics)", "p": [
-            "Google Play builds of {name} include Firebase Analytics. It receives anonymous usage events (screens opened, game start and end, rewards claimed) together with an app-instance ID and basic device information. Your name, photo, gender and coin balance are not sent. A copy built without a Firebase configuration sends nothing to Firebase."
-          ] },
-          { "h": "Daily reward time check", "p": [
-            "When the phone is online, the app asks two public time services, worldtimeapi.org and timeapi.io, for the current India date so daily rewards reset at midnight IST. Those requests do not include your name, photo, or coin balance. Like any web request they see the phone's IP address. If the phone is offline, the app uses the device clock and blocks a claim when that clock has been moved backwards."
-          ] },
-          { "h": "Reminders", "p": [
-            "Reminders are off until you turn them on and allow notifications. The app then schedules at most one local reminder a day, around 7 pm phone time, and only while you are away from the game. The reminder is made and shown on this phone. Nothing is sent to a push server. You can turn reminders off in the app at any time."
-          ] },
-          { "h": "Photo, vibration and sharing", "p": [
-            "Play vs AI is played against computer opponents on the phone, and each one is labelled AI. Choosing a photo opens the system picker. The app does not ask for camera or photo library permission. Vibration uses the normal vibrate permission and only runs when that setting is on. The share button opens your phone's share sheet. The app does not receive the list of people you share with."
-          ] }
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner sits at the bottom of the game screen in matches against the computer. There is no banner in Pass and Play. There are no interstitial ads or other full-screen ads between games.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Account, then Settings, then Privacy choices. This entry appears when Google's consent rules apply to you."
+            ]
+          },
+          {
+            "h": "Analytics (Google Firebase Analytics)",
+            "p": [
+              "Google Play builds of {name} include Google Firebase Analytics. It records four kinds of play event: a screen being opened (the screen's name), a game starting (the game mode and the number of players), a game ending (the winning seat, such as red human or yellow computer, and the match length in seconds), and a reward being claimed (the reward type and the coins in that reward).",
+              "Firebase sends these events with an app-instance ID, the advertising ID, and basic device and app information such as the phone model, Android version, app version and approximate location from the IP address. Your name, photo, gender, friends' names and coin balance are not sent.",
+              "Google keeps this event data for the retention period set in our Firebase project, and then deletes it. Uninstalling the app or clearing its storage removes the app-instance ID from the phone, and you can reset or delete the advertising ID in your phone's settings (Google, then Ads). See <a href=\"https://policies.google.com/privacy\">Google's privacy policy</a> and <a href=\"https://policies.google.com/technologies/partner-sites\">how Google uses information from apps that use its services</a>."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "To check the India date (Asia/Kolkata) for daily rewards, and to stop rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "Reminders",
+            "p": [
+              "Reminders are off until you turn them on in Account and allow notifications. The app then schedules at most one local reminder a day, around 7 pm phone time, and only while you are away from the game. The reminder is made and shown on this phone. Nothing is sent to a push server. You can turn reminders off in the app at any time."
+            ]
+          },
+          {
+            "h": "Photo, vibration and sharing",
+            "p": [
+              "Play vs AI is played against computer opponents on the phone, and each one is labelled AI. Choosing a photo opens the system picker. The app does not ask for camera or photo library permission. Vibration only runs when that setting is on. The share button opens your phone's share sheet. The app does not receive the list of people you share with."
+            ]
+          }
         ]
       }
     },
@@ -137,28 +159,51 @@
       ],
       "privacy": {
         "published": true,
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
         "stays": [
           "The name and icon you choose",
           "Optional gender, if you choose to give it. It is never sent to ads, and you can clear it in Settings.",
-          "Coins, levels, stars, streaks, goals and records",
-          "Sound, vibration, reminder and language settings"
+          "Coins, levels, stars, streaks, goals, saved games and records",
+          "Sound, vibration, reminder and language settings",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
         ],
         "sections": [
-          { "h": "Ads (Google AdMob)", "p": [
-            "{name} shows Google AdMob ads in two formats only. A rewarded video is always your choice, for example to continue a game, double coins, get one extra spin a day, or use a helper (power-up): rotate, swap tray or undo. A banner is shown on the game screen only. There are no full-screen ads between games.",
-            "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings.",
-            "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
-          ] },
-          { "h": "Reminders", "p": [
-            "The evening reminder is optional and off until you turn it on. You can turn it on in Settings, or by allowing notifications when the app asks once after your first level win. A phone that allows notifications without asking does not turn it on. While it is on and notifications are allowed, the app schedules at most one local reminder a day, around 7 pm phone time, and none on a day you have already played.",
-            "The reminder is made and shown on this phone using Android's notification system. No data is sent for it and no push server is used. You can turn it off at any time in Settings, which cancels the pending reminder, or in your phone's settings."
-          ] },
-          { "h": "Daily rewards and the clock", "p": [
-            "Daily rewards use the phone's own clock, with checks on the phone that stop a reward being claimed twice when the clock is moved. The app does not contact a time service."
-          ] },
-          { "h": "Share card and vibration", "p": [
-            "The share card is a picture made on the phone. It holds your chosen name (or none) and your score, never your gender or icon. It leaves the phone only when you tap Share, through your phone's share sheet. The app does not receive the list of people you share with. Vibration only runs when that setting is on."
-          ] }
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown on the game screen only. There are no interstitial ads or other full-screen ads between games.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Settings (the gear on the home screen), then Privacy choices. This entry appears when Google's consent rules apply to you."
+            ]
+          },
+          {
+            "h": "Analytics (Google Firebase Analytics)",
+            "p": [
+              "Google Play builds of {name} include Google Firebase Analytics. The game does not send any events of its own to Firebase. The Firebase SDK automatically collects app usage data, such as when the app is first opened, app sessions and how long the app is used.",
+              "Firebase sends this data with an app-instance ID, the advertising ID, and basic device and app information such as the phone model, Android version, app version and approximate location from the IP address. Your name, icon, gender and coin balance are not sent.",
+              "Google keeps this data for the retention period set in our Firebase project, and then deletes it. Uninstalling the app or clearing its storage removes the app-instance ID from the phone, and you can reset or delete the advertising ID in your phone's settings (Google, then Ads). See <a href=\"https://policies.google.com/privacy\">Google's privacy policy</a> and <a href=\"https://policies.google.com/technologies/partner-sites\">how Google uses information from apps that use its services</a>."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "To stop daily rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "Reminders",
+            "p": [
+              "The evening reminder is optional and off until you turn it on. You can turn it on in Settings, or by allowing notifications when the app asks once after your first level win. A phone that allows notifications without asking does not turn it on. While it is on and notifications are allowed, the app schedules at most one local reminder a day, around 7 pm phone time, and none on a day you have already played.",
+              "The reminder is made and shown on this phone using Android's notification system. No data is sent for it and no push server is used. You can turn it off at any time in Settings, which cancels the pending reminder, or in your phone's settings."
+            ]
+          },
+          {
+            "h": "Share card and vibration",
+            "p": [
+              "The share card is a picture made on the phone. It holds your chosen name (or none) and your score, never your gender or icon. It leaves the phone only when you tap Share, through your phone's share sheet. The app does not receive the list of people you share with. Vibration only runs when that setting is on."
+            ]
+          }
         ]
       }
     },
@@ -205,32 +250,53 @@
       ],
       "privacy": {
         "published": true,
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
         "stays": [
-          "Your name and avatar",
-          "Optional gender, if you choose to give it",
-          "Progress, coins, stars, streaks and records",
-          "Sound, reminder and language settings"
+          "Level progress, scores, stars, coins, lives, boosters and streaks",
+          "Daily gift, Daily Thali, event, shop and album progress",
+          "Sound, music, vibration, reminder, theme and language settings",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
         ],
         "sections": [
-          { "h": "Ads (Google AdMob)", "p": [
-            "{name} shows Google AdMob ads: rewarded videos that you choose to watch, with a daily cap, and a banner. There are no full-screen ads between games. Ads are limited to content rated PG.",
-            "The Google Mobile Ads SDK may collect and use the advertising ID, the IP address (for approximate location), ad interactions, and diagnostics such as crash and performance data, to serve, measure and protect ads and to prevent fraud. See <a href=\"https://policies.google.com/technologies/partner-sites\">how Google uses information from sites or apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
-            "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
-          ] },
-          { "h": "Time check", "p": [
-            "When the game starts on Android, it sends an empty request to https://www.google.com/generate_204 and reads only the date and time from the reply, so the daily gift and the Daily Thali follow real time and not a changed phone clock. The request carries no game data, no player details and no ad or device ID. Like any web request, it lets Google see the phone's IP address and the web view's browser string. If the phone is offline, the game falls back to its own clock checks."
-          ] },
-          { "h": "Reminders", "p": [
-            "Reminders are off until you turn them on (the game asks once after your first Daily Thali, or you can use Settings). The game then schedules at most one local notification a day, around 6 pm phone time, using Android's notification system. The text is made on the phone. Nothing is sent to a server and no push service is used. Turning reminders off cancels the pending one."
-          ] },
-          { "h": "Share card, fonts and art", "p": [
-            "The share card is drawn on the phone and leaves it only when you tap Share, through your phone's share sheet. All fonts, pictures and sounds are inside the app, so the game makes no requests to font or art servers."
-          ] }
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown on the level map and on the results screen, not while you play a level. There are no interstitial ads or other full-screen ads between games. Ads are limited to content rated PG.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Settings, then Privacy choices. This entry appears when Google's consent rules apply to you.",
+              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+            ]
+          },
+          {
+            "h": "No name, picture or gender",
+            "p": [
+              "{name} does not ask for your name, a picture or your gender."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "When the game starts and when you come back to it, so the daily gift, the Daily Thali and the ad limit follow real time and not a changed phone clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "Reminders",
+            "p": [
+              "Reminders are off until you turn them on (the game asks once after your first Daily Thali, or you can use Settings). The game then schedules at most one local notification a day, around 6 pm phone time, using Android's notification system. The text is made on the phone. Nothing is sent to a server and no push service is used. Turning reminders off cancels the pending one."
+            ]
+          },
+          {
+            "h": "Share card, fonts and art",
+            "p": [
+              "The share card is drawn on the phone and leaves it only when you tap Share, through your phone's share sheet. All fonts, pictures and sounds are inside the app, so the game makes no requests to font or art servers. Vibration only runs when that setting is on. The Privacy policy and Data deletion links in Settings open this website in your browser."
+            ]
+          }
         ]
       }
     },
     {
-      "id": "snakes", "slug": "saanp-seedhi", "featured": false,
+      "id": "snakes", "slug": "saanp-seedhi", "featured": false, "listed": false,
       "package": "com.bharatjoy.saanpseedhi",
       "nameEn": "Bharat Saanp Seedhi", "nameHi": "भारत साँप सीढ़ी",
       "status": "in-workshop", "playUrl": "",
@@ -243,28 +309,47 @@
       "id": "carrom", "slug": "carrom", "featured": false,
       "package": "com.bharatjoy.carrom",
       "nameEn": "Bharat Carrom", "nameHi": "भारत कैरम",
-      "status": "in-workshop", "playUrl": "",
+      "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/carrom-icon",
-      "lineEn": "Coming soon. A carrom board, still being made.",
-      "lineHi": "जल्द आ रहा है। कैरम बोर्ड, अभी बन रहा है।",
+      "lineEn": "A carrom board, played against the computer or with friends.",
+      "lineHi": "कैरम बोर्ड, कंप्यूटर के साथ या दोस्तों के साथ।",
       "privacy": {
         "published": true,
-        "effectiveDate": "17 November 2026",
-        "effectiveISO": "2026-11-17",
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
         "stays": [
-          "Game progress and saved games",
+          "Saved matches, stats, rewards, streaks and unlocked items",
           "Coin balance",
-          "Game settings, including the optional commentary voice"
+          "Game settings, including the optional commentary voice",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
         ],
         "deletion": "Uninstalling the app or clearing its app data deletes this local data. There is no {studio} account, no sign-in and no game server, so there is nothing of yours to delete on our side. See the <a href=\"/delete\">data deletion page</a> for ad data and advertising ID reset or deletion steps.",
         "sections": [
           {
             "h": "Ads (Google AdMob)",
             "p": [
-              "{name} shows Google AdMob ads in two formats only: rewarded ads that you choose to watch, and banner ads. There are no interstitial ads or full-screen ads between games.",
-              "Google is the ad provider and processes ad data. AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, measure and limit ads, and to prevent fraud. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's Google settings.",
-              "Where required, you are asked for consent before personalised ads are shown. Your consent choices determine whether personalised ads can be shown.",
-              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service. {studio} does not collect personal data or run servers for this game. Your game progress, settings, saves and coins stay only on your device."
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown on the home screen and during matches, including Pass and Play matches. There are no interstitial ads or other full-screen ads between games.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Settings, then Privacy choices. This entry appears when Google's consent rules apply to you.",
+              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service. {studio} does not collect personal data or run servers for this game."
+            ]
+          },
+          {
+            "h": "No name, picture or gender",
+            "p": [
+              "{name} does not ask for your name, a picture or your gender."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "To stop daily rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "No reminders",
+            "p": [
+              "{name} does not schedule or show notifications."
             ]
           },
           {
@@ -276,7 +361,58 @@
           {
             "h": "On-device features",
             "p": [
-              "Game saves and app settings are handled on the phone. These features do not upload your game data. Vibration only runs when that setting is on. Sharing opens your phone's share sheet, and content leaves the phone only when you choose to share it. The app does not receive the list of people you share with."
+              "Vibration only runs when that setting is on. The Privacy policy and Data deletion links in Settings open this website in your browser."
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sudoku", "slug": "sudoku", "featured": false,
+      "package": "com.bharatjoy.sudoku",
+      "nameEn": "Bharat Sudoku", "nameHi": "भारत सुडोकू",
+      "status": "coming-soon", "playUrl": "",
+      "icon": "/assets/img/icons/sudoku-icon",
+      "lineEn": "The nine by nine number puzzle.",
+      "lineHi": "नौ बाय नौ अंकों की पहेली।",
+      "privacy": {
+        "published": true,
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
+        "stays": [
+          "The name and built-in avatar you choose",
+          "Optional gender, if you choose to give it. It is never sent to ads.",
+          "Puzzles in progress, levels, stars, stats and streaks",
+          "Coins, rewards, boards and achievements",
+          "Sound, music, vibration, language and theme settings",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
+        ],
+        "sections": [
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown at the bottom of the puzzle screen. There are no interstitial ads or other full-screen ads between games.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Profile, then Settings, then Privacy choices. This entry appears when Google's consent rules apply to you.",
+              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "To stop daily rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "No reminders",
+            "p": [
+              "{name} does not schedule or show notifications."
+            ]
+          },
+          {
+            "h": "Sharing and vibration",
+            "p": [
+              "The share button passes a short line about your result (your chosen name, the level and your time) to your phone's share options, or copies it if sharing is not available. It leaves the phone only if you then send it. Vibration only runs when that setting is on."
             ]
           }
         ]
@@ -286,21 +422,110 @@
       "id": "callbreak", "slug": "call-break", "featured": false,
       "package": "com.bharatjoy.callbreak",
       "nameEn": "Bharat Call Break", "nameHi": "भारत कॉल ब्रेक",
-      "status": "in-workshop", "playUrl": "",
+      "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/callbreak-icon",
-      "lineEn": "The card game, still being made.",
-      "lineHi": "ताश का खेल, अभी बन रहा है।",
-      "privacy": { "published": false }
+      "lineEn": "The card game of calls and tricks.",
+      "lineHi": "ताश का खेल।",
+      "privacy": {
+        "published": true,
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
+        "staysIntro": "The app saves the following in private storage on the device. The game does not upload it (see Android backup below).",
+        "stays": [
+          "The name and built-in avatar you choose",
+          "Optional gender, if you choose to give it. It is never sent to ads.",
+          "Names you type for Pass and Play players",
+          "A saved match, coins, XP, stats and rewards",
+          "Sound, vibration, speed, table and language settings",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
+        ],
+        "deletion": "Uninstalling the app or clearing its storage deletes this data from the phone. There is no {studio} account, no sign-in and no game server, so there is nothing of yours to delete on our side. See the <a href=\"/delete\">data deletion page</a>.",
+        "sections": [
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown at the bottom of the game screen during a match, including Pass and Play matches. There are no interstitial ads or other full-screen ads between games.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Settings, then Privacy choices. This entry appears when Google's consent rules apply to you.",
+              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "To stop daily rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "Android backup",
+            "p": [
+              "{name} allows Android's own backup. If backup is turned on for your Google account, Android may include the game's saved data in your phone's backup and restore it on a new phone. That backup is run by Google under your account; {studio} never receives it. You can turn backup off in your phone's settings."
+            ]
+          },
+          {
+            "h": "No reminders",
+            "p": [
+              "{name} does not schedule or show notifications."
+            ]
+          },
+          {
+            "h": "Vibration",
+            "p": [
+              "Vibration only runs when that setting is on."
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "bubble", "slug": "bubble-shooter", "featured": false,
       "package": "com.bharatjoy.bubbleshooter",
       "nameEn": "Bharat Bubble Shooter", "nameHi": "भारत बबल शूटर",
-      "status": "in-workshop", "playUrl": "",
+      "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/bubble-icon",
-      "lineEn": "Aim, match and pop, still being made.",
-      "lineHi": "निशाना लगाओ, मिलाओ और फोड़ो, अभी बन रहा है।",
-      "privacy": { "published": false }
+      "lineEn": "Aim, match and pop.",
+      "lineHi": "निशाना लगाओ, मिलाओ और फोड़ो।",
+      "privacy": {
+        "published": true,
+        "effectiveDate": "24 November 2026",
+        "effectiveISO": "2026-11-24",
+        "stays": [
+          "The name and built-in avatar you choose",
+          "Optional gender, if you choose to give it. It is never sent to ads.",
+          "Levels, scores, coins, goals, streaks and items you unlock",
+          "Sound, music, vibration, motion, reminder, theme and language settings",
+          "Ad limit and clock records (when you last watched a rewarded ad, and the last verified time), so the daily limit works"
+        ],
+        "sections": [
+          {
+            "h": "Ads (Google AdMob)",
+            "p": [
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown at the bottom of the level map and of the game screen while you play a level. There are no interstitial ads or other full-screen ads between games.",
+              "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
+              "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Profile (tap your avatar on the home screen), then Privacy options. This entry appears when Google's consent rules apply to you.",
+              "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."
+            ]
+          },
+          {
+            "h": "Verified time check",
+            "p": [
+              "To stop daily rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
+            ]
+          },
+          {
+            "h": "Reminders",
+            "p": [
+              "The daily reminder is off until you turn it on in settings, or say yes when the game asks (never in your first session). It needs notification permission. While it is on, the game schedules at most one local reminder a day, around 7:30 pm India time, about your daily goals, and moves it to the next day once you have claimed them. The reminder is made and shown on this phone. Nothing is sent to a server and no push service is used. Turning it off cancels the pending one."
+            ]
+          },
+          {
+            "h": "Share card and vibration",
+            "p": [
+              "The share card is a picture made on the phone. It leaves the phone only when you tap Share, through your phone's share sheet. The app does not receive the list of people you share with. Vibration only runs when that setting is on."
+            ]
+          }
+        ]
+      }
     }
   ],
 
@@ -315,7 +540,7 @@
     "skip": { "en": "Skip to content", "hi": "सामग्री पर जाएँ" },
     "langLabel": { "en": "Language", "hi": "भाषा" },
     "navGames": { "en": "Games", "hi": "गेम" },
-    "navWorkshop": { "en": "Workshop", "hi": "वर्कशॉप" },
+    "navWorkshop": { "en": "Coming soon", "hi": "जल्द आ रहे हैं" },
     "navPrivacy": { "en": "Privacy", "hi": "गोपनीयता" },
     "navContact": { "en": "Contact", "hi": "संपर्क" },
     "homeKicker": { "en": "A game studio in India", "hi": "भारत का एक गेम स्टूडियो" },
@@ -326,8 +551,8 @@
     "gamesTitle": { "en": "The games", "hi": "हमारे गेम" },
     "gamesIntro": { "en": "A board game, a puzzle, and a match-3, all from the same studio.", "hi": "एक बोर्ड गेम, एक पहेली और एक मैच-3, सब एक ही स्टूडियो से।" },
     "readAbout": { "en": "Read about {name}", "hi": "{nameHi} के बारे में पढ़ें" },
-    "workshopTitle": { "en": "In the workshop", "hi": "वर्कशॉप में" },
-    "workshopLead": { "en": "These will join the catalogue when they are ready to show.", "hi": "ये गेम तैयार होने पर सूची में जुड़ेंगे।" },
+    "workshopTitle": { "en": "Coming soon", "hi": "जल्द आ रहे हैं" },
+    "workshopLead": { "en": "These games are made and will come to Google Play soon.", "hi": "ये गेम बन चुके हैं और जल्द Google Play पर आएँगे।" },
     "footAbout": { "en": "A small studio. Games for Google Play. Coins are for play only and have no money value.", "hi": "एक छोटा स्टूडियो। Google Play के लिए गेम। सिक्के सिर्फ़ खेलने के लिए हैं, उनका कोई पैसा मूल्य नहीं है।" },
     "footSupport": { "en": "Support", "hi": "सहायता" },
     "footPolicies": { "en": "Policies", "hi": "नीतियाँ" },
