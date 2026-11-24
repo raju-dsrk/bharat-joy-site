@@ -59,7 +59,7 @@ function makeT() {
 
 const statusOf = (g) => DATA.status[g.status] || DATA.status['coming-soon'];
 const icon = (g, size, cls = '', alt = '', extra = '') =>
-  `<img class="${cls}" src="${g.icon}-${size <= 96 ? 96 : 192}.webp" width="${size}" height="${size}" alt="${esc(alt)}"${extra}>`;
+  `<img class="${cls}" src="${g.icon}-${size < 96 ? 96 : 192}.webp" width="${size}" height="${size}" alt="${esc(alt)}"${extra}>`;
 
 function phone(shot, { eager = false, cls = '' } = {}) {
   // Screens captured on a 16:9 phone (for example 360x640) get a 9:16 frame so nothing is cropped.
@@ -90,8 +90,8 @@ function langToggle(T) {
 
 function header(T, kind, current) {
   const navLinks = (kind === 'home'
-    ? [['#games', 'navGames'], ['#workshop', 'navWorkshop'], ['#policies', 'navPrivacy'], [url.contact, 'navContact']]
-    : [['/#games', 'navGames'], ['/#workshop', 'navWorkshop'], ['/#policies', 'navPrivacy'], [url.contact, 'navContact']])
+    ? [['#games', 'navGames'], ['#policies', 'navPrivacy'], [url.contact, 'navContact']]
+    : [['/#games', 'navGames'], ['/#policies', 'navPrivacy'], [url.contact, 'navContact']])
     .map(([href, k]) => `<a href="${href}"${current === href ? ' aria-current="page"' : ''}>${T.s(k)}</a>`).join('\n      ');
   const nav = `<nav class="nav" aria-label="Main">
       ${navLinks}
@@ -195,20 +195,25 @@ function homePage() {
   const rail = GAMES.map((g) => `<li>${g.featured
     ? `<a href="${url.game(g)}" aria-label="${esc(g.nameEn)}">${icon(g, 48, '', '')}</a>`
     : `<span class="rail-quiet" title="${esc(g.nameEn)}">${icon(g, 48, '', g.nameEn)}</span>`}</li>`).join('\n        ');
-  const entries = FEATURED.map((g, i) => {
+  // One grid of equal cards: every listed game, its icon, EN + HI name, status badge and a short line.
+  const cards = GAMES.map((g) => {
     const st = statusOf(g);
-    return `    <article class="entry${i % 2 ? ' alt' : ''}" aria-labelledby="g-${g.id}">
-      <div class="frame">${phone(g.shots[0], { cls: 'lift' })}</div>
-      <div class="copy">
-        <h3 class="game-name" id="g-${g.id}"><a href="${url.game(g)}">${esc(g.nameEn)}</a></h3>
+    const name = g.featured ? `<a href="${url.game(g)}">${esc(g.nameEn)}</a>` : esc(g.nameEn);
+    const links = [
+      g.featured ? `<a class="more" href="${url.game(g)}">${T.s('readAbout', g)}</a>` : '',
+      g.privacy?.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : '',
+    ].filter(Boolean).join('\n          ');
+    return `      <li class="card" id="g-${g.id}">
+        ${icon(g, 96, 'card-icon', `${g.nameEn} icon`, ' loading="lazy" decoding="async"')}
+        <h3 class="game-name">${name}</h3>
         <p class="hn" lang="hi">${esc(g.nameHi)}</p>
         <p class="pill">${T.t(st.pillEn, st.pillHi)}</p>
-        <p class="body">${T.t(g.summaryEn, g.summaryHi)}</p>
-        <a class="more" href="${url.game(g)}">${T.s('readAbout', g)}</a>
-      </div>
-    </article>`;
+        <p class="body">${T.t(g.cardEn, g.cardHi)}</p>
+        <div class="card-links">
+          ${links}
+        </div>
+      </li>`;
   }).join('\n');
-  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span>${statusOf(g).pillEn ? `<p class="pill">${T.t(statusOf(g).pillEn, statusOf(g).pillHi)}</p>` : ''}<em>${T.t(g.lineEn, g.lineHi)}</em>${g.privacy.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</div></li>`).join('\n      ');
   const body = `
   ${toran()}
   <main id="main">
@@ -231,18 +236,13 @@ function homePage() {
   <p class="band-caption">${T.s('bandCaption')}</p>
 
   <section class="catalog" id="games" aria-labelledby="games-title">
+    <span id="workshop" aria-hidden="true"></span>
     <div class="catalog-intro">
       <h2 id="games-title">${T.s('gamesTitle')}</h2>
       <p>${T.s('gamesIntro')}</p>
     </div>
-${entries}
-  </section>
-
-  <section class="workshop" id="workshop" aria-labelledby="workshop-title">
-    <h2 id="workshop-title">${T.s('workshopTitle')}</h2>
-    <p class="lead">${T.s('workshopLead')}</p>
-    <ul class="contents">
-      ${workshop}
+    <ul class="game-grid">
+${cards}
     </ul>
   </section>
   </main>`;
@@ -356,7 +356,7 @@ ${sections}
   </article>
   </main>
   <nav class="legal-foot" aria-label="Related">
-    <a href="${g.featured ? url.game(g) : '/#workshop'}">${T.s('backTo', g)}</a>
+    <a href="${g.featured ? url.game(g) : `/#g-${g.id}`}">${T.s('backTo', g)}</a>
     <a href="${url.delete}">${T.s('delete')}</a>
     <a href="/">${esc(S.studio)}</a>
   </nav>`;
@@ -390,7 +390,11 @@ function deletePage() {
   const games = WITH_POLICY.map((g) => `<li>${esc(g.nameEn)} <span lang="hi">(${esc(g.nameHi)})</span>, package ${esc(g.package)}</li>`).join('\n      ');
   const fb = WITH_POLICY.filter((g) => /Firebase Analytics/.test(JSON.stringify(g.privacy.sections)));
   const backup = WITH_POLICY.filter((g) => g.privacy.sections.some((sec) => sec.h === 'Android backup'));
-  const names = (list) => list.map((g) => esc(g.nameEn)).join(', ');
+  // "A", "A and B", "A, B and C"
+  const names = (list) => {
+    const n = list.map((g) => esc(g.nameEn));
+    return n.length > 1 ? `${n.slice(0, -1).join(', ')} and ${n[n.length - 1]}` : (n[0] ?? '');
+  };
   const inner = `
     <h2>There is no account to delete</h2>
     <p>Our games do not have sign-in, cloud saves or a game server. Your name, picture, optional gender, coins and progress are kept on your phone${fb.length || backup.length ? ' (see the notes below for usage events and Android backup)' : ' only'}. This page covers:</p>
