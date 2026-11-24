@@ -350,43 +350,47 @@ test('privacy pages match each game\'s SDKs and current behaviour', () => {
   assert.match(mela, /content rated PG/);
   assert.ok(!/\bhint\b|achievements/.test(block), 'Block Puzzle privacy: no hint or achievements (not in the game)');
   for (const slug of ['carrom', 'sudoku', 'call-break', 'bubble-shooter']) {
-    assert.match(read(join(PUB, slug, 'privacy.html')), /href="\/#workshop"/, `${slug} links back to the Coming soon list`);
+    const id = DATA.games.find((g) => g.slug === slug).id;
+    assert.ok(read(join(PUB, slug, 'privacy.html')).includes(`href="/#g-${id}"`), `${slug} links back to its card on the home grid`);
   }
 });
 
-test('home lists the 7 finished games: 3 in closed testing, 4 Coming soon, Snakes and Ladders not listed', () => {
+test('home shows all 8 games as equal cards in one Our games grid, in EN and HI', () => {
   const home = read(join(PUB, 'index.html'));
-  const catalog = home.slice(home.indexOf('<section class="catalog"'), home.indexOf('<section class="workshop"'));
-  const soon = home.slice(home.indexOf('<section class="workshop"'), home.indexOf('</main>'));
-  for (const id of ['ludo', 'block', 'mela']) {
-    const g = DATA.games.find((x) => x.id === id);
-    assert.equal(g.status, 'closed-testing', id);
-    assert.ok(catalog.includes(g.nameEn), `${id} in the catalogue`);
-  }
-  assert.equal((catalog.match(/>Closed testing on Google Play</g) || []).length, 3);
-  for (const id of ['carrom', 'sudoku', 'callbreak', 'bubble']) {
-    const g = DATA.games.find((x) => x.id === id);
-    assert.equal(g.status, 'coming-soon', id);
-    assert.equal(g.featured, false, id);
-    assert.equal(g.playUrl, '', id);
-    assert.equal(g.privacy.published, true, id);
-    assert.ok(soon.includes(`<strong>${g.nameEn}</strong>`), `${id} in the Coming soon list`);
-    assert.ok(soon.includes(`href="/${g.slug}/privacy"`), `${id} privacy link`);
-    assert.match(read(join(PUB, 'delete.html')), new RegExp(g.package.replace(/\./g, '\\.')));
-    assert.ok(read(join(PUB, 'sitemap.xml')).includes(`<loc>${S.domain}/${g.slug}/privacy</loc><lastmod>2026-11-24</lastmod>`));
-  }
-  assert.equal((soon.match(/<p class="pill"><span data-i18n="t\d+">Coming soon<\/span><\/p>/g) || []).length, 4);
+  assert.ok(!home.includes('<section class="workshop"'), 'no separate Coming soon section');
+  assert.ok(!/#workshop/.test(home), 'no #workshop anchor left');
+  const grid = home.slice(home.indexOf('<ul class="game-grid">'), home.indexOf('</ul>', home.indexOf('<ul class="game-grid">')));
+  assert.match(home, /<h2 id="games-title"><span data-i18n="t\d+">Our games<\/span><\/h2>/);
+  assert.match(home, /Eight games from one studio/);
+  const cards = grid.split('<li class="card"').slice(1);
+  assert.equal(cards.length, 8, 'eight cards');
   const T = JSON.parse(home.match(/<script type="application\/json" id="i18n-hi">([\s\S]*?)<\/script>/)[1]);
-  assert.ok(Object.values(T).includes('जल्द आ रहा है'), 'Hindi Coming soon label');
-  assert.ok(Object.values(T).includes('Google Play पर क्लोज़्ड टेस्टिंग'), 'Hindi closed testing label');
-  assert.ok(!/play\.google\.com/.test(soon));
-  assert.ok(!/>Coming soon</.test(catalog), 'no featured game says Coming soon');
-  const snakes = DATA.games.find((g) => g.id === 'snakes');
-  assert.equal(snakes.listed, false);
-  for (const f of HTML) assert.ok(!/Saanp Seedhi|saanp-seedhi|snakes-icon/.test(read(f)), `${relative(PUB, f)} must not list Snakes and Ladders`);
+  const hiOf = (card, en) => { const k = card.match(new RegExp(`data-i18n="(t\\d+)">${en.replace(/[.()]/g, '\\$&')}<`))?.[1]; return k && T[k]; };
+  const want = { ludo: 'closed-testing', block: 'closed-testing', mela: 'closed-testing', carrom: 'coming-soon', sudoku: 'coming-soon', callbreak: 'coming-soon', bubble: 'coming-soon', snakes: 'coming-soon' };
+  for (const [id, status] of Object.entries(want)) {
+    const g = DATA.games.find((x) => x.id === id);
+    assert.equal(g.status, status, id);
+    const card = cards.find((c) => c.startsWith(` id="g-${id}"`));
+    assert.ok(card, `${id} card`);
+    assert.match(card, new RegExp(`class="card-icon" src="${g.icon}-192\\.webp" width="96" height="96"`), `${id} icon`);
+    assert.ok(existsSync(join(PUB, `${g.icon}-192.webp`)), `${id} 192 icon file`);
+    assert.ok(card.includes(g.nameEn) && card.includes(g.nameHi), `${id} EN + HI name`);
+    const pill = status === 'closed-testing' ? ['Closed testing on Google Play', 'Google Play पर क्लोज़्ड टेस्टिंग'] : ['Coming soon', 'जल्द आ रहा है'];
+    assert.equal(hiOf(card, pill[0]), pill[1], `${id} badge EN + HI`);
+    assert.ok(g.cardEn && g.cardHi && hiOf(card, g.cardEn) === g.cardHi, `${id} EN + HI line`);
+    assert.equal(card.includes(`href="/${g.slug}/privacy"`), !!g.privacy?.published, `${id} privacy link only where a policy exists`);
+    assert.equal(card.includes(`href="/${g.slug}/"`), !!g.featured, `${id} game page link only for featured games`);
+  }
+  assert.ok(!existsSync(join(PUB, 'saanp-seedhi/privacy.html')), 'no Snakes policy');
+  assert.ok(!/play\.google\.com/.test(grid));
+  for (const g of POLICY.filter((x) => !x.featured)) {
+    assert.ok(read(join(PUB, 'sitemap.xml')).includes(`<loc>${S.domain}/${g.slug}/privacy</loc>`), `${g.slug} in sitemap`);
+    assert.match(read(join(PUB, 'delete.html')), new RegExp(g.package.replace(/\./g, '\\.')));
+  }
   // Footer policy list on every page with a footer names all 7 policies.
   for (const f of HTML.filter((x) => read(x).includes('class="foot-links"'))) {
     for (const g of POLICY) assert.ok(read(f).includes(`href="/${g.slug}/privacy"`), `${relative(PUB, f)} footer lists ${g.slug}`);
+    assert.ok(!/#workshop/.test(read(f)), `${relative(PUB, f)} has no #workshop link`);
   }
 });
 
