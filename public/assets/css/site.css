@@ -133,6 +133,7 @@ p.body{font-size:17px;line-height:1.6;color:var(--mute);max-width:520px}
 .screen{border-radius:24px;overflow:hidden;aspect-ratio:390/844;background:#1a0a08}
 .screen img{width:100%;height:100%;object-fit:cover;object-position:top}
 .screen.r169{aspect-ratio:9/16}
+.screen.r12{aspect-ratio:1/2}
 
 
 /* Footer */

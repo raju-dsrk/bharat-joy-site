@@ -326,7 +326,7 @@
         "Three modes: Classic (cover the queen), Freestyle to 120 points, and Disc Pool",
         "Play the computer at Easy, Medium or Hard, or two players on one phone with Pass and Play",
         "Aaj ka Shot: a new carrom puzzle every day",
-        "Seven boards, from Royal Wood to Diwali Night. Looks only: every board plays the same.",
+        "Seven boards, from Royal Wood to Rajwada Royal. Looks only: every board plays the same.",
         "A daily gift, a daily spin, goals, chests, streaks and trophies",
         "Optional match commentary, spoken by your phone’s own voice",
         "Rewarded ads only when you choose, and a banner on the home screen and during matches. No full-screen ads.",
@@ -336,7 +336,7 @@
         "तीन मोड: क्लासिक (रानी कवर करो), 120 अंक तक फ़्रीस्टाइल, और डिस्क पूल",
         "कंप्यूटर के साथ आसान, मध्यम या कठिन स्तर पर खेलें, या पास एंड प्ले में एक फ़ोन पर दो खिलाड़ी",
         "आज का शॉट: हर दिन एक नई कैरम पहेली",
-        "रॉयल वुड से दिवाली नाइट तक सात बोर्ड। सिर्फ़ रूप बदलता है, हर बोर्ड पर खेल एक जैसा है।",
+        "रॉयल वुड से राजवाड़ा रॉयल तक सात बोर्ड। सिर्फ़ रूप बदलता है, हर बोर्ड पर खेल एक जैसा है।",
         "डेली गिफ़्ट, डेली स्पिन, लक्ष्य, संदूक, स्ट्रीक और ट्रॉफ़ी",
         "चाहें तो मैच पर कमेंट्री, फ़ोन की अपनी आवाज़ में",
         "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर होम स्क्रीन पर और मैच के दौरान। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
@@ -494,7 +494,7 @@
       "icon": "/assets/img/icons/callbreak-icon",
       "shots": [
         { "src": "/assets/img/shots/callbreak-game.webp", "w": 480, "h": 1067, "altEn": "A Bharat Call Break round in progress, with three computer players, each call and your hand of cards" },
-        { "src": "/assets/img/shots/callbreak-table.webp", "w": 480, "h": 835, "altEn": "A Bharat Call Break trick on the festive table, with spades as trump" }
+        { "src": "/assets/img/shots/callbreak-table.webp", "w": 480, "h": 975, "altEn": "A Bharat Call Break trick in progress against three computer players, with spades as trump" }
       ],
       "kindEn": "A card game",
       "taglineEn": "Make your call, then win your tricks.",
@@ -589,8 +589,8 @@
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/bubble-icon",
       "shots": [
-        { "src": "/assets/img/shots/bubble-home.webp", "w": 480, "h": 1067, "altEn": "Bharat Bubble Shooter home screen with Play, daily goals and the weekly event" },
-        { "src": "/assets/img/shots/bubble-game.webp", "w": 480, "h": 1034, "altEn": "A Bharat Bubble Shooter level in progress, with the lotus shooter, the aim line and boosters" }
+        { "src": "/assets/img/shots/bubble-home.webp", "w": 480, "h": 932, "altEn": "Bharat Bubble Shooter home screen with Play, daily goals and the weekly event" },
+        { "src": "/assets/img/shots/bubble-game.webp", "w": 480, "h": 967, "altEn": "A Bharat Bubble Shooter level in progress, with the lotus shooter, the aim line and boosters" }
       ],
       "kindEn": "An arcade puzzle",
       "taglineEn": "Aim, match three, pop.",
@@ -674,7 +674,7 @@
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/snakes-icon",
       "shots": [
-        { "src": "/assets/img/shots/snakes-game.webp", "w": 480, "h": 1039, "altEn": "A Bharat Saanp Seedhi Pass and Play match on the classic board, with the die, Shield and Re-roll" },
+        { "src": "/assets/img/shots/snakes-game.webp", "w": 480, "h": 940, "altEn": "A Bharat Saanp Seedhi Pass and Play match on the classic board, with the die, Shield and Re-roll" },
         { "src": "/assets/img/shots/snakes-setup.webp", "w": 480, "h": 1039, "altEn": "The Bharat Saanp Seedhi Pass and Play setup: number of players, a pawn for each player and the board" }
       ],
       "kindEn": "A board game",

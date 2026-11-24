@@ -71,8 +71,10 @@ const icon = (g, size, cls = '', alt = '', extra = '') =>
   `<img class="${cls}" src="${g.icon}-${size < 96 ? 96 : 192}.webp" width="${size}" height="${size}" alt="${esc(alt)}"${extra}>`;
 
 function phone(shot, { eager = false, cls = '' } = {}) {
-  // Screens captured on a 16:9 phone (for example 360x640) get a 9:16 frame so nothing is cropped.
-  const screen = shot.h / shot.w < 1.9 ? 'screen r169' : 'screen';
+  // Screens captured on a 16:9 phone (for example 360x640) get a 9:16 frame so nothing is cropped,
+  // and screens cropped to about 1:2 (a banner or header trimmed off) get a 1:2 frame.
+  const r = shot.h / shot.w;
+  const screen = r < 1.9 ? 'screen r169' : r < 2.1 ? 'screen r12' : 'screen';
   return `<div class="phone ${cls}"><div class="bezel"><div class="${screen}"><img src="${shot.src}" width="${shot.w}" height="${shot.h}" alt="${esc(shot.altEn)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div></div></div>`;
 }
 

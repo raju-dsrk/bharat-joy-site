@@ -481,6 +481,27 @@ test('Carrom page uses the v2 icon art and real Carrom modes', () => {
   assert.ok(existsSync(join(PUB, '/assets/img/icons/carrom-icon-512.jpg')));
 });
 
+test('every screenshot sits in a frame close to its own shape, so little is cropped', () => {
+  const css = read(join(PUB, 'assets/css/site.css'));
+  const FRAMES = { 'screen': 844 / 390, 'screen r169': 16 / 9, 'screen r12': 2 };
+  assert.match(css, /\.screen\.r12\{aspect-ratio:1\/2\}/);
+  for (const g of DATA.games) {
+    const html = pageOf(g);
+    for (const sh of g.shots) {
+      const cls = html.match(new RegExp(`<div class="(screen[^"]*)"><img src="${sh.src}"`))?.[1];
+      assert.ok(cls, `${sh.src} is framed`);
+      const off = Math.abs(FRAMES[cls] - sh.h / sh.w) / FRAMES[cls];
+      assert.ok(off < 0.06, `${sh.src} (${sh.w}x${sh.h}) in ${cls} is off by ${(off * 100).toFixed(1)}%`);
+    }
+  }
+});
+
+test('Carrom boards line names the first and last board', () => {
+  const g = DATA.games.find((x) => x.id === 'carrom');
+  assert.ok(g.featuresEn.includes('Seven boards, from Royal Wood to Rajwada Royal. Looks only: every board plays the same.'));
+  assert.ok(g.featuresHi.some((f) => f.startsWith('रॉयल वुड से राजवाड़ा रॉयल तक सात बोर्ड।')));
+});
+
 test('closed testing Ludo has a label, not a store or tester link', () => {
   const ludo = DATA.games.find((g) => g.id === 'ludo');
   if (ludo.status !== 'closed-testing') return;
