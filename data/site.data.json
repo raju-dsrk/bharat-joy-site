@@ -86,6 +86,14 @@
             ]
           },
           {
+            "h": "Analytics (Google Firebase Analytics)",
+            "p": [
+              "Google Play builds of {name} include Google Firebase Analytics. It records four kinds of play event: a screen being opened (the screen's name), a game starting (the game mode and the number of players), a game ending (the winning seat, such as red human or yellow computer, and the match length in seconds), and a reward being claimed (the reward type and the coins in that reward).",
+              "Firebase sends these events with an app-instance ID, the advertising ID, and basic device and app information such as the phone model, Android version, app version and approximate location from the IP address. Your name, photo, gender, friends' names and coin balance are not sent.",
+              "Google keeps this event data for the retention period set in our Firebase project, and then deletes it. Uninstalling the app or clearing its storage removes the app-instance ID from the phone, and you can reset or delete the advertising ID in your phone's settings (Google, then Ads). See <a href=\"https://policies.google.com/privacy\">Google's privacy policy</a> and <a href=\"https://policies.google.com/technologies/partner-sites\">how Google uses information from apps that use its services</a>."
+            ]
+          },
+          {
             "h": "Verified time check",
             "p": [
               "To check the India date (Asia/Kolkata) for daily rewards, and to stop rewards and ad limits being reset by changing the phone's clock, the Android app sends an HTTPS HEAD request, with no body, to https://www.google.com/generate_204 and reads only the Date header of the reply. The request carries no game data, no player details and no advertising or device ID. Like any web request, it lets Google see the phone's IP address. If the phone is offline, the app uses its own clock checks."
@@ -485,7 +493,7 @@
           {
             "h": "Ads (Google AdMob)",
             "p": [
-              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown at the bottom of the game screen while you play a level. There are no interstitial ads or other full-screen ads between games.",
+              "{name} shows Google AdMob ads in two formats only: rewarded video ads and banner ads. A rewarded ad never plays by itself: it starts only after you tap a button that shows an ad icon and names the reward, and there is a daily limit. A banner is shown at the bottom of the level map and of the game screen while you play a level. There are no interstitial ads or other full-screen ads between games.",
               "AdMob may collect and use the advertising ID, device and app information, approximate location from the IP address, ad interactions, and its own diagnostics, to serve, personalise, measure and limit ads, and to prevent fraud. Ads can be personalised using the advertising ID, depending on your consent choices. See <a href=\"https://policies.google.com/technologies/ads\">how Google uses information from apps that use its services</a>. You can reset or delete the advertising ID in your phone's settings (Google, then Ads).",
               "If you are in the European Economic Area (EEA), the UK or Switzerland, the app asks for your consent through Google's User Messaging Platform (UMP) before it requests ads, and your choice decides whether ads can be personalised. You can change your choice at any time in Profile (tap your avatar on the home screen), then Privacy options. This entry appears when Google's consent rules apply to you.",
               "AdMob is the only third party that receives data from this app. {name} does not include Firebase or any other analytics service."

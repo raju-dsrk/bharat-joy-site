@@ -389,9 +389,11 @@ function deletePage() {
   const T = makeT();
   const games = WITH_POLICY.map((g) => `<li>${esc(g.nameEn)} <span lang="hi">(${esc(g.nameHi)})</span>, package ${esc(g.package)}</li>`).join('\n      ');
   const fb = WITH_POLICY.filter((g) => /Firebase Analytics/.test(JSON.stringify(g.privacy.sections)));
+  const backup = WITH_POLICY.filter((g) => g.privacy.sections.some((sec) => sec.h === 'Android backup'));
+  const names = (list) => list.map((g) => esc(g.nameEn)).join(', ');
   const inner = `
     <h2>There is no account to delete</h2>
-    <p>Our games do not have sign-in, cloud saves or a game server. Your name, picture, optional gender, coins and progress are kept only on your phone. This page covers:</p>
+    <p>Our games do not have sign-in, cloud saves or a game server. Your name, picture, optional gender, coins and progress are kept on your phone${fb.length || backup.length ? ' (see the notes below for usage events and Android backup)' : ' only'}. This page covers:</p>
     <ul>
       ${games}
     </ul>
@@ -407,8 +409,11 @@ function deletePage() {
     <h2>Advertising ID</h2>
     <p>Ads come from Google AdMob, which uses your phone's advertising ID. To delete or reset it, open Settings, then Google, then Ads, and choose Delete advertising ID (or Reset advertising ID on older Android versions). Google handles ad data under its own <a href="https://policies.google.com/privacy">privacy policy</a>.</p>
 ${fb.length ? `
-    <h2>Usage events in ${fb.map((g) => esc(g.nameEn)).join(', ')}</h2>
-    <p>${fb.map((g) => esc(g.nameEn)).join(', ')} sends anonymous usage events to Google Firebase Analytics, linked to a random app-instance ID and not to your name. Uninstalling or clearing storage removes that ID from your phone, so older events are no longer linked to it. Google keeps those events only for the retention period set for the project, and then deletes them. If you would like us to ask for them to be deleted sooner, write to us.</p>
+    <h2>Usage events in ${names(fb)}</h2>
+    <p>${names(fb)} sends play events (screens opened, game start and end, rewards claimed) to Google Firebase Analytics with an app-instance ID and the advertising ID, never your name, photo or coin balance. Uninstalling or clearing storage removes the app-instance ID from your phone, so older events are no longer linked to it, and you can delete or reset the advertising ID as above. Google keeps those events only for the retention period set in our Firebase project, and then deletes them. If you would like us to ask for them to be deleted sooner, write to us.</p>
+` : ''}${backup.length ? `
+    <h2>Android backup in ${names(backup)}</h2>
+    <p>${names(backup)} allows Android's own backup. If backup is turned on for your Google account, a copy of the game's saved data may be kept in your phone's Google backup, even after you uninstall the game, until you turn backup off or delete that backup. To remove it, open Settings, then Google, then Backup on your phone (the path varies by phone), turn backup off or delete the backup, or manage backups in your Google account. ${esc(S.studio)} never receives this backup.</p>
 ` : ''}
     <h2>Questions</h2>
     <p>Write to <a href="mailto:${S.supportEmail}">${S.supportEmail}</a> with the name of the game. We will never ask for a password.</p>`;

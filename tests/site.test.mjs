@@ -302,11 +302,19 @@ test('privacy pages match each game\'s SDKs and current behaviour', () => {
   for (const [id, path] of Object.entries(paths)) assert.ok(all[id].includes(`at any time in ${path}.`), `${id} Privacy choices path`);
   // Analytics: Ludo's Firebase is only built in when a config file exists, so its policy makes no claim
   // either way; the other six state AdMob is the only third party.
-  assert.ok(!/Firebase/.test(ludo), 'Ludo makes no Firebase claim');
+  assert.match(ludo, /Analytics \(Google Firebase Analytics\)/);
+  assert.match(ludo, /screen being opened.*game starting.*game ending.*reward being claimed/);
+  assert.match(ludo, /app-instance ID, the advertising ID/);
+  assert.match(ludo, /name, photo, gender, friends' names and coin balance are not sent/);
+  assert.match(ludo, /retention period set in our Firebase project/);
+  assert.ok(read(join(PUB, 'bharat-ludo/privacy.html')).includes('href="https://policies.google.com/privacy"'), 'Ludo links Google privacy policy');
   for (const id of ['block', 'mela', 'carrom', 'sudoku', 'callbreak', 'bubble']) {
     assert.match(all[id], /does not include Firebase or any other analytics service/, id);
   }
-  assert.ok(!/Usage events in/.test(visible(read(join(PUB, 'delete.html')))));
+  const del = visible(read(join(PUB, 'delete.html')));
+  assert.match(del, /Usage events in Bharat Ludo/);
+  assert.match(del, /Android backup in Bharat Call Break/);
+  assert.match(bubble, /bottom of the level map and of the game screen/);
   // Banners: no banner in Ludo Pass and Play; Carrom and Call Break show it in Pass and Play.
   assert.match(ludo, /There is no banner in Pass and Play/);
   assert.match(carrom, /including Pass and Play matches/);
