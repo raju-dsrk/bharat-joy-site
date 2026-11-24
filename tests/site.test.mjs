@@ -321,7 +321,8 @@ test('privacy pages match each game\'s SDKs and current behaviour', () => {
   assert.ok(!/game_start|reward being claimed|game starting/.test(block), 'no Ludo custom events in Block Puzzle');
   assert.ok(read(join(PUB, 'block-puzzle/privacy.html')).includes('href="https://policies.google.com/privacy"'));
   const del = visible(read(join(PUB, 'delete.html')));
-  assert.match(del, /Usage events in Bharat Ludo, Bharat Block Puzzle/);
+  assert.match(del, /Usage events in Bharat Ludo and Bharat Block Puzzle\b/);
+  assert.match(del, /Bharat Ludo and Bharat Block Puzzle send usage data/);
   assert.match(del, /Android backup in Bharat Call Break/);
   assert.match(bubble, /bottom of the level map and of the game screen/);
   // Banners: no banner in Ludo Pass and Play; Carrom and Call Break show it in Pass and Play.
@@ -364,6 +365,10 @@ test('home shows all 8 games as equal cards in one Our games grid, in EN and HI'
   assert.match(home, /Eight games from one studio/);
   const cards = grid.split('<li class="card"').slice(1);
   assert.equal(cards.length, 8, 'eight cards');
+  assert.deepEqual(cards.map((c) => c.match(/^ id="g-([a-z]+)"/)[1]),
+    ['ludo', 'block', 'mela', 'carrom', 'sudoku', 'callbreak', 'bubble', 'snakes'], 'card order');
+  assert.ok(home.includes('<span id="workshop" aria-hidden="true"></span>'), 'old /#workshop links land on the grid');
+  assert.ok(home.indexOf('id="workshop"') > home.indexOf('<section class="catalog" id="games"'), '#workshop is inside the grid section');
   const T = JSON.parse(home.match(/<script type="application\/json" id="i18n-hi">([\s\S]*?)<\/script>/)[1]);
   const hiOf = (card, en) => { const k = card.match(new RegExp(`data-i18n="(t\\d+)">${en.replace(/[.()]/g, '\\$&')}<`))?.[1]; return k && T[k]; };
   const want = { ludo: 'closed-testing', block: 'closed-testing', mela: 'closed-testing', carrom: 'coming-soon', sudoku: 'coming-soon', callbreak: 'coming-soon', bubble: 'coming-soon', snakes: 'coming-soon' };

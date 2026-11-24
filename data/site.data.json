@@ -216,7 +216,7 @@
       "slug": "sweet-mela",
       "featured": true,
       "cardEn": "Match sweets along a map of Indian market streets, with the Daily Thali and festive events.",
-      "cardHi": "भारत की बाज़ार की गलियों के नक्शे पर मिठाइयाँ मिलाओ, डेली थाली और त्योहार इवेंट के साथ।",
+      "cardHi": "भारत के बाज़ारों की गलियों के नक्शे पर मिठाइयाँ मिलाओ, डेली थाली और त्योहार इवेंट के साथ।",
       "package": "com.bharatjoy.sweets",
       "nameEn": "Bharat Sweet Mela",
       "nameHi": "भारत स्वीट मेला",
@@ -300,18 +300,6 @@
           }
         ]
       }
-    },
-    {
-      "id": "snakes", "slug": "saanp-seedhi", "featured": false,
-      "cardEn": "Climb the ladders and dodge the snakes. Play vs AI, or pass the phone with friends.",
-      "cardHi": "सीढ़ियाँ चढ़ो और साँपों से बचो। AI के साथ खेलें, या दोस्तों के साथ फ़ोन पास करें।",
-      "package": "com.bharatjoy.saanpseedhi",
-      "nameEn": "Bharat Saanp Seedhi", "nameHi": "भारत साँप सीढ़ी",
-      "status": "coming-soon", "playUrl": "",
-      "icon": "/assets/img/icons/snakes-icon",
-      "lineEn": "Snakes and ladders with Pass and Play and vs AI.",
-      "lineHi": "साँप सीढ़ी, पास एंड प्ले और AI के साथ।",
-      "privacy": { "published": false }
     },
     {
       "id": "carrom", "slug": "carrom", "featured": false,
@@ -542,6 +530,18 @@
           }
         ]
       }
+    },
+    {
+      "id": "snakes", "slug": "saanp-seedhi", "featured": false,
+      "cardEn": "Climb the ladders and dodge the snakes. Play vs AI, or pass the phone with friends.",
+      "cardHi": "सीढ़ियाँ चढ़ो और साँपों से बचो। AI के साथ खेलें, या दोस्तों के साथ फ़ोन पास करें।",
+      "package": "com.bharatjoy.saanpseedhi",
+      "nameEn": "Bharat Saanp Seedhi", "nameHi": "भारत साँप सीढ़ी",
+      "status": "coming-soon", "playUrl": "",
+      "icon": "/assets/img/icons/snakes-icon",
+      "lineEn": "Snakes and ladders with Pass and Play and vs AI.",
+      "lineHi": "साँप सीढ़ी, पास एंड प्ले और AI के साथ।",
+      "privacy": { "published": false }
     }
   ],
 

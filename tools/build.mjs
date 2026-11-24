@@ -236,6 +236,7 @@ function homePage() {
   <p class="band-caption">${T.s('bandCaption')}</p>
 
   <section class="catalog" id="games" aria-labelledby="games-title">
+    <span id="workshop" aria-hidden="true"></span>
     <div class="catalog-intro">
       <h2 id="games-title">${T.s('gamesTitle')}</h2>
       <p>${T.s('gamesIntro')}</p>
@@ -389,7 +390,11 @@ function deletePage() {
   const games = WITH_POLICY.map((g) => `<li>${esc(g.nameEn)} <span lang="hi">(${esc(g.nameHi)})</span>, package ${esc(g.package)}</li>`).join('\n      ');
   const fb = WITH_POLICY.filter((g) => /Firebase Analytics/.test(JSON.stringify(g.privacy.sections)));
   const backup = WITH_POLICY.filter((g) => g.privacy.sections.some((sec) => sec.h === 'Android backup'));
-  const names = (list) => list.map((g) => esc(g.nameEn)).join(', ');
+  // "A", "A and B", "A, B and C"
+  const names = (list) => {
+    const n = list.map((g) => esc(g.nameEn));
+    return n.length > 1 ? `${n.slice(0, -1).join(', ')} and ${n[n.length - 1]}` : (n[0] ?? '');
+  };
   const inner = `
     <h2>There is no account to delete</h2>
     <p>Our games do not have sign-in, cloud saves or a game server. Your name, picture, optional gender, coins and progress are kept on your phone${fb.length || backup.length ? ' (see the notes below for usage events and Android backup)' : ' only'}. This page covers:</p>
