@@ -42,7 +42,7 @@ test('generated output is up to date with the data file', () => {
 
 test('every required page and root file exists', () => {
   const need = ['index.html', '404.html', 'delete.html', 'terms.html', 'contact.html', 'robots.txt', 'sitemap.xml', 'app-ads.txt', '_headers', '_redirects', 'favicon.ico'];
-  for (const g of FEATURED) need.push(`${g.slug}/index.html`);
+  for (const g of DATA.games) need.push(`${g.slug}/index.html`);
   for (const g of POLICY) need.push(`${g.slug}/privacy.html`);
   for (const f of need) assert.ok(existsSync(join(PUB, f)), `missing ${f}`);
 });
@@ -117,12 +117,9 @@ test('Block Puzzle typos and the coming-soon privacy.html addresses redirect wit
   }
 });
 
-test('unpublished policies stay off the site; workshop games have no game page', () => {
+test('unpublished policies stay off the site', () => {
   for (const g of DATA.games.filter((x) => !x.privacy?.published)) {
     assert.ok(!existsSync(join(PUB, g.slug, 'privacy.html')), `${g.slug} privacy should not be published`);
-  }
-  for (const g of DATA.games.filter((x) => !x.featured)) {
-    assert.ok(!existsSync(join(PUB, g.slug, 'index.html')), `${g.slug} should stay in the workshop`);
   }
 });
 
@@ -384,7 +381,9 @@ test('home shows all 8 games as equal cards in one Our games grid, in EN and HI'
     assert.equal(hiOf(card, pill[0]), pill[1], `${id} badge EN + HI`);
     assert.ok(g.cardEn && g.cardHi && hiOf(card, g.cardEn) === g.cardHi, `${id} EN + HI line`);
     assert.equal(card.includes(`href="/${g.slug}/privacy"`), !!g.privacy?.published, `${id} privacy link only where a policy exists`);
-    assert.equal(card.includes(`href="/${g.slug}/"`), !!g.featured, `${id} game page link only for featured games`);
+    assert.ok(card.includes(`<h3 class="game-name"><a href="/${g.slug}/">`), `${id} name links to its game page`);
+    assert.ok(card.includes(`<a class="more" href="/${g.slug}/">`), `${id} Read about links to its game page`);
+    assert.ok(existsSync(join(PUB, g.slug, 'index.html')), `${id} game page exists`);
   }
   assert.ok(!existsSync(join(PUB, 'saanp-seedhi/privacy.html')), 'no Snakes policy');
   assert.ok(!/play\.google\.com/.test(grid));
@@ -397,6 +396,79 @@ test('home shows all 8 games as equal cards in one Our games grid, in EN and HI'
     for (const g of POLICY) assert.ok(read(f).includes(`href="/${g.slug}/privacy"`), `${relative(PUB, f)} footer lists ${g.slug}`);
     assert.ok(!/#workshop/.test(read(f)), `${relative(PUB, f)} has no #workshop link`);
   }
+});
+
+const COMING = DATA.games.filter((g) => g.status === 'coming-soon');
+const pageOf = (g) => read(join(PUB, g.slug, 'index.html'));
+const hiMap = (html) => JSON.parse(html.match(/<script type="application\/json" id="i18n-hi">([\s\S]*?)<\/script>/)[1]);
+const hiFor = (html, en) => { const k = html.match(new RegExp(`data-i18n="(t\\d+)">${en.replace(/[.()+?*[\]]/g, '\\$&')}<`))?.[1]; return k && hiMap(html)[k]; };
+
+test('the 5 coming-soon games are Carrom, Sudoku, Call Break, Bubble Shooter and Saanp Seedhi', () => {
+  assert.deepEqual(COMING.map((g) => g.id), ['carrom', 'sudoku', 'callbreak', 'bubble', 'snakes']);
+});
+
+test('every game, closed testing or coming soon, has a full game page in the same structure', () => {
+  for (const g of DATA.games) {
+    const html = pageOf(g);
+    for (const cls of ['game-hero', 'game-copy', 'feature-block', 'feats', 'feat-shot', 'note', 'links']) {
+      assert.ok(html.includes(`class="${cls}"`), `${g.slug} has .${cls}`);
+    }
+    assert.match(html, new RegExp(`<img class="game-icon" src="${g.icon}-96\\.webp"`), `${g.slug} icon`);
+    assert.match(html, new RegExp(`<h1 id="game-title">${g.nameEn}</h1>`), `${g.slug} h1`);
+    assert.ok(html.includes(`lang="hi">${g.nameHi}<`), `${g.slug} Hindi name`);
+    assert.equal(g.shots.length, 2, `${g.slug} has two screenshots`);
+    for (const sh of g.shots) {
+      assert.ok(html.includes(`src="${sh.src}"`), `${g.slug} shows ${sh.src}`);
+      assert.ok(statSync(join(PUB, sh.src)).size < 100 * 1024, `${sh.src} stays under 100 KB`);
+      assert.match(sh.src, /\.webp$/, `${sh.src} is webp`);
+    }
+    assert.ok(existsSync(join(PUB, `${g.icon}-512.jpg`)), `${g.slug} has a 512 share icon`);
+    assert.match(html, new RegExp(`<meta property="og:image" content="[^"]*${g.icon}-512\\.jpg">`), `${g.slug} og:image`);
+    assert.equal(g.featuresEn.length, g.featuresHi.length, `${g.slug} EN and HI feature lists match`);
+    assert.ok(g.featuresEn.length >= 6, `${g.slug} has a full feature list`);
+    for (const [en, hi] of [[g.taglineEn, g.taglineHi], [g.ledeEn, g.ledeHi], [g.featuresTitleEn, g.featuresTitleHi], ...g.featuresEn.map((f, i) => [f, g.featuresHi[i]])]) {
+      assert.ok(en && hi && /[\u0900-\u097F]/.test(hi), `${g.slug} has Hindi for: ${en}`);
+      assert.equal(hiFor(html, en), hi, `${g.slug} page shows EN + HI: ${en}`);
+    }
+    assert.ok(/English/.test(g.featuresEn.join(' ')) && /Hindi/.test(g.featuresEn.join(' ')), `${g.slug} says it is in English and Hindi`);
+    assert.ok(read(join(PUB, 'sitemap.xml')).includes(`<loc>${S.domain}/${g.slug}/</loc>`), `${g.slug} page in sitemap`);
+    assert.ok(read(join(PUB, 'contact.html')).includes(`<a class="contact-game" href="/${g.slug}/">`), `${g.slug} linked from contact`);
+    assert.ok(read(join(PUB, 'index.html')).match(new RegExp(`<ul class="icon-rail">[\\s\\S]*?href="/${g.slug}/"`)), `${g.slug} linked from the icon rail`);
+  }
+});
+
+test('coming-soon pages show the Coming soon badge in EN + HI and have no Play link', () => {
+  for (const g of COMING) {
+    const html = pageOf(g);
+    assert.equal(g.playUrl, '', `${g.slug} has no Play URL`);
+    assert.match(html, /<p class="pill"><span data-i18n="t\d+">Coming soon<\/span><\/p>/, `${g.slug} badge`);
+    assert.equal(hiFor(html, 'Coming soon'), 'जल्द आ रहा है', `${g.slug} Hindi badge`);
+    assert.ok(!/Closed testing/.test(html), `${g.slug} is not marked closed testing`);
+    assert.ok(!/play\.google\.com|groups\.google\.com|\/apps\/testing\//.test(html), `${g.slug} has no store or tester link`);
+    assert.ok(!/<a class="cta"/.test(html), `${g.slug} has no Play button`);
+    assert.match(html, /<meta name="description" content="[^"]*Coming soon\.">/, `${g.slug} description`);
+  }
+});
+
+test('coming-soon pages link their privacy policy, except Saanp Seedhi which has none', () => {
+  for (const g of COMING) {
+    const html = pageOf(g);
+    const links = html.slice(html.indexOf('<p class="links">'), html.indexOf('</p>', html.indexOf('<p class="links">')));
+    if (g.id === 'snakes') {
+      assert.equal(g.privacy.published, false);
+      assert.ok(!links.includes('/privacy'), 'Snakes page has no privacy link');
+      assert.ok(!html.includes('href="/saanp-seedhi/privacy"'), 'Snakes page links no Snakes policy anywhere');
+    } else {
+      assert.ok(links.includes(`href="/${g.slug}/privacy"`), `${g.slug} page links its policy`);
+    }
+  }
+});
+
+test('Carrom page uses the v2 icon art and real Carrom modes', () => {
+  const g = DATA.games.find((x) => x.id === 'carrom');
+  const en = g.featuresEn.join(' ');
+  for (const w of ['Classic', 'Freestyle', 'Disc Pool', 'Pass and Play', 'Aaj ka Shot']) assert.ok(en.includes(w), `Carrom: ${w}`);
+  assert.ok(existsSync(join(PUB, '/assets/img/icons/carrom-icon-512.jpg')));
 });
 
 test('closed testing Ludo has a label, not a store or tester link', () => {

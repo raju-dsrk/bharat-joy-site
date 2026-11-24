@@ -18,6 +18,15 @@ const STR = DATA.strings;
 const GAMES = DATA.games.filter((g) => g.listed !== false);
 const FEATURED = GAMES.filter((g) => g.featured);
 const WORKSHOP = GAMES.filter((g) => !g.featured);
+// Every listed game has its own page: the featured three (closed testing) and the coming-soon ones.
+// Featured only decides the studio band windows at the top of the home page.
+const PAGE_FIELDS = ['shots', 'taglineEn', 'taglineHi', 'ledeEn', 'ledeHi', 'featuresTitleEn', 'featuresTitleHi', 'featuresEn', 'featuresHi'];
+for (const g of GAMES) {
+  const missing = PAGE_FIELDS.filter((k) => !g[k] || (Array.isArray(g[k]) && !g[k].length));
+  if (missing.length) throw new Error(`${g.id} needs ${missing.join(', ')} for its game page`);
+  if (g.shots.length < 2) throw new Error(`${g.id} needs two shots for its game page`);
+  if (g.featuresEn.length !== g.featuresHi.length) throw new Error(`${g.id} featuresEn and featuresHi differ in length`);
+}
 const WITH_POLICY = GAMES.filter((g) => g.privacy && g.privacy.published);
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -192,15 +201,13 @@ ${body}
 function homePage() {
   const T = makeT();
   const windows = FEATURED.map((g) => `<li class="win"><a href="${url.game(g)}" aria-label="${esc(g.nameEn)}"><img src="${g.band}" alt="${esc(g.bandAltEn)}" width="400" height="300" fetchpriority="high" decoding="async"></a></li>`).join('\n        ');
-  const rail = GAMES.map((g) => `<li>${g.featured
-    ? `<a href="${url.game(g)}" aria-label="${esc(g.nameEn)}">${icon(g, 48, '', '')}</a>`
-    : `<span class="rail-quiet" title="${esc(g.nameEn)}">${icon(g, 48, '', g.nameEn)}</span>`}</li>`).join('\n        ');
+  const rail = GAMES.map((g) => `<li><a href="${url.game(g)}" aria-label="${esc(g.nameEn)}">${icon(g, 48, '', '')}</a></li>`).join('\n        ');
   // One grid of equal cards: every listed game, its icon, EN + HI name, status badge and a short line.
   const cards = GAMES.map((g) => {
     const st = statusOf(g);
-    const name = g.featured ? `<a href="${url.game(g)}">${esc(g.nameEn)}</a>` : esc(g.nameEn);
+    const name = `<a href="${url.game(g)}">${esc(g.nameEn)}</a>`;
     const links = [
-      g.featured ? `<a class="more" href="${url.game(g)}">${T.s('readAbout', g)}</a>` : '',
+      `<a class="more" href="${url.game(g)}">${T.s('readAbout', g)}</a>`,
       g.privacy?.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : '',
     ].filter(Boolean).join('\n          ');
     return `      <li class="card" id="g-${g.id}">
@@ -481,10 +488,10 @@ function termsPage() {
 
 function contactPage() {
   const T = makeT();
-  // Featured games link to their page; the others (no game page yet) show their name and the policy link only.
-  const games = [...FEATURED, ...WORKSHOP.filter((g) => g.privacy.published)].map((g) => {
+  // Every game links to its page, with its policy link when the policy is published.
+  const games = [...FEATURED, ...WORKSHOP].map((g) => {
     const inner = `${icon(g, 48, '', '', ' loading="lazy" decoding="async"')}<span><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span></span>`;
-    const name = g.featured ? `<a class="contact-game" href="${url.game(g)}">${inner}</a>` : `<span class="contact-game">${inner}</span>`;
+    const name = `<a class="contact-game" href="${url.game(g)}">${inner}</a>`;
     return `<li>${name}${g.privacy.published ? ` <a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</li>`;
   }).join('\n        ');
   const body = `
@@ -542,7 +549,7 @@ function notFoundPage() {
 }
 
 // ---------- Text files ----------
-const sitemapPaths = ['/', ...FEATURED.map(url.game), ...WITH_POLICY.map(url.privacy), url.delete, url.terms, url.contact];
+const sitemapPaths = ['/', ...GAMES.map(url.game), ...WITH_POLICY.map(url.privacy), url.delete, url.terms, url.contact];
 const policyDates = new Map(WITH_POLICY.map((g) => [url.privacy(g), g.privacy.effectiveISO]));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -580,7 +587,7 @@ const files = {
   'robots.txt': robots,
   'app-ads.txt': appAds,
 };
-for (const g of FEATURED) {
+for (const g of GAMES) {
   files[`${g.slug}/index.html`] = gamePage(g);
 }
 for (const g of WITH_POLICY) files[`${g.slug}/privacy.html`] = privacyPage(g);
