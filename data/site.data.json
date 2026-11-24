@@ -309,6 +309,39 @@
       "nameEn": "Bharat Carrom", "nameHi": "भारत कैरम",
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/carrom-icon",
+      "shots": [
+        { "src": "/assets/img/shots/carrom-match.webp", "w": 480, "h": 1067, "altEn": "A Bharat Carrom match against the computer, with the queen on the board and the offer to take a shot again" },
+        { "src": "/assets/img/shots/carrom-aim.webp", "w": 480, "h": 1039, "altEn": "The Bharat Carrom board at the start of a match, with the striker slider and power bar" }
+      ],
+      "kindEn": "A board game",
+      "taglineEn": "Aim the striker, cover the queen.",
+      "taglineHi": "स्ट्राइकर से निशाना लगाओ, रानी कवर करो।",
+      "summaryEn": "A carrom board with three modes, a computer opponent at three levels, Pass and Play, and a new shot puzzle every day. Rewarded ads only when you choose. Coins you earn, never buy.",
+      "summaryHi": "तीन मोड, तीन स्तर वाला कंप्यूटर खिलाड़ी, पास एंड प्ले और हर दिन एक नई शॉट पहेली वाला कैरम बोर्ड। इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से। सिक्के कमाए जाते हैं, ख़रीदे नहीं जाते।",
+      "ledeEn": "Carrom for your phone, in English and Hindi. Play Classic, Freestyle or Disc Pool against the computer, or pass the phone to a friend. It plays offline.",
+      "ledeHi": "आपके फ़ोन के लिए कैरम, अंग्रेज़ी और हिंदी में। क्लासिक, फ़्रीस्टाइल या डिस्क पूल कंप्यूटर के साथ खेलें, या फ़ोन दोस्त को पास करें। बिना इंटरनेट भी चलता है।",
+      "featuresTitleEn": "At the carrom board",
+      "featuresTitleHi": "कैरम बोर्ड पर",
+      "featuresEn": [
+        "Three modes: Classic (cover the queen), Freestyle to 120 points, and Disc Pool",
+        "Play the computer at Easy, Medium or Hard, or two players on one phone with Pass and Play",
+        "Aaj ka Shot: a new carrom puzzle every day",
+        "Seven boards, from Royal Wood to Rajwada Royal. Looks only: every board plays the same.",
+        "A daily gift, a daily spin, goals, chests, streaks and trophies",
+        "Optional match commentary, spoken by your phone’s own voice",
+        "Rewarded ads only when you choose, and a banner on the home screen and during matches. No full-screen ads.",
+        "Plays offline, and ads need the internet. English and Hindi."
+      ],
+      "featuresHi": [
+        "तीन मोड: क्लासिक (रानी कवर करो), 120 अंक तक फ़्रीस्टाइल, और डिस्क पूल",
+        "कंप्यूटर के साथ आसान, मध्यम या कठिन स्तर पर खेलें, या पास एंड प्ले में एक फ़ोन पर दो खिलाड़ी",
+        "आज का शॉट: हर दिन एक नई कैरम पहेली",
+        "रॉयल वुड से राजवाड़ा रॉयल तक सात बोर्ड। सिर्फ़ रूप बदलता है, हर बोर्ड पर खेल एक जैसा है।",
+        "डेली गिफ़्ट, डेली स्पिन, लक्ष्य, संदूक, स्ट्रीक और ट्रॉफ़ी",
+        "चाहें तो मैच पर कमेंट्री, फ़ोन की अपनी आवाज़ में",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर होम स्क्रीन पर और मैच के दौरान। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "बिना इंटरनेट भी चलता है, विज्ञापनों के लिए इंटरनेट चाहिए। अंग्रेज़ी और हिंदी।"
+      ],
       "lineEn": "A carrom board, played against the computer or with friends.",
       "lineHi": "कैरम बोर्ड, कंप्यूटर के साथ या दोस्तों के साथ।",
       "privacy": {
@@ -373,6 +406,39 @@
       "nameEn": "Bharat Sudoku", "nameHi": "भारत सुडोकू",
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/sudoku-icon",
+      "shots": [
+        { "src": "/assets/img/shots/sudoku-game.webp", "w": 480, "h": 1067, "altEn": "A Bharat Sudoku puzzle in progress, with the mistakes count, timer, notes and hint buttons" },
+        { "src": "/assets/img/shots/sudoku-win.webp", "w": 480, "h": 1067, "altEn": "The Bharat Sudoku level complete screen with three stars, the time and the coins earned" }
+      ],
+      "kindEn": "A puzzle",
+      "taglineEn": "Fill the grid, one number at a time.",
+      "taglineHi": "एक-एक अंक से पूरा ग्रिड भरो।",
+      "summaryEn": "Calm nine by nine Sudoku with 300 levels, a daily puzzle and a weekly mela. Notes and hints, and rewarded ads only when you choose. Coins you earn, never buy.",
+      "summaryHi": "शांत नौ बाय नौ सुडोकू, 300 स्तर, रोज़ की पहेली और साप्ताहिक मेले के साथ। नोट्स और हिंट, और इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से। सिक्के कमाए जाते हैं, ख़रीदे नहीं जाते।",
+      "ledeEn": "Classic Sudoku in English and Hindi, with the digits 1 to 9. Four levels from Easy to Expert, and the puzzles play offline.",
+      "ledeHi": "अंग्रेज़ी और हिंदी में क्लासिक सुडोकू, 1 से 9 तक के अंकों के साथ। आसान से एक्सपर्ट तक चार स्तर, और पहेलियाँ बिना इंटरनेट भी चलती हैं।",
+      "featuresTitleEn": "In the puzzle",
+      "featuresTitleHi": "पहेली में",
+      "featuresEn": [
+        "Classic 9x9 Sudoku: Easy, Medium, Hard and Expert",
+        "300 levels on a level map, up to three stars each, plus Quick Play",
+        "A Daily Puzzle and a Weekly Mela of seven puzzles",
+        "Notes, undo, erase and hints. The first three hints are free.",
+        "Highlight same numbers, show conflicts, auto-remove notes and a focus mode",
+        "A daily reward, a spin, achievements, and board themes and number fonts you earn with coins",
+        "Rewarded ads only when you choose, and a banner at the bottom of the puzzle screen. No full-screen ads.",
+        "Festive and Classic looks. English and Hindi."
+      ],
+      "featuresHi": [
+        "क्लासिक 9x9 सुडोकू: आसान, मध्यम, कठिन और एक्सपर्ट",
+        "नक्शे पर 300 स्तर, हर स्तर पर तीन सितारे तक, और क्विक प्ले",
+        "रोज़ की पहेली और सात पहेलियों वाला साप्ताहिक मेला",
+        "नोट्स, वापस लो, मिटाओ और हिंट। पहले तीन हिंट मुफ़्त।",
+        "एक जैसे अंक हाइलाइट करना, टकराव दिखाना, नोट्स अपने आप हटाना और फ़ोकस मोड",
+        "रोज़ का इनाम, स्पिन, उपलब्धियाँ, और सिक्कों से मिलने वाले बोर्ड थीम और अंक फ़ॉन्ट",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर पहेली स्क्रीन के नीचे। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "त्योहार और क्लासिक रूप। अंग्रेज़ी और हिंदी।"
+      ],
       "lineEn": "The nine by nine number puzzle.",
       "lineHi": "नौ बाय नौ अंकों की पहेली।",
       "privacy": {
@@ -426,6 +492,41 @@
       "nameEn": "Bharat Call Break", "nameHi": "भारत कॉल ब्रेक",
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/callbreak-icon",
+      "shots": [
+        { "src": "/assets/img/shots/callbreak-game.webp", "w": 480, "h": 1067, "altEn": "A Bharat Call Break round in progress, with three computer players, each call and your hand of cards" },
+        { "src": "/assets/img/shots/callbreak-table.webp", "w": 480, "h": 975, "altEn": "A Bharat Call Break trick in progress against three computer players, with spades as trump" }
+      ],
+      "kindEn": "A card game",
+      "taglineEn": "Make your call, then win your tricks.",
+      "taglineHi": "कॉल करो, फिर उतने हाथ बनाओ।",
+      "summaryEn": "Call Break for four players, with spades always trump. Play three computer players or pass the phone, plus a free practice table. Rewarded ads only when you choose. Coins you earn, never buy.",
+      "summaryHi": "चार खिलाड़ियों का कॉल ब्रेक, हुकुम हमेशा ट्रंप। तीन कंप्यूटर खिलाड़ियों के साथ खेलें या फ़ोन पास करें, और मुफ़्त प्रैक्टिस टेबल भी। इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से। सिक्के कमाए जाते हैं, ख़रीदे नहीं जाते।",
+      "ledeEn": "The card game of calls and tricks, in English and Hindi. Thirteen cards each, five rounds, and computer players at three levels.",
+      "ledeHi": "कॉल और हाथ वाला ताश का खेल, अंग्रेज़ी और हिंदी में। हर खिलाड़ी को तेरह पत्ते, पाँच राउंड, और तीन स्तर वाले कंप्यूटर खिलाड़ी।",
+      "featuresTitleEn": "At the table",
+      "featuresTitleHi": "टेबल पर",
+      "featuresEn": [
+        "Classic Call Break: four players, 52 cards, and spades are always trump",
+        "Play three computer players at Easy, Medium or Hard, over five rounds",
+        "Pass and Play for 2 to 4 people on one phone, with computer players in empty seats",
+        "A free Practice table, and house rules you can change",
+        "Hints during play, and quick chat lines like Namaste and Well played",
+        "A daily reward, a daily spin, chests, missions, levels and a Festival Reward",
+        "Tables and card backs to unlock. Looks only: rules, deals and computer players stay the same.",
+        "Rewarded ads only when you choose, and a banner at the bottom of the game screen during a match. No full-screen ads.",
+        "English and Hindi"
+      ],
+      "featuresHi": [
+        "क्लासिक कॉल ब्रेक: चार खिलाड़ी, 52 पत्ते, और हुकुम हमेशा ट्रंप",
+        "तीन कंप्यूटर खिलाड़ियों के साथ आसान, मध्यम या कठिन स्तर पर, पाँच राउंड",
+        "एक फ़ोन पर 2 से 4 लोगों के लिए पास एंड प्ले, खाली सीटों पर कंप्यूटर खिलाड़ी",
+        "मुफ़्त प्रैक्टिस टेबल, और अपने हिसाब से बदलने वाले नियम",
+        "खेल के दौरान हिंट, और नमस्ते, बढ़िया खेला जैसे झटपट चैट संदेश",
+        "रोज़ का इनाम, डेली स्पिन, संदूक, मिशन, स्तर और त्योहार इनाम",
+        "खोलने के लिए टेबल और पत्तों के पीछे के डिज़ाइन। सिर्फ़ रूप बदलता है, नियम, पत्ते बाँटना और कंप्यूटर खिलाड़ी वही रहते हैं।",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर मैच के दौरान गेम स्क्रीन के नीचे। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "अंग्रेज़ी और हिंदी"
+      ],
       "lineEn": "The card game of calls and tricks.",
       "lineHi": "ताश का खेल।",
       "privacy": {
@@ -487,6 +588,39 @@
       "nameEn": "Bharat Bubble Shooter", "nameHi": "भारत बबल शूटर",
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/bubble-icon",
+      "shots": [
+        { "src": "/assets/img/shots/bubble-home.webp", "w": 480, "h": 932, "altEn": "Bharat Bubble Shooter home screen with Play, daily goals and the weekly event" },
+        { "src": "/assets/img/shots/bubble-game.webp", "w": 480, "h": 967, "altEn": "A Bharat Bubble Shooter level in progress, with the lotus shooter, the aim line and boosters" }
+      ],
+      "kindEn": "An arcade puzzle",
+      "taglineEn": "Aim, match three, pop.",
+      "taglineHi": "निशाना लगाओ, तीन मिलाओ, फोड़ो।",
+      "summaryEn": "A festive bubble shooter with 300 levels, Endless and a weekly Festival Level. Rewarded ads only when you choose. Coins you earn, never buy.",
+      "summaryHi": "त्योहार जैसा बबल शूटर, 300 स्तर, एंडलेस और हर हफ़्ते एक त्योहार स्तर के साथ। इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से। सिक्के कमाए जाते हैं, ख़रीदे नहीं जाते।",
+      "ledeEn": "Shoot from the lotus, match three or more of a colour and watch them pop. In English and Hindi, and it plays offline.",
+      "ledeHi": "कमल से बबल चलाओ, एक रंग के तीन या ज़्यादा मिलाओ और उन्हें फूटते देखो। अंग्रेज़ी और हिंदी में, और बिना इंटरनेट भी चलता है।",
+      "featuresTitleEn": "Level by level",
+      "featuresTitleHi": "स्तर दर स्तर",
+      "featuresEn": [
+        "300 levels across valleys on a level map, up to three stars each",
+        "Level goals: clear the ceiling, free the parrots, light the diyas, beat the clock and rescue the peacock",
+        "Endless mode and a weekly Festival Level",
+        "Boosters: Fireball, Rainbow, +5 shots and Long Aim, for coins you earn",
+        "A daily gift, a streak with a weekly streak saver, daily and weekly goals, a weekly chest and achievements",
+        "Festive and Classic looks, and a share card",
+        "Rewarded ads only when you choose, and a banner on the level map and the game screen. No full-screen ads.",
+        "English and Hindi"
+      ],
+      "featuresHi": [
+        "नक्शे पर घाटियों में फैले 300 स्तर, हर स्तर पर तीन सितारे तक",
+        "स्तरों के लक्ष्य: छत साफ़ करो, तोते छुड़ाओ, दीये जलाओ, समय से पहले पूरा करो और मोर को बचाओ",
+        "एंडलेस मोड और हर हफ़्ते एक त्योहार स्तर",
+        "बूस्टर: फ़ायरबॉल, रेनबो, +5 शॉट और लंबा निशाना, कमाए हुए सिक्कों से",
+        "डेली गिफ़्ट, स्ट्रीक और हफ़्ते में एक स्ट्रीक सेवर, रोज़ और हफ़्ते के लक्ष्य, साप्ताहिक संदूक और उपलब्धियाँ",
+        "त्योहार और क्लासिक रूप, और शेयर कार्ड",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर नक्शे पर और गेम स्क्रीन पर। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "अंग्रेज़ी और हिंदी"
+      ],
       "lineEn": "Aim, match and pop.",
       "lineHi": "निशाना लगाओ, मिलाओ और फोड़ो।",
       "privacy": {
@@ -539,6 +673,39 @@
       "nameEn": "Bharat Saanp Seedhi", "nameHi": "भारत साँप सीढ़ी",
       "status": "coming-soon", "playUrl": "",
       "icon": "/assets/img/icons/snakes-icon",
+      "shots": [
+        { "src": "/assets/img/shots/snakes-game.webp", "w": 480, "h": 940, "altEn": "A Bharat Saanp Seedhi Pass and Play match on the classic board, with the die, Shield and Re-roll" },
+        { "src": "/assets/img/shots/snakes-setup.webp", "w": 480, "h": 1039, "altEn": "The Bharat Saanp Seedhi Pass and Play setup: number of players, a pawn for each player and the board" }
+      ],
+      "kindEn": "A board game",
+      "taglineEn": "Climb the ladders, dodge the snakes!",
+      "taglineHi": "सीढ़ी चढ़ो, साँप से बचो!",
+      "summaryEn": "Snakes and ladders for the whole family. Play one or three computer players, or pass the phone around. Rewarded ads only when you choose. Coins you earn, never buy.",
+      "summaryHi": "पूरे परिवार के लिए साँप सीढ़ी। एक या तीन कंप्यूटर खिलाड़ियों के साथ खेलें, या फ़ोन एक से दूसरे को पास करें। इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से। सिक्के कमाए जाते हैं, ख़रीदे नहीं जाते।",
+      "ledeEn": "Classic snakes and ladders in Hindi and English. Roll the die, climb the ladders, and land exactly on 100 to finish first.",
+      "ledeHi": "हिंदी और अंग्रेज़ी में क्लासिक साँप सीढ़ी। पासा फेंको, सीढ़ियाँ चढ़ो, और सबसे पहले ठीक 100 पर पहुँचो।",
+      "featuresTitleEn": "On the board",
+      "featuresTitleHi": "बोर्ड पर",
+      "featuresEn": [
+        "Play one or three computer players, or Pass and Play for 2 to 4 friends on one phone",
+        "Shield and Re-roll cards in every match: a shield stops a snake, a re-roll tries that move again",
+        "Eleven boards from easy to hard, opened as you level up or with coins",
+        "A Festival Board that changes every week",
+        "Eight pawns to pick from, and your own name and icon",
+        "A daily reward, a daily spin and a chest",
+        "Rewarded ads only when you choose, and a banner on the game screen. No full-screen ads.",
+        "English and Hindi"
+      ],
+      "featuresHi": [
+        "एक या तीन कंप्यूटर खिलाड़ियों के साथ खेलें, या एक फ़ोन पर 2 से 4 दोस्तों के साथ पास एंड प्ले",
+        "हर मैच में ढाल और दोबारा वाले कार्ड: ढाल साँप को रोकती है, दोबारा से वही चाल फिर से चल सकते हो",
+        "आसान से कठिन तक ग्यारह बोर्ड, स्तर बढ़ने पर या सिक्कों से खुलते हैं",
+        "हर हफ़्ते बदलने वाला त्योहार बोर्ड",
+        "चुनने के लिए आठ गोटियाँ, और आपका अपना नाम और आइकन",
+        "रोज़ का इनाम, डेली स्पिन और संदूक",
+        "इनाम वाले विज्ञापन सिर्फ़ आपकी मर्ज़ी से, और बैनर गेम स्क्रीन पर। कोई फ़ुल-स्क्रीन विज्ञापन नहीं।",
+        "अंग्रेज़ी और हिंदी"
+      ],
       "lineEn": "Snakes and ladders with Pass and Play and vs AI.",
       "lineHi": "साँप सीढ़ी, पास एंड प्ले और AI के साथ।",
       "privacy": { "published": false }
