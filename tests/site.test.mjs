@@ -72,7 +72,7 @@ function applyRedirects(rules, path) {
   return null;
 }
 
-test('Block Puzzle typos and Carrom privacy.html redirect with 301, leaving canonical routes alone', () => {
+test('Block Puzzle typos and the coming-soon privacy.html addresses redirect with 301, leaving canonical routes alone', () => {
   const rules = parseRedirects(read(join(PUB, '_redirects')));
   assert.ok(rules.length > 0, '_redirects has no rules');
   assert.ok(rules.length <= 2100, `_redirects has ${rules.length} rules; Pages allows 2,100`);
@@ -99,6 +99,9 @@ test('Block Puzzle typos and Carrom privacy.html redirect with 301, leaving cano
   expect('/bharat-block-puzzle/privacy', '/block-puzzle/privacy');
   expect('/bharat-block-puzzle/anything/else', '/block-puzzle/anything/else');
   expect('/carrom/privacy.html', '/carrom/privacy');
+  expect('/sudoku/privacy.html', '/sudoku/privacy');
+  expect('/call-break/privacy.html', '/call-break/privacy');
+  expect('/bubble-shooter/privacy.html', '/bubble-shooter/privacy');
 
   // The privacy.html typo must be a single hop, not /block-puzzle/privacy.html then a pretty-URL 308.
   assert.equal(applyRedirects(rules, '/bharat-block-puzzle/privacy.html').destination, '/block-puzzle/privacy');
@@ -107,7 +110,7 @@ test('Block Puzzle typos and Carrom privacy.html redirect with 301, leaving cano
     '/', '/block-puzzle', '/block-puzzle/', '/block-puzzle/privacy', '/block-puzzle/privacy.html',
     '/bharat-ludo', '/bharat-ludo/', '/bharat-ludo/privacy', '/bharat-ludo/privacy.html',
     '/sweet-mela', '/sweet-mela/privacy', '/delete', '/delete.html', '/terms', '/contact',
-    '/carrom/privacy',
+    '/carrom/privacy', '/sudoku/privacy', '/call-break/privacy', '/bubble-shooter/privacy',
     '/app-ads.txt', '/robots.txt', '/sitemap.xml', '/404',
   ]) {
     assert.equal(applyRedirects(rules, path), null, `${path} must not be caught by _redirects`);
@@ -259,70 +262,115 @@ test('pages are accessible basics: lang, title, description, one h1, main, alt a
   }
 });
 
-test('privacy pages match each game\'s SDKs', () => {
+test('privacy pages match each game\'s SDKs and current behaviour', () => {
   const p = (slug) => visible(read(join(PUB, slug, 'privacy.html')));
-  const ludo = p('bharat-ludo');
-  assert.match(ludo, /Firebase Analytics/);
-  assert.match(ludo, /worldtimeapi\.org/);
-  assert.match(ludo, /timeapi\.io/);
-  assert.match(ludo, /Reminders are off until you turn them on/);
-  const block = p('block-puzzle');
-  assert.match(block, /does not include Firebase/);
-  assert.ok(!/Firebase Analytics/.test(block));
-  assert.match(block, /at most one local reminder a day, around 7 pm phone time/);
-  assert.match(block, /optional and off until you turn it on/);
-  assert.match(block, /No data is sent for it and no push server is used/);
-  assert.match(block, /turn it off at any time in Settings/);
-  assert.ok(!/does not schedule or send any reminders/.test(block));
-  assert.ok(!/worldtimeapi|timeapi\.io|generate_204/.test(block));
-  const mela = p('sweet-mela');
-  assert.match(mela, /does not include Firebase/);
-  assert.ok(!/Firebase Analytics/.test(mela));
-  assert.match(mela, /generate_204/);
-  assert.match(mela, /at most one local notification a day/);
-  assert.match(block, /rewarded video[^.]*\(power-up\): rotate, swap tray or undo/, 'Block Puzzle names its real power-ups');
-  assert.ok(!/\bhint\b|achievements/.test(block), 'Block Puzzle privacy: no hint or achievements (not in the game)');
-  const carrom = p('carrom');
-  assert.match(carrom, /rewarded ads that you choose to watch, and banner ads/);
-  assert.match(carrom, /no interstitial ads/);
-  assert.match(carrom, /advertising ID, device and app information/);
-  assert.match(carrom, /consent before personalised ads/);
-  assert.match(carrom, /does not include Firebase or any other analytics service/);
-  assert.ok(!/Firebase Analytics|worldtimeapi|timeapi\.io|generate_204/.test(carrom));
-  assert.match(carrom, /does not collect personal data or run servers/);
-  assert.match(carrom, /no sign-in/);
-  assert.match(carrom, /progress, settings, saves and coins stay only on your device/);
-  assert.match(carrom, /on-device text-to-speech/);
-  assert.match(carrom, /Nothing is recorded or sent/);
-  assert.match(carrom, /does not use the microphone/);
-  assert.match(carrom, /Uninstalling the app or clearing its app data deletes this local data/);
-  const carromHtml = read(join(PUB, 'carrom/privacy.html'));
-  assert.match(carromHtml, /<time datetime="2026-11-17">17 November 2026<\/time>/);
-  assert.match(carromHtml, /href="\/delete"/);
-  assert.match(carromHtml, /href="\/#workshop"/);
+  const all = {};
+  for (const g of POLICY) all[g.id] = p(g.slug);
+  const { ludo, block, mela, carrom, sudoku, callbreak, bubble } = all;
+  assert.equal(POLICY.length, 7, 'all 7 finished games have a published policy');
+  // Every policy: AdMob rewarded + banner only, personalised ads via the advertising ID, UMP, the
+  // Google HEAD Date time check, no account, the delete page, 18+.
   for (const g of POLICY) {
-    const s = p(g.slug);
-    assert.ok(s.includes(`${g.nameEn} is not directed at children under 13.`), `${g.slug}: children sentence`);
-    assert.match(s, /Google AdMob/);
+    const s = all[g.id];
+    assert.match(s, /Google AdMob ads in two formats only: rewarded video ads and banner ads/, g.id);
+    assert.match(s, /never plays by itself/, g.id);
+    assert.match(s, /no interstitial ads/, g.id);
+    assert.match(s, /personalised using the advertising ID/, g.id);
+    assert.match(s, /User Messaging Platform \(UMP\)/, g.id);
+    assert.match(s, /European Economic Area \(EEA\), the UK or Switzerland/, g.id);
+    assert.match(s, /HTTPS HEAD request, with no body, to https:\/\/www\.google\.com\/generate_204 and reads only the Date header/, g.id);
+    assert.match(s, /no advertising or device ID/, g.id);
+    assert.ok(!/worldtimeapi|timeapi\.io/.test(s), `${g.id}: only the Google HEAD time check`);
+    assert.ok(s.includes(`${g.nameEn} is intended for adults aged 18 and over.`), `${g.id}: 18+`);
+    assert.ok(!/children under 13/.test(s), g.id);
+    assert.match(s, /no .*account/i, g.id);
+    assert.ok(read(join(PUB, g.slug, 'privacy.html')).includes('href="/delete"'), `${g.id} links the delete page`);
     assert.ok(s.includes(g.package), `${g.slug} names its package`);
     assert.ok(s.includes(S.supportEmail));
+    assert.ok(read(join(PUB, g.slug, 'privacy.html')).includes('<time datetime="2026-11-24">24 November 2026</time>'), `${g.id} date`);
+  }
+  // The real Privacy choices path in each app (never a generic "Account" for games without one).
+  const paths = {
+    ludo: 'Account, then Settings, then Privacy choices',
+    sudoku: 'Profile, then Settings, then Privacy choices',
+    block: 'Settings (the gear on the home screen), then Privacy choices',
+    mela: 'Settings, then Privacy choices',
+    carrom: 'Settings, then Privacy choices',
+    callbreak: 'Settings, then Privacy choices',
+    bubble: 'Profile (tap your avatar on the home screen), then Privacy options',
+  };
+  for (const [id, path] of Object.entries(paths)) assert.ok(all[id].includes(`at any time in ${path}.`), `${id} Privacy choices path`);
+  // Analytics: Ludo's Firebase is only built in when a config file exists, so its policy makes no claim
+  // either way; the other six state AdMob is the only third party.
+  assert.ok(!/Firebase/.test(ludo), 'Ludo makes no Firebase claim');
+  for (const id of ['block', 'mela', 'carrom', 'sudoku', 'callbreak', 'bubble']) {
+    assert.match(all[id], /does not include Firebase or any other analytics service/, id);
+  }
+  assert.ok(!/Usage events in/.test(visible(read(join(PUB, 'delete.html')))));
+  // Banners: no banner in Ludo Pass and Play; Carrom and Call Break show it in Pass and Play.
+  assert.match(ludo, /There is no banner in Pass and Play/);
+  assert.match(carrom, /including Pass and Play matches/);
+  assert.match(callbreak, /including Pass and Play matches/);
+  assert.match(mela, /on the level map and on the results screen, not while you play a level/);
+  // Reminders only where the app schedules them.
+  assert.match(ludo, /Reminders are off until you turn them on/);
+  assert.match(block, /at most one local reminder a day, around 7 pm phone time/);
+  assert.match(block, /No data is sent for it and no push server is used/);
+  assert.match(mela, /at most one local notification a day, around 6 pm/);
+  assert.match(bubble, /around 7:30 pm India time/);
+  for (const id of ['sudoku', 'carrom', 'callbreak']) assert.match(all[id], /does not schedule or show notifications/, id);
+  // Sweet Mela and Carrom do not collect a name, picture or gender.
+  for (const id of ['mela', 'carrom']) {
+    assert.match(all[id], /does not ask for your name, a picture or your gender/, id);
+    const stays = DATA.games.find((g) => g.id === id).privacy.stays.join(' ');
+    assert.ok(!/name|avatar|gender|photo/i.test(stays), `${id} stays list has no name, avatar or gender`);
+  }
+  // Per-game extras.
+  assert.match(callbreak, /allows Android's own backup/);
+  assert.match(carrom, /on-device text-to-speech/);
+  assert.match(carrom, /does not use the microphone/);
+  assert.match(carrom, /does not collect personal data or run servers/);
+  assert.match(mela, /content rated PG/);
+  assert.ok(!/\bhint\b|achievements/.test(block), 'Block Puzzle privacy: no hint or achievements (not in the game)');
+  for (const slug of ['carrom', 'sudoku', 'call-break', 'bubble-shooter']) {
+    assert.match(read(join(PUB, slug, 'privacy.html')), /href="\/#workshop"/, `${slug} links back to the Coming soon list`);
   }
 });
 
-test('Carrom has a published workshop policy, Coming soon text and no Play link', () => {
-  const carrom = DATA.games.find((g) => g.id === 'carrom');
-  assert.equal(carrom.privacy.published, true);
-  assert.equal(carrom.status, 'in-workshop');
-  assert.equal(carrom.featured, false);
-  assert.equal(carrom.playUrl, '');
+test('home lists the 7 finished games: 3 in closed testing, 4 Coming soon, Snakes and Ladders not listed', () => {
   const home = read(join(PUB, 'index.html'));
-  const workshop = home.slice(home.indexOf('<section class="workshop"'), home.indexOf('</main>'));
-  assert.match(workshop, /Bharat Carrom/);
-  assert.match(workshop, /Coming soon/);
-  assert.match(workshop, /href="\/carrom\/privacy"/);
-  assert.ok(!/play\.google\.com/.test(workshop));
-  assert.ok(read(join(PUB, 'sitemap.xml')).includes(`<loc>${S.domain}/carrom/privacy</loc><lastmod>2026-11-17</lastmod>`));
-  assert.match(read(join(PUB, 'delete.html')), /com\.bharatjoy\.carrom/);
+  const catalog = home.slice(home.indexOf('<section class="catalog"'), home.indexOf('<section class="workshop"'));
+  const soon = home.slice(home.indexOf('<section class="workshop"'), home.indexOf('</main>'));
+  for (const id of ['ludo', 'block', 'mela']) {
+    const g = DATA.games.find((x) => x.id === id);
+    assert.equal(g.status, 'closed-testing', id);
+    assert.ok(catalog.includes(g.nameEn), `${id} in the catalogue`);
+  }
+  assert.equal((catalog.match(/>Closed testing on Google Play</g) || []).length, 3);
+  for (const id of ['carrom', 'sudoku', 'callbreak', 'bubble']) {
+    const g = DATA.games.find((x) => x.id === id);
+    assert.equal(g.status, 'coming-soon', id);
+    assert.equal(g.featured, false, id);
+    assert.equal(g.playUrl, '', id);
+    assert.equal(g.privacy.published, true, id);
+    assert.ok(soon.includes(`<strong>${g.nameEn}</strong>`), `${id} in the Coming soon list`);
+    assert.ok(soon.includes(`href="/${g.slug}/privacy"`), `${id} privacy link`);
+    assert.match(read(join(PUB, 'delete.html')), new RegExp(g.package.replace(/\./g, '\\.')));
+    assert.ok(read(join(PUB, 'sitemap.xml')).includes(`<loc>${S.domain}/${g.slug}/privacy</loc><lastmod>2026-11-24</lastmod>`));
+  }
+  assert.equal((soon.match(/<p class="pill"><span data-i18n="t\d+">Coming soon<\/span><\/p>/g) || []).length, 4);
+  const T = JSON.parse(home.match(/<script type="application\/json" id="i18n-hi">([\s\S]*?)<\/script>/)[1]);
+  assert.ok(Object.values(T).includes('जल्द आ रहा है'), 'Hindi Coming soon label');
+  assert.ok(Object.values(T).includes('Google Play पर क्लोज़्ड टेस्टिंग'), 'Hindi closed testing label');
+  assert.ok(!/play\.google\.com/.test(soon));
+  assert.ok(!/>Coming soon</.test(catalog), 'no featured game says Coming soon');
+  const snakes = DATA.games.find((g) => g.id === 'snakes');
+  assert.equal(snakes.listed, false);
+  for (const f of HTML) assert.ok(!/Saanp Seedhi|saanp-seedhi|snakes-icon/.test(read(f)), `${relative(PUB, f)} must not list Snakes and Ladders`);
+  // Footer policy list on every page with a footer names all 7 policies.
+  for (const f of HTML.filter((x) => read(x).includes('class="foot-links"'))) {
+    for (const g of POLICY) assert.ok(read(f).includes(`href="/${g.slug}/privacy"`), `${relative(PUB, f)} footer lists ${g.slug}`);
+  }
 });
 
 test('closed testing Ludo has a label, not a store or tester link', () => {
@@ -333,7 +381,7 @@ test('closed testing Ludo has a label, not a store or tester link', () => {
   assert.ok(!/play\.google\.com/.test(html));
 });
 
-test('Block Puzzle and Sweet Mela are in closed testing with a label, no store or tester link; Carrom stays in the workshop', () => {
+test('Block Puzzle and Sweet Mela are in closed testing with a label, no store or tester link', () => {
   for (const [id, slug] of [['block', 'block-puzzle'], ['mela', 'sweet-mela']]) {
     const g = DATA.games.find((x) => x.id === id);
     assert.equal(g.status, 'closed-testing', `${id} status`);
@@ -349,10 +397,6 @@ test('Block Puzzle and Sweet Mela are in closed testing with a label, no store o
   }
   const home = read(join(PUB, 'index.html'));
   assert.ok(!/play\.google\.com|groups\.google\.com|\/apps\/testing\//.test(home));
-  assert.ok(!/>Coming soon</.test(home.slice(0, home.indexOf('<section class="workshop"'))), 'no featured game still says Coming soon');
-  const carrom = DATA.games.find((x) => x.id === 'carrom');
-  assert.equal(carrom.status, 'in-workshop');
-  assert.equal(carrom.playUrl, '');
 });
 
 test('no secrets or signing files are tracked', () => {

@@ -132,6 +132,7 @@ p.body{font-size:17px;line-height:1.6;color:var(--mute);max-width:520px}
 .contents strong{display:block;font-family:var(--display);font-weight:400;font-size:18px}
 .contents span{display:block;color:var(--maroon);font-size:14px}
 .contents em{display:block;font-style:normal;color:var(--mute);font-size:14px;margin-top:2px}
+.contents .pill{margin:6px 0 2px}
 
 /* Footer */
 .site-footer{margin:20px var(--pad) 36px;padding-top:20px;border-top:3px solid var(--maroon);display:grid;grid-template-columns:1.2fr .8fr 1.6fr;gap:24px;font-size:16px;color:var(--mute);font-family:var(--italic);position:relative;z-index:2}

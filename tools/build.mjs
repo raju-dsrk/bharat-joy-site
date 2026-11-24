@@ -14,9 +14,11 @@ const S = DATA.site;
 const DOMAIN = S.domain.replace(/\/+$/, '');
 const HOST = DOMAIN.replace(/^https?:\/\//, '');
 const STR = DATA.strings;
-const FEATURED = DATA.games.filter((g) => g.featured);
-const WORKSHOP = DATA.games.filter((g) => !g.featured);
-const WITH_POLICY = DATA.games.filter((g) => g.privacy && g.privacy.published);
+// A game with "listed": false (for example one still being built) stays off every page, list and sitemap.
+const GAMES = DATA.games.filter((g) => g.listed !== false);
+const FEATURED = GAMES.filter((g) => g.featured);
+const WORKSHOP = GAMES.filter((g) => !g.featured);
+const WITH_POLICY = GAMES.filter((g) => g.privacy && g.privacy.published);
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const fill = (s, g = {}) => String(s ?? '')
@@ -190,7 +192,7 @@ ${body}
 function homePage() {
   const T = makeT();
   const windows = FEATURED.map((g) => `<li class="win"><a href="${url.game(g)}" aria-label="${esc(g.nameEn)}"><img src="${g.band}" alt="${esc(g.bandAltEn)}" width="400" height="300" fetchpriority="high" decoding="async"></a></li>`).join('\n        ');
-  const rail = DATA.games.map((g) => `<li>${g.featured
+  const rail = GAMES.map((g) => `<li>${g.featured
     ? `<a href="${url.game(g)}" aria-label="${esc(g.nameEn)}">${icon(g, 48, '', '')}</a>`
     : `<span class="rail-quiet" title="${esc(g.nameEn)}">${icon(g, 48, '', g.nameEn)}</span>`}</li>`).join('\n        ');
   const entries = FEATURED.map((g, i) => {
@@ -206,7 +208,7 @@ function homePage() {
       </div>
     </article>`;
   }).join('\n');
-  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span><em>${T.t(g.lineEn, g.lineHi)}</em>${g.privacy.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</div></li>`).join('\n      ');
+  const workshop = WORKSHOP.map((g) => `<li>${icon(g, 52, '', '', ' loading="lazy" decoding="async"')}<div><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span>${statusOf(g).pillEn ? `<p class="pill">${T.t(statusOf(g).pillEn, statusOf(g).pillHi)}</p>` : ''}<em>${T.t(g.lineEn, g.lineHi)}</em>${g.privacy.published ? `<a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</div></li>`).join('\n      ');
   const body = `
   ${toran()}
   <main id="main">
@@ -324,7 +326,7 @@ function privacyPage(g) {
     <p class="meta">Developer: ${esc(S.studio)}. This page is for the Android edition of ${esc(g.nameEn)} on Google Play (package ${esc(g.package)}). Effective date: <time datetime="${esc(p.effectiveISO ?? S.legalEffectiveISO)}">${esc(p.effectiveDate ?? S.legalEffectiveDate)}</time>. A Hindi version of this policy will follow.</p>
 
     <h2>What stays on your phone</h2>
-    <p>The app saves the following in private storage on the device. It is not uploaded.</p>
+    <p>${esc(p.staysIntro ?? 'The app saves the following in private storage on the device. It is not uploaded.')}</p>
     <ul>
       ${p.stays.map((x) => `<li>${esc(fill(x, g))}</li>`).join('\n      ')}
     </ul>
@@ -342,8 +344,8 @@ ${sections}
     <h2>Security</h2>
     <p>Everything the app sends over the internet, as described above, travels encrypted over HTTPS.</p>
 
-    <h2>Children</h2>
-    <p>${esc(g.nameEn)} is not directed at children under 13. It does not knowingly collect personal information from children.</p>
+    <h2>Age</h2>
+    <p>${esc(g.nameEn)} is intended for adults aged 18 and over. It is not directed at children and does not knowingly collect personal information from children.</p>
 
     <h2>Changes</h2>
     <p>If a later version changes the ad network or analytics, or adds an account server, this policy and the Google Play Data safety form will be updated before that version ships.</p>
@@ -470,7 +472,12 @@ function termsPage() {
 
 function contactPage() {
   const T = makeT();
-  const games = FEATURED.map((g) => `<li><a class="contact-game" href="${url.game(g)}">${icon(g, 48, '', '', ' loading="lazy" decoding="async"')}<span><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span></span></a>${g.privacy.published ? ` <a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</li>`).join('\n        ');
+  // Featured games link to their page; the others (no game page yet) show their name and the policy link only.
+  const games = [...FEATURED, ...WORKSHOP.filter((g) => g.privacy.published)].map((g) => {
+    const inner = `${icon(g, 48, '', '', ' loading="lazy" decoding="async"')}<span><strong>${esc(g.nameEn)}</strong><span lang="hi">${esc(g.nameHi)}</span></span>`;
+    const name = g.featured ? `<a class="contact-game" href="${url.game(g)}">${inner}</a>` : `<span class="contact-game">${inner}</span>`;
+    return `<li>${name}${g.privacy.published ? ` <a class="small" href="${url.privacy(g)}">${T.s('privacyPolicy')}</a>` : ''}</li>`;
+  }).join('\n        ');
   const body = `
   <main id="main" class="contact">
   <section class="wrap">

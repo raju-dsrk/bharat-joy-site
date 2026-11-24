@@ -5,6 +5,9 @@
 /bharat-block-puzzle/             /block-puzzle/         301
 /bharat-block-puzzle/privacy.html /block-puzzle/privacy  301
 /bharat-block-puzzle/privacy      /block-puzzle/privacy  301
-# Carrom privacy uses the canonical URL without .html.
+# Carrom, Sudoku, Call Break and Bubble Shooter privacy use the canonical URL without .html.
 /carrom/privacy.html             /carrom/privacy        301
+/sudoku/privacy.html             /sudoku/privacy        301
+/call-break/privacy.html         /call-break/privacy    301
+/bubble-shooter/privacy.html     /bubble-shooter/privacy 301
 /bharat-block-puzzle/*            /block-puzzle/:splat   301
